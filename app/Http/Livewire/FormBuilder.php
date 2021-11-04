@@ -15,7 +15,7 @@ class FormBuilder extends BaseComponent
 
     public $slugQuestions;
 
-    public $createForm = [
+    public $create_form = [
         'email' => '',
         'club' => '',
     ];
@@ -23,13 +23,18 @@ class FormBuilder extends BaseComponent
     public function mount($form)
     {
         $this->form = Form::whereSlug($form)->first();
+
         $this->slugQuestions = array_map(function ($item) {
             return Str::slug($item);
         }, array_merge(
             array_column(config('questions.business-model'), 'question'),
-            $this->form->questions->pluck('question')->toArray(),
             array_column(config('questions.qualitative-intuitive-scoring'), 'question'),
-            array_column(config('questions.qualitative-intuitive-scoring-feedback'), 'question')
+        ));
+
+        $this->customQuestions = array_map(function ($item) {
+            return Str::slug($item);
+        }, array_merge(
+            $this->form->questions->pluck('question')->toArray(),
         ));
     }
 
@@ -37,8 +42,9 @@ class FormBuilder extends BaseComponent
     {
         CreateFormSubmission::run(
             $this->form,
-            $this->createForm,
-            $this->slugQuestions
+            $this->create_form,
+            $this->slugQuestions,
+            $this->customQuestions,
         );
 
         $this->emit('created');

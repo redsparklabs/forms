@@ -15,13 +15,15 @@ class CreateFormSubmission
     use AsObject, WithAttributes;
 
     public $slugQuestions;
+    public $customQuestions;
 
-    public function handle(Form $form, array $attributes, array $slugQuestions)
+    public function handle(Form $form, array $attributes, array $slugQuestions, array $customQuestions)
     {
-
         $this->slugQuestions = $slugQuestions;
 
-        if ( ! $attributes['club']) {
+        $this->customQuestions = $customQuestions;
+
+        if (!$attributes['club']) {
             $attributes['club'] = $form->clubs->first()->name;
         }
 
@@ -34,26 +36,40 @@ class CreateFormSubmission
 
     public function rules(): array
     {
-        $data = array_merge(array_map(function($item) {
-            return ['questions.'.$item => ['required']];
+        $data = array_merge(array_map(function ($item) {
+            return ['questions.' . $item => ['required']];
         }, $this->slugQuestions));
 
         $data = array_merge(...$data);
 
-        $data = array_merge($data, [
+        $data1 = array_merge(array_map(function ($item) {
+            return ['questions.custom.' . $item => ['required']];
+        }, $this->customQuestions));
+
+        $data1 = array_merge(...$data1);
+
+        $data = array_merge($data, $data1, [
             'email' => ['required', 'email'],
             'club' => ['required'],
         ]);
 
         return $data;
-
     }
 
     public function getValidationMessages(): array
     {
-        return [
+        $arr = [
             'club.required' => 'Please choose a team.',
         ];
+
+        foreach ($this->slugQuestions as $item) {
+            $arr['questions.' . $item . '.required'] = 'Please answer the question.';
+        }
+        foreach ($this->customQuestions as $item) {
+            $arr['questions.custom.' . $item . '.required'] = 'Please answer the question.';
+        }
+
+        return $arr;
     }
 
     public function getValidationErrorBag(): string

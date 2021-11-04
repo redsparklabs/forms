@@ -1,5 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
+
 module.exports = {
     mode: 'jit',
     presets: [
@@ -12,10 +13,12 @@ module.exports = {
         './resources/views/**/*.blade.php',
         './vendor/ph7jack/wireui/resources/**/*.blade.php',
         './vendor/ph7jack/wireui/ts/**/*.ts',
-        './vendor/ph7jack/wireui/src/View/**/*.php'
+        './vendor/ph7jack/wireui/src/View/**/*.php',
+        './safelist.txt'
     ],
 
     theme: {
+
         extend: {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
@@ -23,5 +26,14 @@ module.exports = {
         },
     },
 
-    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+    plugins: [
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/typography'),
+        require('tailwind-safelist-generator')({
+            patterns: [
+                'text-{colors}',
+                'bg-{colors}',
+            ],
+        }),
+    ],
 };

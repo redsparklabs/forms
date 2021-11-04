@@ -11,7 +11,7 @@
             <table class="w-1/2 border-collapse m-auto">
                 <thead class="table-auto h-[278px]">
                     <tr>
-                        <th scope="col">GB Member</th>
+                        <th scope="col" class="align-bottom">GB Member</th>
                         <th scope="col" class="bg-blue-500 border w-10 whitespace-nowrap">
                             <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
                                 <span class="p-2 text-white ">PROGRESS METRIC</span>
@@ -26,7 +26,7 @@
                         @endforeach
 
                         @php
-                            $sections = collect($questions)->groupBy('section');
+                            $sections = collect($questions)->groupBy('section')->reject(fn($item, $key) => $key == 'custom');
                         @endphp
 
                         @foreach($sections->all() as $section => $sectionData)
@@ -41,8 +41,7 @@
                 <tbody>
                     @php
                         $progressMetricTotal = 0;
-                        $sections = collect($questions)->groupBy('section');
-                        dd($sections);
+                        $sections = collect($questions)->groupBy('section')->reject(fn($item, $key) => $key == 'custom');
                         $sectiontotals = $sections->keys()->mapWithkeys(fn($item) => [$item.'_count' => 0])->all();
                     @endphp
                     @foreach($this->form->responses as $response)
@@ -65,17 +64,14 @@
                                 @php
                                     $sectionQuestions = $sectionData->pluck('question')->map(fn($item) => Str::slug($item))->toArray();
 
-                                    $total = collect($response->questions)->filter(function($item, $key) use ($sectionQuestions) {
+                                    $total += collect($response->questions)->filter(function($item, $key) use ($sectionQuestions) {
                                         return in_array($key, $sectionQuestions);
-                                    });
-
-                                    ray($total);
+                                    })->sum();
                                 @endphp
 
                             @endforeach
 
                             @php
-                            die;
                                 $progressMetricTotal += number_format($total / $totalSections, 1);
                             @endphp
                             <td class="border-2 text-right bg-white p-2">{{ number_format($total / $totalSections, 1) }}</td>
@@ -85,7 +81,7 @@
                             @endforeach
 
                             @php
-                                $sections = collect($questions)->groupBy('section');
+                                $sections = collect($questions)->groupBy('section')->reject(fn($item, $key) => $key == 'custom');
                             @endphp
 
                             @foreach($sections->all() as $section => $sectionData)
@@ -107,7 +103,7 @@
 
                     <tr>
                         <td></td>
-                        <td class="border-2 text-center bg-blue-500 text-white font-bold text-right p-2">
+                        <td class="border-2 bg-blue-500 text-white font-bold text-right p-2">
                             {{  number_format($progressMetricTotal / $this->form->responses->count(), 1) }}
                         </td>
 
@@ -132,6 +128,75 @@
                     </tr>
                 </tbody>
             </table>
+
+            <table class="w-full border-collapse m-auto mt-10">
+                <thead class="table-auto">
+
+                    <tr>
+                        <th scope="col"></th>
+                        @foreach($feedback_questions as $question)
+                            <th scope="col" class="text-left py-2 px-4">
+                                <div class="text-lg mb-2">{{ $question['question'] }}</div>
+                                <div class="font-normal text-xs">{{ $question['description'] }}</div>
+                            </th>
+                        @endforeach
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach($this->form->responses as $response)
+                    <tr class="border-b-2 border-black border-solid">
+                        <td class="py-2 px-4">{{ $response->email }} </td>
+                        @foreach($response->response['questions']['custom'] as $custom)
+                            <td class="py-2 px-4"> {{ $custom }} </td>
+                        @endforeach
+                    </tr>
+                    @endforeach
+                    <tr>
+                        <td class="text-sm italic p-2" colspan="{{ count($feedback_questions) + 1 }}">*Note: All Scores are calculated based on the last Evaluation, they are not a aggregate of all Progress scores.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="w-2/3 m-auto mt-10">
+                <div class="grid grid-rows- grid-flow-col gap-2">
+                    <div class="row-span-3 bg-red-100 flex items-center justify-center">
+                        1
+                    </div>
+
+                    <div class="col-span-2 bg-red-100 flex items-center justify-center h-20">
+                        2
+                    </div>
+                    <div class="row-span-2 col-span-2 bg-red-100 flex items-center justify-center h-20">
+                        3
+                    </div>
+
+                    <div class="row-span-3 bg-red-100 flex items-center justify-center">
+                        1
+                    </div>
+
+                    <div class="col-span-2 bg-red-100 flex items-center justify-center h-20">
+                        2
+                    </div>
+                    <div class="row-span-2 col-span-2 bg-red-100 flex items-center justify-center h-20">
+                        3
+                    </div>
+
+                    <div class="row-span-3 bg-red-100 flex items-center justify-center">
+                        1
+                    </div>
+                </div>
+
+                <div class="grid grid-rows- grid-flow-col gap-2 mt-2">
+                    <div class="row-span-3 bg-red-100 flex items-center justify-center h-32">
+                        1
+                    </div>
+                    <div class="row-span-3 bg-red-100 flex items-center justify-center">
+                        1
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

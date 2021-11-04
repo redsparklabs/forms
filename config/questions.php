@@ -83,13 +83,15 @@ return [
     ],
     'qualitative-intuitive-scoring-feedback' => [
         [
-            'question' => 'Overall Feedback (Your general thoughts, impressions, and feedback for the Team.)',
-            'description' => '',
+            'question' => 'Overall Feedback',
+            'description' => 'Your general thoughts, impressions, and feedback for the Team',
             'color' => '',
+            'section' => 'feedback',
         ], [
-            'question' => 'Specific Questions (Any specific areas you would like to see more information, or specific questions you have for this Team).',
-            'description' => '',
+            'question' => 'Specific Questions',
+            'description' => 'Any specific areas you would like to see more information, or specific questions you have for this Team',
             'color' => '',
+            'section' => 'feedback',
         ]
     ]
 

@@ -16,6 +16,8 @@ class FormResults extends Component
 
     public $questions;
 
+    public $feedback_questions;
+
     public function mount($form)
     {
         $this->form = Form::find($form);
@@ -24,7 +26,8 @@ class FormResults extends Component
             return [
                 'question' => $item['question'],
                 'description' => $item['description'],
-                'color' => ''
+                'color' => '',
+                'section' => 'custom'
             ];
         })->toArray();
 
@@ -32,8 +35,10 @@ class FormResults extends Component
             config('questions.business-model'),
             config('questions.qualitative-intuitive-scoring'),
             $customQuestion,
-            // config('questions.qualitative-intuitive-scoring-feedback')
+
         );
+
+        $this->feedback_questions = config('questions.qualitative-intuitive-scoring-feedback');
     }
 
     public function render()

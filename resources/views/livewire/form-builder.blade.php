@@ -1,6 +1,4 @@
-{{-- @if($errors->any())
-    @php print_r($errors->all()) @endphp
-@endif --}}
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 mt-5">
     <div class="max-w-3xl mx-auto">
         <div x-data="{ shown: false }"
@@ -89,48 +87,7 @@
                             High Confidence
                         </div>
                     </div>
-                    <x-jet-input-error for="{{ $slug }}" class="mt-2" />
-                </div>
-            @endforeach
-
-            @foreach($form->questions->all() as $question)
-                @php
-                    $slug = Str::slug($question['question'])
-                @endphp
-                <div class="bg-white border-b border-gray-200 rounded-md mb-4 p-4">
-                    <h3 class="text-lg leading-6 font-medium">{{ $question['question'] }}</h3>
-                    <div>{{ $question['description'] }}</div>
-
-                    <div class="flex items-center mt-5 m-auto">
-                        <div class="flex-initial">
-                            Not Applicable (N/A)
-                        </div>
-                        <div class="flex-1 text-center">
-                            <div><label for="score-[{{ $slug }}]-1" tabindex="" name="score-[{{ $slug }}]-1">1</label></div>
-                            <x-radio id="score-[{{ $slug }}]-1" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="1" />
-                        </div>
-                        <div class="flex-1 text-center">
-                            <div><label for="score-[{{ $slug }}]-2" name="score-[{{ $slug }}]-2">2</label></div>
-                            <x-radio id="score-[{{ $slug }}]-2" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="2" />
-                        </div>
-                        <div class="flex-1 text-center">
-                            <div><label for="score-[{{ $slug }}]-3" name="score-[{{ $slug }}]-3">3</label></div>
-                            <x-radio id="score-[{{ $slug }}]-3" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="3" />
-                        </div>
-                        <div class="flex-1 text-center">
-                            <div><label for="score-[{{ $slug }}]-4" name="score-[{{ $slug }}]-4">4</label></div>
-                            <x-radio id="score-[{{ $slug }}]-4" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="4" />
-                        </div>
-                        <div class="flex-1 text-center">
-                            <div><label for="score-[{{ $slug }}]-5" name="score-[{{ $slug }}]-5">5</label></div>
-                            <x-radio id="score-[{{ $slug }}]-5" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="5" />
-                        </div>
-                        <div class="flex-initial">
-                            High Confidence
-                        </div>
-                    </div>
-
-                    <x-jet-input-error for="{{ $slug }}" class="mt-2" />
+                    <x-jet-input-error for="questions.{{ $slug }}" class="mt-2" />
                 </div>
             @endforeach
 
@@ -171,25 +128,75 @@
                         </div>
                     </div>
 
-                    <x-jet-input-error for="{{ $slug }}" class="mt-2" />
+                    <x-jet-input-error for="questions.{{ $slug }}" class="mt-2" />
                 </div>
             @endforeach
 
-            @foreach(config('questions.qualitative-intuitive-scoring-feedback') as $question)
+            <!-- @foreach($form->questions->all() as $question)
                 @php
                     $slug = Str::slug($question['question'])
                 @endphp
                 <div class="bg-white border-b border-gray-200 rounded-md mb-4 p-4">
-                    <x-textarea label="{{ $question['question'] }}" tabindex="" wire:model.defer="create_form.questions.{{ $slug }}" />
-                    <x-jet-input-error for="{{ $slug }}" class="mt-2" />
-                </div>
+                    <h3 class="text-lg leading-6 font-medium">{{ $question['question'] }}</h3>
+                    <div>{{ $question['description'] }}</div>
 
+                    <div class="flex items-center mt-5 m-auto">
+                        <div class="flex-initial">
+                            Not Applicable (N/A)
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div><label for="score-[{{ $slug }}]-1" tabindex="" name="score-[{{ $slug }}]-1">1</label></div>
+                            <x-radio id="score-[{{ $slug }}]-1" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="1" />
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div><label for="score-[{{ $slug }}]-2" name="score-[{{ $slug }}]-2">2</label></div>
+                            <x-radio id="score-[{{ $slug }}]-2" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="2" />
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div><label for="score-[{{ $slug }}]-3" name="score-[{{ $slug }}]-3">3</label></div>
+                            <x-radio id="score-[{{ $slug }}]-3" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="3" />
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div><label for="score-[{{ $slug }}]-4" name="score-[{{ $slug }}]-4">4</label></div>
+                            <x-radio id="score-[{{ $slug }}]-4" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="4" />
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div><label for="score-[{{ $slug }}]-5" name="score-[{{ $slug }}]-5">5</label></div>
+                            <x-radio id="score-[{{ $slug }}]-5" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="5" />
+                        </div>
+                        <div class="flex-initial">
+                            High Confidence
+                        </div>
+                    </div>
+
+                    <x-jet-input-error for="questions.{{ $slug }}" class="mt-2" />
+                </div>
+            @endforeach -->
+
+            <!-- @foreach(config('questions.qualitative-intuitive-scoring-feedback') as $question)
+                @php
+                    $slug = Str::slug($question['question'])
+                @endphp
+                <div class="bg-white border-b border-gray-200 rounded-md mb-4 p-4">
+                    <x-textarea label="{{ $question['question'] }}" tabindex="" wire:model.defer="create_form.questions.custom.{{ $slug }}" />
+                    <x-jet-input-error for="questions.custom.{{ $slug }}" class="mt-2" />
+                </div>
+            @endforeach -->
+
+            @foreach($form->questions->all() as $question)
+                @php
+                    $slug = Str::slug($question['question'])
+                @endphp
+                <div class="bg-white border-b border-gray-200 rounded-md mb-4 p-4">
+                    <x-textarea label="{{ $question['question'] }}" tabindex="" wire:model.defer="create_form.questions.custom.{{ $slug }}" :hint="$question['description']"/>
+                    <x-jet-input-error for="questions.custom.{{ $slug }}" class="mt-2" />
+                </div>
             @endforeach
 
             <div class="pt-5">
                 <div class="flex justify-end">
                     <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Save
+                        {{ __('Save') }}
                     </button>
                 </div>
             </div>

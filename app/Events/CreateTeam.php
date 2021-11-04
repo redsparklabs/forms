@@ -24,9 +24,7 @@ class CreateTeam extends TeamCreated
      */
     public function __construct(Team $team)
     {
-        $team->questions()->createMany(config('questions.qualitative-intuitive-scoring'));
-        // $team->questions()->createMany(config('questions.business-model'));
-        // $team->questions()->createMany(config('questions.qualitative-intuitive-scoring-feedback'));
+        $team->questions()->createMany(config('questions.qualitative-intuitive-scoring-feedback'));
     }
 
 }
