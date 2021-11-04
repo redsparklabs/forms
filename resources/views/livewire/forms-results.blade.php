@@ -17,6 +17,9 @@
                                 <span class="p-2 text-white ">PROGRESS METRIC</span>
                             </div>
                         </th>
+                        @php
+                            $questions = collect($questions)->reject(fn($item) => $item['section'] == 'custom');
+                        @endphp
                         @foreach($questions as $question)
                             <th scope="col" class="bg-white border w-10 whitespace-nowrap">
                                 <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
@@ -129,9 +132,8 @@
                 </tbody>
             </table>
 
-            <table class="w-full border-collapse m-auto mt-10">
+           {{--  <table class="w-full border-collapse m-auto mt-10">
                 <thead class="table-auto">
-
                     <tr>
                         <th scope="col"></th>
                         @foreach($feedback_questions as $question)
@@ -156,44 +158,35 @@
                         <td class="text-sm italic p-2" colspan="{{ count($feedback_questions) + 1 }}">*Note: All Scores are calculated based on the last Evaluation, they are not a aggregate of all Progress scores.</td>
                     </tr>
                 </tbody>
-            </table>
+            </table> --}}
 
             <div class="w-2/3 m-auto mt-10">
                 <div class="grid grid-rows- grid-flow-col gap-2">
-                    <div class="row-span-3 bg-red-100 flex items-center justify-center">
-                        1
-                    </div>
 
-                    <div class="col-span-2 bg-red-100 flex items-center justify-center h-20">
-                        2
-                    </div>
-                    <div class="row-span-2 col-span-2 bg-red-100 flex items-center justify-center h-20">
-                        3
-                    </div>
+                     @foreach($questions->where('hidden', false)->sortBy('order')->take(7) as $question)
+                        @php
+                            $mappedQuestions = collect($this->form->responses)->map(function ($value) {
+                                return $value->response['questions'];
+                            });
+                            $number = number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
+                        @endphp
 
-                    <div class="row-span-3 bg-red-100 flex items-center justify-center">
-                        1
-                    </div>
-
-                    <div class="col-span-2 bg-red-100 flex items-center justify-center h-20">
-                        2
-                    </div>
-                    <div class="row-span-2 col-span-2 bg-red-100 flex items-center justify-center h-20">
-                        3
-                    </div>
-
-                    <div class="row-span-3 bg-red-100 flex items-center justify-center">
-                        1
-                    </div>
+                        <div class="{{ $question['classes']}} {{ colorize($number) }} flex items-center justify-center">{{ $question['question'] }}<br/>{{ $number}}</div>
+                    @endforeach
                 </div>
 
+
                 <div class="grid grid-rows- grid-flow-col gap-2 mt-2">
-                    <div class="row-span-3 bg-red-100 flex items-center justify-center h-32">
-                        1
-                    </div>
-                    <div class="row-span-3 bg-red-100 flex items-center justify-center">
-                        1
-                    </div>
+                     @foreach($questions->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
+                        @php
+                            $mappedQuestions = collect($this->form->responses)->map(function ($value) {
+                                return $value->response['questions'];
+                            });
+                            $number = number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
+                        @endphp
+
+                        <div class="{{ $question['classes']}} {{ colorize($number) }} flex items-center justify-center">{{ $question['question'] }}<br/>{{ $number}}</div>
+                    @endforeach
                 </div>
             </div>
 

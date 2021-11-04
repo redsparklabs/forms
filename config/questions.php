@@ -26,46 +26,64 @@ return [
             'description' => 'The team is targeting a clearly defined, underserved segment for value-creation.',
             'color' => 'yellow-500',
             'section' => 'Desirability_(Market)',
+            'order' => 8,
+            'classes' => 'row-span-3'
         ], [
             'question' => 'Customer Need',
             'description' => 'The team is addressing a clearly defined, unmet user need.',
             'color' => 'yellow-500',
             'section' => 'Desirability_(Market)',
+            'order' => 1,
+            'classes' => 'row-span-3'
         ], [
             'question' => 'Value Proposition',
             'description' => 'There is a clear definition of value being delivered to the opportunity segment (value = solution satisfies unmet need).',
             'color' => 'yellow-500',
             'section' => 'Desirability_(Market)',
+            'order' => 4,
+            'classes' => 'row-span-3'
         ], [
             'question' => 'Solution',
             'description' => 'The technology or solution is technically feasible & scalable.',
             'color' => 'purple-500',
             'section' => 'Feasability_(Technical)',
+            'order' => 2,
+            'classes' => 'col-span-2 row-span-2 h-20'
         ], [
             'question' => 'Channels',
             'description' => 'There is clear evidence of the channel(s) through which value can be delivered to the customer.',
             'color' => 'purple-500',
             'section' => 'Feasability_(Technical)',
+            'order' => 6,
+            'classes' => 'col-span-2 h-20'
         ], [
             'question' => 'Competitive Advantage',
             'description' => 'There is a clear definition of how the solution is different or more valuable compared to competing solutions and offerings.',
             'color' => 'purple-500',
             'section' => 'Feasability_(Technical)',
+            'order' => 5,
+            'classes' => 'col-span-2 row-span-2'
         ], [
             'question' => 'Key Metrics',
             'description' => 'There is clear evidence of the metrics used for how success is measured.',
             'color' => 'green-500',
             'section' => 'Viability_(Regulatory)',
+            'order' => 3,
+            'classes' => 'col-span-2 h-20'
         ], [
             'question' => 'Revenue',
             'description' => 'There is revenue OR a clear definition of how the solution can be monetized.',
             'color' => 'green-500',
             'section' => 'Viability_(Regulatory)',
+            'order' => 9,
+            'classes' => 'row-span-3 h-32'
         ], [
             'question' => 'Costs',
             'description' => 'There is clear evidence of the costs necessary to launch and maintain this business model.',
             'color' => 'green-500',
             'section' => 'Viability_(Regulatory)',
+            'order' => 10,
+            'classes' => 'row-span-3 h-32'
         ],
     ],
     'qualitative-intuitive-scoring' => [
@@ -74,11 +92,14 @@ return [
             'description' => 'How confident are you that this team has the expertise, background and experience needed to continue to progress in the Business Model?',
             'color' => 'red-500',
             'section' => 'Intutive_Scoring',
+            'order' => 10,
+            'hidden' => true,
         ], [
             'question' => 'Team Gameplan',
             'description' => 'How confident are you the proposed gameplan for progression will meet the desired outcomes for the next sprint?',
             'color' => 'red-500',
             'section' => 'Intutive_Scoring',
+            'hidden' => true,
         ]
     ],
     'qualitative-intuitive-scoring-feedback' => [
@@ -87,11 +108,13 @@ return [
             'description' => 'Your general thoughts, impressions, and feedback for the Team',
             'color' => '',
             'section' => 'feedback',
+            'hidden' => true,
         ], [
             'question' => 'Specific Questions',
             'description' => 'Any specific areas you would like to see more information, or specific questions you have for this Team',
             'color' => '',
             'section' => 'feedback',
+            'hidden' => true,
         ]
     ]
 
