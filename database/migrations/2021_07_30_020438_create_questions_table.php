@@ -19,6 +19,7 @@ class CreateQuestionsTable extends Migration
             $table->text('description')->nullable();
             $table->text('color')->nullable();
             $table->text('section')->nullable();
+            $table->boolean('hidden')->nullable();
             $table->timestamps();
 
             $table->foreignId('team_id')
