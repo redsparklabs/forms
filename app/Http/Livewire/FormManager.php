@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Actions\Createform;
+use App\Actions\CreateForm;
 use App\Actions\DestroyForm;
 use App\Actions\UpdateForm;
 use App\Models\Team;
