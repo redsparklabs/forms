@@ -32,5 +32,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::component('jetstream::components.textarea', 'jet-textarea');
+        Blade::component('jetstream::components.switchable-organization', 'jet-switchable-organization');
     }
 }

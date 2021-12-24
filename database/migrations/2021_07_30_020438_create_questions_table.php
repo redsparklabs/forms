@@ -22,7 +22,7 @@ class CreateQuestionsTable extends Migration
             $table->boolean('hidden')->nullable();
             $table->timestamps();
 
-            $table->foreignId('team_id')
+            $table->foreignId('organization_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');

@@ -28,9 +28,9 @@ Route::group(['middleware' => config('jetstream.middleware', ['web'])], function
 
         // Teams... aliased as organizartion
         if (Jetstream::hasTeamFeatures()) {
-            Route::get('/organizations/create', [TeamController::class, 'create'])->name('teams.create');
-            Route::get('/organizations/{team}', [TeamController::class, 'show'])->name('teams.show');
-            Route::put('/current-organization', [CurrentTeamController::class, 'update'])->name('current-team.update');
+            Route::get('/organizations/create', [TeamController::class, 'create'])->name('organizations.create');
+            Route::get('/organizations/{team}', [TeamController::class, 'show'])->name('organizations.show');
+            Route::put('/current-organization', [CurrentTeamController::class, 'update'])->name('current-organization.update');
 
             Route::get('/organization-invitations/{invitation}', [TeamInvitationController::class, 'accept'])
                         ->middleware(['signed'])

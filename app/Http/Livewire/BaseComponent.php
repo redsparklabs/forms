@@ -75,8 +75,8 @@ abstract class BaseComponent extends Component {
         $this->createAction();
 
         $this->notification()->success(
-            $title = $this->componentName . ' Created',
-            $description = 'Your ' . strtolower($this->componentName) . ' was successfully created.'
+            $this->componentName . ' Created',
+            'Your ' . strtolower($this->componentName) . ' was successfully created.'
         );
 
         $this->reset('createForm');
@@ -127,8 +127,8 @@ abstract class BaseComponent extends Component {
         $this->updateAction();
 
         $this->notification()->success(
-            $title = $this->componentName . ' Updated',
-            $description = 'Your ' . strtolower($this->componentName) . ' was successfully updated.'
+            $this->componentName . ' Updated',
+            'Your ' . strtolower($this->componentName) . ' was successfully updated.'
         );
 
         $this->reset('updateForm');
@@ -172,8 +172,8 @@ abstract class BaseComponent extends Component {
         $this->destroyAction();
 
         $this->notification()->success(
-            $title = $this->componentName . ' Removed',
-            $description = 'Your ' . strtolower($this->componentName) . ' was successfully removed.'
+            $this->componentName . ' Removed',
+            'Your ' . strtolower($this->componentName) . ' was successfully removed.'
         );
 
         $this->confirmingDestroying = false;

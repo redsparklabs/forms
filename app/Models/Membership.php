@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
-use Laravel\Jetstream\Membership as JetstreamMembership;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Membership extends JetstreamMembership
+class Membership extends Pivot
 {
+    /**
+     * The table associated with the pivot model.
+     *
+     * @var string
+     */
+    protected $table = 'organization_user';
+
     /**
      * Indicates if the IDs are auto-incrementing.
      *
