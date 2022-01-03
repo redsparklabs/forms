@@ -20,7 +20,7 @@ class CreateFormsTable extends Migration
             $table->text('description')->nullable();
             $table->timestamps();
 
-            $table->foreignId('team_id')
+            $table->foreignId('organization_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');

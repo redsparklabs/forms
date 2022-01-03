@@ -13,12 +13,11 @@ class OrganizationController extends Controller
      * Show the organization management screen.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $teaorganizationIdmId
+     * @param  int  $organization
      * @return \Illuminate\View\View
      */
-    public function show(Request $request, $organizationId)
+    public function show(Request $request, $organization)
     {
-        $organization = Organization::findOrFail($organizationId);
 
         if (Gate::denies('view', $organization)) {
             abort(403);

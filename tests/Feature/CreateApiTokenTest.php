@@ -20,7 +20,7 @@ class CreateApiTokenTest extends TestCase
         }
 
         if (Features::hasTeamFeatures()) {
-            $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+            $this->actingAs($user = User::factory()->withPersonalOrganization()->create());
         } else {
             $this->actingAs($user = User::factory()->create());
         }

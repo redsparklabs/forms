@@ -8,19 +8,19 @@ use Laravel\Jetstream\Http\Livewire\UpdateTeamNameForm;
 use Livewire\Livewire;
 use Tests\TestCase;
 
-class UpdateTeamNameTest extends TestCase
+class UpdateOrganizationNameTest extends TestCase
 {
     use RefreshDatabase;
 
     public function test_team_names_can_be_updated()
     {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        $this->actingAs($user = User::factory()->withPersonalOrganization()->create());
 
-        Livewire::test(UpdateTeamNameForm::class, ['team' => $user->currentTeam])
+        Livewire::test(UpdateTeamNameForm::class, ['team' => $user->currentOrganization])
                     ->set(['state' => ['name' => 'Test Team']])
                     ->call('updateTeamName');
 
-        $this->assertCount(1, $user->fresh()->ownedTeams);
-        $this->assertEquals('Test Team', $user->currentTeam->fresh()->name);
+        $this->assertCount(1, $user->fresh()->ownedOrganizations);
+        $this->assertEquals('Test Team', $user->currentOrganization->fresh()->name);
     }
 }

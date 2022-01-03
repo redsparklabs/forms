@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Organizations;
 
 use Illuminate\Support\Facades\Auth;
 use Laravel\Jetstream\Contracts\UpdatesTeamNames;
 use Livewire\Component;
 
-class UpdateTeamNameForm extends Component
+class UpdateOrganizationNameForm extends Component
 {
     /**
      * The team instance.
      *
      * @var mixed
      */
-    public $team;
+    public $organization;
 
     /**
      * The component's state.
@@ -25,18 +25,18 @@ class UpdateTeamNameForm extends Component
     /**
      * Mount the component.
      *
-     * @param  mixed  $team
+     * @param  mixed  $organization
      * @return void
      */
-    public function mount($team)
+    public function mount($organization)
     {
-        $this->team = $team;
+        $this->organization = $organization;
 
-        $this->state = $team->withoutRelations()->toArray();
+        $this->state = $organization->withoutRelations()->toArray();
     }
 
     /**
-     * Update the team's name.
+     * Update the organization's name.
      *
      * @param  \Laravel\Jetstream\Contracts\UpdatesTeamNames  $updater
      * @return void
@@ -45,7 +45,7 @@ class UpdateTeamNameForm extends Component
     {
         $this->resetErrorBag();
 
-        $updater->update($this->user, $this->team, $this->state);
+        $updater->update($this->user, $this->organization, $this->state);
 
         $this->emit('saved');
 
@@ -69,6 +69,6 @@ class UpdateTeamNameForm extends Component
      */
     public function render()
     {
-        return view('teams.update-team-name-form');
+        return view('organizations.update-organization-name-form');
     }
 }

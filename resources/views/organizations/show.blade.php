@@ -8,15 +8,15 @@
     <div>
         <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
 
-            @livewire('teams.update-team-name-form', ['team' => $team])
+            @livewire('organizations.update-organization-name-form', ['organization' => $organization])
 
-            @livewire('teams.team-member-manager', ['team' => $team])
+            @livewire('organizations.organization-member-manager', ['organization' => $organization])
 
-            @if (Gate::check('delete', $team) && ! $team->personal_team)
+            @if (Gate::check('delete', $organization) && ! $organization->personal_organization)
                 <x-jet-section-border />
 
                 <div class="mt-10 sm:mt-0">
-                    @livewire('teams.delete-team-form', ['team' => $team])
+                    @livewire('organizations.delete-organization-form', ['organization' => $organization])
                 </div>
             @endif
         </div>

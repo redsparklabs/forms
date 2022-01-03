@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Organizations;
 
 use Illuminate\Support\Facades\Auth;
 use Laravel\Jetstream\Actions\ValidateTeamDeletion;
@@ -8,7 +8,7 @@ use Laravel\Jetstream\Contracts\DeletesTeams;
 use Laravel\Jetstream\RedirectsActions;
 use Livewire\Component;
 
-class DeleteTeamForm extends Component
+class DeleteOrganizationForm extends Component
 {
     use RedirectsActions;
 
@@ -60,6 +60,6 @@ class DeleteTeamForm extends Component
      */
     public function render()
     {
-        return view('teams.delete-team-form');
+        return view('organizations.delete-organization-form');
     }
 }

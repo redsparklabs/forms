@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Organizations;
 
 use Illuminate\Support\Facades\Auth;
-use Laravel\Jetstream\Actions\UpdateTeamMemberRole;
-use Laravel\Jetstream\Contracts\AddsTeamMembers;
-use Laravel\Jetstream\Contracts\InvitesTeamMembers;
-use Laravel\Jetstream\Contracts\RemovesTeamMembers;
+use Add\Actions\UpdateOrganizationMemberRole;
+use Add\Actions\AddsOrganizationMembers;
+use Add\Actions\InvitesOrganizationMembers;
+use Add\Actions\RemovesOrganizationMembers;
 use Laravel\Jetstream\Features;
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Role;
 use Livewire\Component;
 
-class TeamMemberManager extends Component
+class OrganizationMemberManager extends Component
 {
     /**
-     * The team instance.
+     * The organization instance.
      *
      * @var mixed
      */
-    public $team;
+    public $organization;
 
     /**
      * Indicates if a user's role is currently being managed.
@@ -43,28 +43,28 @@ class TeamMemberManager extends Component
     public $currentRole;
 
     /**
-     * Indicates if the application is confirming if a user wishes to leave the current team.
+     * Indicates if the application is confirming if a user wishes to leave the current organization.
      *
      * @var bool
      */
-    public $confirmingLeavingTeam = false;
+    public $confirmingLeavingOrganization = false;
 
     /**
-     * Indicates if the application is confirming if a team member should be removed.
+     * Indicates if the application is confirming if a organization member should be removed.
      *
      * @var bool
      */
-    public $confirmingTeamMemberRemoval = false;
+    public $confirmingOrganizationMemberRemoval = false;
 
     /**
-     * The ID of the team member being removed.
+     * The ID of the organization member being removed.
      *
      * @var int|null
      */
     public $teamMemberIdBeingRemoved = null;
 
     /**
-     * The "add team member" form state.
+     * The "add organization member" form state.
      *
      * @var array
      */
@@ -76,16 +76,16 @@ class TeamMemberManager extends Component
     /**
      * Mount the component.
      *
-     * @param  mixed  $team
+     * @param  mixed  $organization
      * @return void
      */
-    public function mount($team)
+    public function mount($organization)
     {
-        $this->team = $team;
+        $this->organization = $organization;
     }
 
     /**
-     * Add a new team member to a team.
+     * Add a new organization member to a organization.
      *
      * @return void
      */
@@ -96,14 +96,14 @@ class TeamMemberManager extends Component
         if (Features::sendsTeamInvitations()) {
             app(InvitesTeamMembers::class)->invite(
                 $this->user,
-                $this->team,
+                $this->torganizationeam,
                 $this->addTeamMemberForm['email'],
                 $this->addTeamMemberForm['role']
             );
         } else {
             app(AddsTeamMembers::class)->add(
                 $this->user,
-                $this->team,
+                $this->organization,
                 $this->addTeamMemberForm['email'],
                 $this->addTeamMemberForm['role']
             );
@@ -114,13 +114,13 @@ class TeamMemberManager extends Component
             'role' => null,
         ];
 
-        $this->team = $this->team->fresh();
+        $this->organization = $this->organization->fresh();
 
         $this->emit('saved');
     }
 
     /**
-     * Cancel a pending team member invitation.
+     * Cancel a pending organization member invitation.
      *
      * @param  int  $invitationId
      * @return void
@@ -133,7 +133,7 @@ class TeamMemberManager extends Component
             $model::whereKey($invitationId)->delete();
         }
 
-        $this->team = $this->team->fresh();
+        $this->organization = $this->organization->fresh();
     }
 
     /**
@@ -146,7 +146,7 @@ class TeamMemberManager extends Component
     {
         $this->currentlyManagingRole = true;
         $this->managingRoleFor = Jetstream::findUserByIdOrFail($userId);
-        $this->currentRole = $this->managingRoleFor->teamRole($this->team)->key;
+        $this->currentRole = $this->managingRoleFor->teamRole($this->organization)->key;
     }
 
     /**
@@ -159,12 +159,12 @@ class TeamMemberManager extends Component
     {
         $updater->update(
             $this->user,
-            $this->team,
+            $this->organization,
             $this->managingRoleFor->id,
             $this->currentRole
         );
 
-        $this->team = $this->team->fresh();
+        $this->organization = $this->organization->fresh();
 
         $this->stopManagingRole();
     }
@@ -180,22 +180,22 @@ class TeamMemberManager extends Component
     }
 
     /**
-     * Remove the currently authenticated user from the team.
+     * Remove the currently authenticated user from the organization.
      *
      * @param  \Laravel\Jetstream\Contracts\RemovesTeamMembers  $remover
      * @return void
      */
-    public function leaveTeam(RemovesTeamMembers $remover)
+    public function leaveTeam(RemovesOrganizationMembers $remover)
     {
         $remover->remove(
             $this->user,
-            $this->team,
+            $this->organization,
             $this->user
         );
 
         $this->confirmingLeavingTeam = false;
 
-        $this->team = $this->team->fresh();
+        $this->organization = $this->organization->fresh();
 
         return redirect(config('fortify.home'));
     }
@@ -223,7 +223,7 @@ class TeamMemberManager extends Component
     {
         $remover->remove(
             $this->user,
-            $this->team,
+            $this->organization,
             $user = Jetstream::findUserByIdOrFail($this->teamMemberIdBeingRemoved)
         );
 
@@ -231,7 +231,7 @@ class TeamMemberManager extends Component
 
         $this->teamMemberIdBeingRemoved = null;
 
-        $this->team = $this->team->fresh();
+        $this->organization = $this->organization->fresh();
     }
 
     /**
@@ -245,7 +245,7 @@ class TeamMemberManager extends Component
     }
 
     /**
-     * Get the available team member roles.
+     * Get the available organization member roles.
      *
      * @return array
      */
@@ -269,6 +269,6 @@ class TeamMemberManager extends Component
      */
     public function render()
     {
-        return view('teams.team-member-manager');
+        return view('organizations.organization-member-manager');
     }
 }

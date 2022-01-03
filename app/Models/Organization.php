@@ -136,7 +136,7 @@ class Organization extends Model
      */
     public function organizationInvitations()
     {
-        return $this->hasMany(Jetstream::teamInvitationModel());
+        return $this->hasMany(OrganizationInvitation::class);
     }
 
     /**

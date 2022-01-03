@@ -8,6 +8,9 @@ use Laravel\Jetstream\Http\Controllers\Livewire\TeamController;
 use Laravel\Jetstream\Http\Controllers\Livewire\TermsOfServiceController;
 use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
 use Laravel\Jetstream\Http\Controllers\TeamInvitationController;
+use App\Http\Controllers\Livewire\CurrentOrganizationController;
+use App\Http\Controllers\Livewire\OrganizationController;
+
 use Laravel\Jetstream\Jetstream;
 
 Route::group(['middleware' => config('jetstream.middleware', ['web'])], function () {
@@ -21,16 +24,11 @@ Route::group(['middleware' => config('jetstream.middleware', ['web'])], function
         Route::get('/user/profile', [UserProfileController::class, 'show'])
                     ->name('profile.show');
 
-        // API...
-        if (Jetstream::hasApiFeatures()) {
-            Route::get('/user/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
-        }
-
         // Teams... aliased as organizartion
         if (Jetstream::hasTeamFeatures()) {
-            Route::get('/organizations/create', [TeamController::class, 'create'])->name('organizations.create');
-            Route::get('/organizations/{team}', [TeamController::class, 'show'])->name('organizations.show');
-            Route::put('/current-organization', [CurrentTeamController::class, 'update'])->name('current-organization.update');
+            Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
+            Route::get('/organizations/{organization}', [OrganizationController::class, 'show'])->name('organizations.show');
+            Route::put('/current-organization', [CurrentOrganizationController::class, 'update'])->name('current-organization.update');
 
             Route::get('/organization-invitations/{invitation}', [TeamInvitationController::class, 'accept'])
                         ->middleware(['signed'])

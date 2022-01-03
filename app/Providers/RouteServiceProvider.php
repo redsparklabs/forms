@@ -6,6 +6,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use App\Models\Form;
+use App\Models\Organization;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
@@ -39,15 +40,9 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->configureRateLimiting();
 
-        $this->routes(function () {
+        Route::model('organization', Organization::class);
 
-            Route::group([
-                'namespace' => 'Laravel\Jetstream\Http\Controllers',
-                'domain' => config('jetstream.domain', null),
-                'prefix' => config('jetstream.prefix', config('jetstream.path')),
-            ], function () {
-                $this->loadRoutesFrom(base_path('routes/jetstream.php'));
-            });
+        $this->routes(function () {
 
             Route::prefix('api')
                 ->middleware('api')

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Laravel\Jetstream\Jetstream;
-use Laravel\Jetstream\TeamInvitation as JetstreamTeamInvitation;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Organization;
 
-class TeamInvitation extends JetstreamTeamInvitation
+class OrganizationInvitation extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -24,6 +24,6 @@ class TeamInvitation extends JetstreamTeamInvitation
      */
     public function team()
     {
-        return $this->belongsTo(Jetstream::teamModel());
+        return $this->belongsTo(Organization::class);
     }
 }
