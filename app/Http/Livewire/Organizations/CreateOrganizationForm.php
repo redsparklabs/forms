@@ -21,8 +21,9 @@ class CreateOrganizationForm extends Component
     /**
      * Create a new team.
      *
-     * @param  \Laravel\Jetstream\Contracts\CreatesTeams  $creator
-     * @return void
+     * @param  \App\Actions\CreatesOrganizations  $creator
+     *
+     * @return \Illuminate\Http\Response
      */
     public function createOrganization(CreatesOrganizations $creator)
     {

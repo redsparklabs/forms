@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Question;
 use App\Models\Team;
-use App\Models\Club;
 use App\Models\Organization;
 use Spatie\Tags\HasTags;
 use Illuminate\Support\Str;
@@ -16,17 +15,32 @@ class Form extends Model
 {
     use HasFactory, HasTags;
 
+    /**
+     * Route Key
+     *
+     * @return string
+     */
     public function getRouteKeyName(): string
     {
         return 'slug';
     }
 
+    /**
+     * Filleable attributes
+     *
+     * @var string[]
+     */
     protected $fillable = [
         'name',
         'slug',
         'description'
     ];
 
+    /**
+     * Boot the model
+     *
+     * @return void
+     */
     public static function boot()
     {
         parent::boot();
@@ -38,31 +52,51 @@ class Form extends Model
         });
     }
 
+    /**
+     * Questions
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function questions()
     {
         return $this->belongsToMany(Question::class)->withPivot('order')->withTimestamps()->using(FormQuestion::class);
     }
 
+    /**
+     * Responses
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function responses()
     {
         return $this->hasMany(Responses::class);
     }
 
+    /**
+     * Organizations
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function organizations()
     {
         return $this->belongsToMany(Organization::class)->withTimestamps();
     }
 
-    public function clubs()
-    {
-        return $this->belongsToMany(Club::class);
-    }
-
+    /**
+     * Teams
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function teams()
     {
-        return $this->hasMany(Team::class);
+        return $this->belongsToMany(Team::class);
     }
 
+    /**
+     * Get Tags
+     *
+     * @return string
+     */
     public function getTagStringAttribute()
     {
         return $this->tags->pluck('name')->implode(',', 'name');

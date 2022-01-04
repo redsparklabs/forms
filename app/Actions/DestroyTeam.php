@@ -13,10 +13,16 @@ class DestroyTeam
 {
     use AsObject, WithAttributes;
 
+    /**
+     * @param  User         $user
+     * @param  Organization $organization
+     * @param  Team         $team
+     * @return void
+     */
     public function handle(User $user, Organization $organization, Team $team)
     {
         Gate::forUser($user)->authorize('removeTeam', $organization);
 
-        $organization->teams()->find($team)->first()->delete();
+        $organization->teams()->find($team)?->first()?->delete();
     }
 }

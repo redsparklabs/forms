@@ -16,6 +16,15 @@ class UpdateForm
 {
     use AsObject, WithAttributes;
 
+    /**
+     * Handle the action
+     *
+     * @param  User         $user
+     * @param  Organization $organization
+     * @param  Form         $form
+     * @param  array        $attributes
+     * @return void
+     */
     public function handle(User $user, Organization $organization, Form $form, array $attributes)
     {
         Gate::forUser($user)->authorize('updateForm', $organization);
@@ -44,6 +53,9 @@ class UpdateForm
         $form->save();
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         return [
@@ -52,6 +64,11 @@ class UpdateForm
         ];
     }
 
+    /**
+     * Get the validation error bag.
+     *
+     * @return string
+     */
     public function getValidationErrorBag(): string
     {
         return 'updateForm';

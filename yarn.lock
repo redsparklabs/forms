@@ -5275,6 +5275,11 @@
   "resolved" "https://registry.npmjs.org/timsort/-/timsort-0.3.0.tgz"
   "version" "0.3.0"
 
+"tingle.js@^0.16.0":
+  "integrity" "sha512-xV4F2j7+QMxDfzuX59KhxiWKeAgI/QSC8o7k9rQu8hZD8TZefMTViq7l07DIcVDb30IlAPlyFRs6SnD1Fup6hA=="
+  "resolved" "https://registry.npmjs.org/tingle.js/-/tingle.js-0.16.0.tgz"
+  "version" "0.16.0"
+
 "tmp@^0.2.1":
   "integrity" "sha512-76SUhtfqR2Ijn+xllcI5P1oyannHNHByD80W1q447gU3mp9G9PSpGdWmjUOHRDPiHYacIk66W7ubDTuPF3BEtQ=="
   "resolved" "https://registry.npmjs.org/tmp/-/tmp-0.2.1.tgz"

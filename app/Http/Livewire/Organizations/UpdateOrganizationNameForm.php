@@ -2,12 +2,20 @@
 
 namespace App\Http\Livewire\Organizations;
 
-use Illuminate\Support\Facades\Auth;
 use App\Actions\Jetstream\UpdateOrganizationName;
+
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateOrganizationNameForm extends Component
 {
+    /**
+     * The user instance.
+     *
+     * @var mixed
+     */
+    public $user;
+
     /**
      * The organization instance.
      *
@@ -31,6 +39,7 @@ class UpdateOrganizationNameForm extends Component
     public function mount($organization)
     {
         $this->organization = $organization;
+        $this->user = Auth::user();
 
         $this->state = $organization->withoutRelations()->toArray();
     }
@@ -38,7 +47,7 @@ class UpdateOrganizationNameForm extends Component
     /**
      * Update the organization's name.
      *
-     * @param  \App\Actions\Jetstream\UpdatesOrganizationNames  $updater
+     * @param  \App\Actions\Jetstream\UpdateOrganizationName  $updater
      * @return void
      */
     public function updateOrganizationName(UpdateOrganizationName $updater)

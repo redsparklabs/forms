@@ -37,5 +37,13 @@ class Team extends Model
         return $this->belongsTo(Organization::class, 'organization_id');
     }
 
-
+    /**
+     * Get the default profile photo URL if no profile photo has been uploaded.
+     *
+     * @return string
+     */
+    public function getTeamImageAttribute()
+    {
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
+    }
 }

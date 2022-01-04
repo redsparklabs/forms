@@ -13,6 +13,13 @@ class CreateQuestion
 {
     use AsObject, WithAttributes;
 
+    /**
+     * @param  User         $user
+     * @param  Organization $organization
+     * @param  array        $attributes
+     *
+     * @return void
+     */
     public function handle(User $user, Organization $organization, array $attributes)
     {
         Gate::forUser($user)->authorize('addQuestion', $organization);
@@ -25,6 +32,9 @@ class CreateQuestion
         $organization->questions()->create(['question' => $question, 'description' => $description]);
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         return [
@@ -33,6 +43,9 @@ class CreateQuestion
         ];
     }
 
+    /**
+     * @return string
+     */
     public function getValidationErrorBag(): string
     {
         return 'addQuestion';

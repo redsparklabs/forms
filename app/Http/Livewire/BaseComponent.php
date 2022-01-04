@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use WireUi\Traits\Actions;
-use App\Team;
+use App\Models\Team;
 
 abstract class BaseComponent extends Component {
 
@@ -13,11 +13,13 @@ abstract class BaseComponent extends Component {
 
     /**
      * The team we are using
+     * @var Team
      */
     public $team;
 
     /**
      * The Components Name
+     * @var string
      */
     public $componentName;
 
@@ -89,7 +91,6 @@ abstract class BaseComponent extends Component {
     /**
      * Execute the creation action
      *
-     * @param  int  $id
      * @return void
      */
     abstract public function createAction();
@@ -185,10 +186,9 @@ abstract class BaseComponent extends Component {
         $this->reloadTeam();
     }
 
-    /*
+    /**
      * Destroy action that should be executed
      *
-     * @param  int  $id
      * @return void
      */
     abstract public function destroyAction();
@@ -203,10 +203,11 @@ abstract class BaseComponent extends Component {
         return Auth::user();
     }
 
+    /**
+     * @return void
+     */
     public function reloadTeam()
     {
-        if($this->team) {
-            $this->team = $this->team->fresh();
-        }
+        $this->team = $this->team->fresh();
     }
 }

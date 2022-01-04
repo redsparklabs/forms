@@ -15,6 +15,13 @@ class UpdateQuestion
 {
     use AsObject, WithAttributes;
 
+    /**
+     * @param  User         $user
+     * @param  Organization $organization
+     * @param  Question     $question
+     * @param  array        $attributes
+     * @return void
+     */
     public function handle(User $user, Organization $organization, Question $question, array $attributes)
     {
 
@@ -32,6 +39,9 @@ class UpdateQuestion
         $question->save();
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         return [
@@ -40,6 +50,9 @@ class UpdateQuestion
         ];
     }
 
+    /**
+     * @return string
+     */
     public function getValidationErrorBag(): string
     {
         return 'updateQuestion';

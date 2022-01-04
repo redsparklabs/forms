@@ -14,9 +14,25 @@ class CreateFormSubmission
 {
     use AsObject, WithAttributes;
 
+    /**
+     * @var array
+     */
     public $slugQuestions;
+
+    /**
+     * @var array
+     */
     public $customQuestions;
 
+    /**
+     * Handle the action
+     *
+     * @param  Form  $form
+     * @param  array $attributes
+     * @param  array $slugQuestions
+     * @param  array $customQuestions
+     * @return void
+     */
     public function handle(Form $form, array $attributes, array $slugQuestions, array $customQuestions)
     {
         $this->slugQuestions = $slugQuestions;
@@ -24,7 +40,7 @@ class CreateFormSubmission
         $this->customQuestions = $customQuestions;
 
         if (!$attributes['team']) {
-            $attributes['team'] = $form->teams->first()->name;
+            $attributes['team'] = $form->teams->first()?->name;
         }
 
         $this->fill($attributes)->validateAttributes();
@@ -34,6 +50,9 @@ class CreateFormSubmission
         ]);
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         $data = array_merge(array_map(function ($item) {
@@ -56,6 +75,9 @@ class CreateFormSubmission
         return $data;
     }
 
+    /**
+     * @return array
+     */
     public function getValidationMessages(): array
     {
         $arr = [
@@ -72,6 +94,9 @@ class CreateFormSubmission
         return $arr;
     }
 
+    /**
+     * @return string
+     */
     public function getValidationErrorBag(): string
     {
         return 'addFormSubmission';

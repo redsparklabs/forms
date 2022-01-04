@@ -18,10 +18,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Jetstream::ignoreRoutes();
-
-        if (Jetstream::hasTeamFeatures()) {
-            Livewire::component('teams.club-manager', ClubManager::class);
-        }
     }
 
     /**

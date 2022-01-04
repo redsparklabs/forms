@@ -13,6 +13,13 @@ class CreateForm
 {
     use AsObject, WithAttributes;
 
+    /**
+     *
+     * @param  User         $user
+     * @param  Organization $organization
+     * @param  array        $attributes
+     * @return \App\Models\Form
+     */
     public function handle(User $user, Organization $organization, array $attributes)
     {
         Gate::forUser($user)->authorize('addForm', $organization);
@@ -40,6 +47,9 @@ class CreateForm
         return $form;
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         return [
@@ -48,6 +58,9 @@ class CreateForm
         ];
     }
 
+    /**
+     * @return string
+     */
     public function getValidationErrorBag(): string
     {
         return 'addForm';

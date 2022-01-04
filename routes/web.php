@@ -6,7 +6,9 @@ use App\Http\Livewire\FormManager;
 use App\Http\Livewire\FormBuilder;
 use App\Http\Livewire\FormResults;
 use App\Http\Livewire\QuestionManager;
-use App\Http\Livewire\ClubManager;
+
+
+use App\Http\Controllers\Livewire\TeamController;
 
 use App\Http\Controllers\Livewire\CurrentOrganizationController;
 use App\Http\Controllers\Livewire\OrganizationController;
@@ -45,6 +47,9 @@ Route::get('form/{form}', FormBuilder::class)->name('form-builder');
 Route::group(['middleware' => ['auth', 'verified']], function () {
     // User & Profile...
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
+
+    Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
+    Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
 
     Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
     Route::get('/organizations/{organization}', [OrganizationController::class, 'show'])->name('organizations.show');

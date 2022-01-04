@@ -92,7 +92,7 @@ trait HasOrganizations
     /**
      * Get the user's "personal" organization.
      *
-     * @return \App\Models\Organization
+     * @return \App\Models\Organization|\Illuminate\Database\Eloquent\Model|null
      */
     public function personalOrganization()
     {
@@ -131,7 +131,7 @@ trait HasOrganizations
      * Get the role that the user has on the organization.
      *
      * @param  mixed  $organization
-     * @return \Laravel\Jetstream\Role
+     * @return \Laravel\Jetstream\Role|\App\Models\OwnerRole|void
      */
     public function organizationRole($organization)
     {

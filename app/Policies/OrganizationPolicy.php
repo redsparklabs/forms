@@ -93,13 +93,13 @@ class OrganizationPolicy
     }
 
    /**
-     * Determine whether the user can view the club.
+     * Determine whether the user can view the team.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Organization  $organization
      * @return mixed
      */
-    public function viewClub(User $user, Organization $organization)
+    public function viewTeam(User $user, Organization $organization)
     {
         return $user->ownsOrganization($organization);
     }
@@ -111,7 +111,7 @@ class OrganizationPolicy
      * @param  \App\Models\Organization  $organization
      * @return mixed
      */
-    public function addClub(User $user, Organization $organization)
+    public function addTeam(User $user, Organization $organization)
     {
         return $user->ownsOrganization($organization);
     }
@@ -123,7 +123,7 @@ class OrganizationPolicy
      * @param  \App\Models\Organization  $organization
      * @return mixed
      */
-    public function updateClub(User $user, Organization $organization)
+    public function updateTeam(User $user, Organization $organization)
     {
         return $user->ownsOrganization($organization);
     }
@@ -135,12 +135,12 @@ class OrganizationPolicy
      * @param  \App\Models\Organization  $organization
      * @return mixed
      */
-    public function removeClub(User $user, Organization $organization)
+    public function removeTeam(User $user, Organization $organization)
     {
         return $user->ownsOrganization($organization);
     }
     /**
-     * Determine whether the user can view the club.
+     * Determine whether the user can view the team.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Organization  $organization
@@ -187,7 +187,7 @@ class OrganizationPolicy
         return $user->ownsOrganization($organization);
     }
     /**
-     * Determine whether the user can view the club.
+     * Determine whether the user can view the team.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Organization  $organization

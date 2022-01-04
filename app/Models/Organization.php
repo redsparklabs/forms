@@ -45,16 +45,25 @@ class Organization extends Model
         'deleted' => OrganizationDeleted::class,
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function teams()
     {
         return $this->hasMany(Team::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function forms()
     {
         return $this->hasMany(Form::class)->latest();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function questions()
     {
         return $this->hasMany(Question::class);
@@ -148,7 +157,7 @@ class Organization extends Model
      */
     public function removeUser($user)
     {
-        if ($user->current_torganization_id === $this->id) {
+        if ($user->current_organization_id === $this->id) {
             $user->forceFill([
                 'current_organization_id' => null,
             ])->save();

@@ -10,11 +10,20 @@ class Question extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
     protected $fillable = [
         'question', 'description',
     ];
 
-    public function forms() {
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function forms()
+    {
         return $this->belongsToMany(Form::class);
     }
 }

@@ -2,19 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class FormQuestion extends Pivot implements Sortable
 {
     use SortableTrait;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     public $sortable = [
         'order_column_name' => 'order',
         'sort_when_creating' => true,
     ];
 
+    /**
+     * Boot the model
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();

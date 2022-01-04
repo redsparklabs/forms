@@ -11,23 +11,33 @@ use Lorisleiva\Actions\Concerns\AsObject;
 use Lorisleiva\Actions\Concerns\WithAttributes;
 
 
-class UpdateClub
+class UpdateTeam
 {
     use AsObject, WithAttributes;
 
+    /**
+     * @param  User         $user
+     * @param  Organization $organization
+     * @param  Team         $team
+     * @param  array        $attributes
+     * @return void
+     */
     public function handle(User $user, Organization $organization, Team $team,  array $attributes)
     {
-        Gate::forUser($user)->authorize('updateTeam', $team);
+        Gate::forUser($user)->authorize('updateTeam', $organization);
 
         $this->fill($attributes)->validateAttributes();
 
         $name = Arr::get($attributes, 'name');
 
-        $organization->name = $name;
+        $team->name = $name;
 
-        $organization->save();
+        $team->save();
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         return [
@@ -35,6 +45,9 @@ class UpdateClub
         ];
     }
 
+    /**
+     * @return string
+     */
     public function getValidationErrorBag(): string
     {
         return 'updateTeam';

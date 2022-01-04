@@ -11,12 +11,12 @@ class DeleteUser implements DeletesUsers
     /**
      * Create a new action instance.
      *
-     * @param  \Laravel\Jetstream\Contracts\DeletesTeams  $deletesOrganzizations
+     * @param  \App\Actions\Jetstream\DeleteOrganization  $deletesOrganizations
      * @return void
      */
-    public function __construct(public DeleteOrganization $deletesOrganzizations)
+    public function __construct(public DeleteOrganization $deletesOrganizations)
     {
-        $this->deletesOrganzizations = $deletesOrganzizations;
+        $this->deletesOrganizations = $deletesOrganizations;
     }
 
     /**

@@ -94,21 +94,15 @@
 
                         <x-slot name="content">
                             <div class="w-60">
-                                @if(Auth::user()->currentTeam)
-                                    <!-- Organization Management -->
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Manage Teams') }}
-                                    </div>
+                                <!-- Teams Management -->
+                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                    {{ __('Manage Teams') }}
+                                </div>
 
 
-                                @endif
-
-                                @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                                    <x-jet-dropdown-link href="{{ route('organizations.create') }}">
-                                        {{ __('Create New Team') }}
-                                    </x-jet-dropdown-link>
-                                @endcan
-
+                                <x-jet-dropdown-link href="{{ route('teams.index') }}">
+                                    {{ __('Create New Team') }}
+                                </x-jet-dropdown-link>
 
                             </div>
                         </x-slot>

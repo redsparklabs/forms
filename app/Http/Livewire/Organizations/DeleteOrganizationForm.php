@@ -40,9 +40,10 @@ class DeleteOrganizationForm extends Component
     /**
      * Delete the organization.
      *
-     * @param  \Laravel\Jetstream\Actions\ValidateOrganizationDeletion  $validator
+     * @param  \App\Actions\Jetstream\ValidateOrganizationDeletion  $validator
      * @param  \App\Actions\Jetstream\DeleteOrganization  $deleter
-     * @return void
+
+     * @return \Illuminate\Http\Response
      */
     public function deleteOrganization(ValidateOrganizationDeletion $validator, DeleteOrganization $deleter)
     {

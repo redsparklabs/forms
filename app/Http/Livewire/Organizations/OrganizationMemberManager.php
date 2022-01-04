@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Organizations;
 
 use Illuminate\Support\Facades\Auth;
 use App\Actions\Jetstream\UpdateOrganizationMemberRole;
-use App\Actions\Jetstream\AddsOrganizationMember;
+use App\Actions\Jetstream\AddOrganizationMember;
 use App\Actions\Jetstream\InviteOrganizationMember;
 use App\Actions\Jetstream\RemoveOrganizationMember;
 use App\Models\Organization;
@@ -16,6 +16,14 @@ use Livewire\Component;
 
 class OrganizationMemberManager extends Component
 {
+
+    /**
+     * The organization instance.
+     *
+     * @var \App\Models\User|null
+     */
+    public $user;
+
     /**
      * The organization instance.
      *
@@ -83,6 +91,7 @@ class OrganizationMemberManager extends Component
      */
     public function mount($organization)
     {
+        $this->user = Auth::user();
         $this->organization = $organization;
     }
 
@@ -103,7 +112,7 @@ class OrganizationMemberManager extends Component
                 $this->addOrganizationMemberForm['role']
             );
         } else {
-            app(AddsOrganizationMember::class)->add(
+            app(AddOrganizationMember::class)->add(
                 $this->user,
                 $this->organization,
                 $this->addOrganizationMemberForm['email'],
@@ -184,7 +193,7 @@ class OrganizationMemberManager extends Component
      * Remove the currently authenticated user from the organization.
      *
      * @param  \App\Actions\Jetstream\RemoveOrganizationMember  $remover
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function leaveOrganization(RemoveOrganizationMember $remover)
     {
@@ -222,27 +231,20 @@ class OrganizationMemberManager extends Component
      */
     public function removeOrganizationMember(RemoveOrganizationMember $remover)
     {
-        $remover->remove(
-            $this->user,
-            $this->organization,
-            $user = Jetstream::findUserByIdOrFail($this->organizationMemberIdBeingRemoved)
-        );
+        if($this->organizationMemberIdBeingRemoved)
+        {
+            $remover->remove(
+                $this->user,
+                $this->organization,
+                Jetstream::findUserByIdOrFail($this->organizationMemberIdBeingRemoved)
+            );
 
-        $this->confirmingOrganizationMemberRemoval = false;
+            $this->confirmingOrganizationMemberRemoval = false;
 
-        $this->organizationMemberIdBeingRemoved = null;
+            $this->organizationMemberIdBeingRemoved = null;
 
-        $this->organization = $this->organization->fresh();
-    }
-
-    /**
-     * Get the current user of the application.
-     *
-     * @return mixed
-     */
-    public function getUserProperty()
-    {
-        return Auth::user();
+            $this->organization = $this->organization->fresh();
+        }
     }
 
     /**

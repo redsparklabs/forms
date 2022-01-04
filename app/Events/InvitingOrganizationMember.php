@@ -11,7 +11,7 @@ class InvitingOrganizationMember
     /**
      * Create a new event instance.
      *
-     * @param  mixed  $team
+     * @param  mixed  $organization
      * @param  mixed  $email
      * @param  mixed  $role
      * @return void

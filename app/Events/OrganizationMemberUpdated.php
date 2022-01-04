@@ -11,7 +11,7 @@ class OrganizationMemberUpdated
     /**
      * Create a new event instance.
      *
-     * @param  mixed  $team
+     * @param  mixed  $organization
      * @param  mixed  $user
      * @return void
      */

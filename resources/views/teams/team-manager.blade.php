@@ -69,14 +69,19 @@
 
                                 <div class="flex items-center">
 
-                                    <!-- Remove Organization -->
-                                     @if (Gate::check('updateTeam', $team))
+                                    @if (Gate::check('viewTeam', $organization))
+                                        <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('teams.show', $team->id) }}">
+                                            {{ __('View') }}
+                                        </a>
+                                    @endif
+
+                                    @if (Gate::check('updateTeam', $organization))
                                         <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmUpdate('{{ $team->id }}')">
                                             {{ __('Update') }}
                                         </button>
                                     @endif
 
-                                    @if (Gate::check('removeTeam', $team))
+                                    @if (Gate::check('removeTeam', $organization))
                                         <button class="ml-6 text-sm text-red-500 cursor-pointer focus:outline-none" wire:click="confirmDestroy('{{ $team->id }}')">
                                             {{ __('Remove') }}
                                         </button>
@@ -94,7 +99,7 @@
     <!-- Uodate Club Confirmation Modal -->
     <x-jet-dialog-modal wire:model="confirmingUpdating">
         <x-slot name="title">
-            {{ __('Update Organization') }}
+            {{ __('Update Team') }}
         </x-slot>
 
         <x-slot name="content">

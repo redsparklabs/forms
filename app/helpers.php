@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Colorize
+ *
+ * @param  integer $number
+ * @return string|null
+ */
 function colorize($number) {
 
     if(inbetween($number, 0, .99)) {
@@ -21,8 +27,18 @@ function colorize($number) {
     if(inbetween($number, 4, 5)) {
         return 'bg-green-900';
     }
+
+    return null;
 }
 
+/**
+ * Check if a number is between two other numbers
+ *
+ * @param  integer $val
+ * @param  integer $min
+ * @param  float $max
+ * @return bool
+ */
 function inbetween($val, $min, $max)
 {
     return ($val >= $min && $val <= $max);
