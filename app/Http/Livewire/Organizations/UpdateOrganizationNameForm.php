@@ -3,13 +3,13 @@
 namespace App\Http\Livewire\Organizations;
 
 use Illuminate\Support\Facades\Auth;
-use Laravel\Jetstream\Contracts\UpdatesTeamNames;
+use App\Actions\Jetstream\UpdateOrganizationName;
 use Livewire\Component;
 
 class UpdateOrganizationNameForm extends Component
 {
     /**
-     * The team instance.
+     * The organization instance.
      *
      * @var mixed
      */
@@ -38,10 +38,10 @@ class UpdateOrganizationNameForm extends Component
     /**
      * Update the organization's name.
      *
-     * @param  \Laravel\Jetstream\Contracts\UpdatesTeamNames  $updater
+     * @param  \App\Actions\Jetstream\UpdatesOrganizationNames  $updater
      * @return void
      */
-    public function updateTeamName(UpdatesTeamNames $updater)
+    public function updateOrganizationName(UpdateOrganizationName $updater)
     {
         $this->resetErrorBag();
 

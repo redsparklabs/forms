@@ -1,10 +1,10 @@
 <div>
-    @if (Gate::check('addTeamMember', $organization))
+    @if (Gate::check('addOrganizationMember', $organization))
         <x-jet-section-border />
 
         <!-- Add Organization Member -->
         <div class="mt-10 sm:mt-0">
-            <x-jet-form-section submit="addTeamMember">
+            <x-jet-form-section submit="addOrganizationMember">
                 <x-slot name="title">
                     {{ __('Add Organization Member') }}
                 </x-slot>
@@ -23,7 +23,7 @@
                     <!-- Member Email -->
                     <div class="col-span-6 sm:col-span-4">
                         <x-jet-label for="email" value="{{ __('Email') }}" />
-                        <x-jet-input id="email" type="email" class="block w-full mt-1" wire:model.defer="addTeamMemberForm.email" />
+                        <x-jet-input id="email" type="email" class="block w-full mt-1" wire:model.defer="addOrganizationMemberForm.email" />
                         <x-jet-input-error for="email" class="mt-2" />
                     </div>
 
@@ -35,15 +35,15 @@
 
                             <div class="relative z-0 mt-1 border border-gray-200 rounded-lg cursor-pointer">
                                 @foreach ($this->roles as $index => $role)
-                                    <button type="button" class="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 {{ $index > 0 ? 'border-t border-gray-200 rounded-t-none' : '' }} {{ ! $loop->last ? 'rounded-b-none' : '' }}" wire:click="$set('addTeamMemberForm.role', '{{ $role->key }}')">
-                                        <div class="{{ isset($addTeamMemberForm['role']) && $addTeamMemberForm['role'] !== $role->key ? 'opacity-50' : '' }}">
+                                    <button type="button" class="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 {{ $index > 0 ? 'border-t border-gray-200 rounded-t-none' : '' }} {{ ! $loop->last ? 'rounded-b-none' : '' }}" wire:click="$set('addOrganizationMemberForm.role', '{{ $role->key }}')">
+                                        <div class="{{ isset($addOrganizationMemberForm['role']) && $addOrganizationMemberForm['role'] !== $role->key ? 'opacity-50' : '' }}">
                                             <!-- Role Name -->
                                             <div class="flex items-center">
-                                                <div class="text-sm text-gray-600 {{ $addTeamMemberForm['role'] == $role->key ? 'font-semibold' : '' }}">
+                                                <div class="text-sm text-gray-600 {{ $addOrganizationMemberForm['role'] == $role->key ? 'font-semibold' : '' }}">
                                                     {{ $role->name }}
                                                 </div>
 
-                                                @if ($addTeamMemberForm['role'] == $role->key)
+                                                @if ($addOrganizationMemberForm['role'] == $role->key)
                                                     <svg class="w-5 h-5 ml-2 text-green-400" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                                 @endif
                                             </div>
@@ -73,7 +73,7 @@
         </div>
     @endif
 
-    @if ($organization->organizationInvitations->isNotEmpty() && Gate::check('addTeamMember', $organization))
+    @if ($organization->organizationInvitations->isNotEmpty() && Gate::check('addOrganizationMember', $organization))
         <x-jet-section-border />
 
         <!-- Organization Member Invitations -->
@@ -89,15 +89,15 @@
 
                 <x-slot name="content">
                     <div class="space-y-6">
-                        @foreach ($organization->teamInvitations as $invitation)
+                        @foreach ($organization->organizationInvitations as $invitation)
                             <div class="flex items-center justify-between">
                                 <div class="text-gray-600">{{ $invitation->email }}</div>
 
                                 <div class="flex items-center">
-                                    @if (Gate::check('removeTeamMember', $organization))
+                                    @if (Gate::check('removeOrganizationMember', $organization))
                                         <!-- Cancel Organization Invitation -->
                                         <button class="ml-6 text-sm text-red-500 cursor-pointer focus:outline-none"
-                                                            wire:click="cancelTeamInvitation({{ $invitation->id }})">
+                                                            wire:click="cancelOrganizationInvitation({{ $invitation->id }})">
                                             {{ __('Cancel') }}
                                         </button>
                                     @endif
@@ -148,13 +148,13 @@
 
                                     <!-- Leave Organization -->
                                     @if ($this->user->id === $user->id)
-                                        <button class="ml-6 text-sm text-red-500 cursor-pointer" wire:click="$toggle('confirmingLeavingTeam')">
+                                        <button class="ml-6 text-sm text-red-500 cursor-pointer" wire:click="$toggle('confirmingLeavingOrganization')">
                                             {{ __('Leave') }}
                                         </button>
 
                                     <!-- Remove Organization Member -->
-                                    @elseif (Gate::check('removeTeamMember', $organization))
-                                        <button class="ml-6 text-sm text-red-500 cursor-pointer" wire:click="confirmTeamMemberRemoval('{{ $user->id }}')">
+                                    @elseif (Gate::check('removeOrganizationMember', $organization))
+                                        <button class="ml-6 text-sm text-red-500 cursor-pointer" wire:click="confirmOrganizationMemberRemoval('{{ $user->id }}')">
                                             {{ __('Remove') }}
                                         </button>
                                     @endif
@@ -212,7 +212,7 @@
     </x-jet-dialog-modal>
 
     <!-- Leave Organization Confirmation Modal -->
-    <x-jet-confirmation-modal wire:model="confirmingLeavingTeam">
+    <x-jet-confirmation-modal wire:model="confirmingLeavingOrganization">
         <x-slot name="title">
             {{ __('Leave Organization') }}
         </x-slot>
@@ -222,18 +222,18 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingLeavingTeam')" wire:loading.attr="disabled">
+            <x-jet-secondary-button wire:click="$toggle('confirmingLeavingOrganization')" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
             </x-jet-secondary-button>
 
-            <x-jet-danger-button class="ml-2" wire:click="leaveTeam" wire:loading.attr="disabled">
+            <x-jet-danger-button class="ml-2" wire:click="leaveOrganization" wire:loading.attr="disabled">
                 {{ __('Leave') }}
             </x-jet-danger-button>
         </x-slot>
     </x-jet-confirmation-modal>
 
     <!-- Remove Organization Member Confirmation Modal -->
-    <x-jet-confirmation-modal wire:model="confirmingTeamMemberRemoval">
+    <x-jet-confirmation-modal wire:model="confirmingOrganizationMemberRemoval">
         <x-slot name="title">
             {{ __('Remove Organization Member') }}
         </x-slot>
@@ -243,11 +243,11 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingTeamMemberRemoval')" wire:loading.attr="disabled">
+            <x-jet-secondary-button wire:click="$toggle('confirmingOrganizationMemberRemoval')" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
             </x-jet-secondary-button>
 
-            <x-jet-danger-button class="ml-2" wire:click="removeTeamMember" wire:loading.attr="disabled">
+            <x-jet-danger-button class="ml-2" wire:click="removeOrganizationMember" wire:loading.attr="disabled">
                 {{ __('Remove') }}
             </x-jet-danger-button>
         </x-slot>

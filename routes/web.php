@@ -7,15 +7,14 @@ use App\Http\Livewire\FormBuilder;
 use App\Http\Livewire\FormResults;
 use App\Http\Livewire\QuestionManager;
 use App\Http\Livewire\ClubManager;
-use Laravel\Jetstream\Http\Controllers\CurrentTeamController;
-use Laravel\Jetstream\Http\Controllers\Livewire\ApiTokenController;
-use Laravel\Jetstream\Http\Controllers\Livewire\PrivacyPolicyController;
-use Laravel\Jetstream\Http\Controllers\Livewire\TeamController;
-use Laravel\Jetstream\Http\Controllers\Livewire\TermsOfServiceController;
-use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
-use Laravel\Jetstream\Http\Controllers\TeamInvitationController;
+
 use App\Http\Controllers\Livewire\CurrentOrganizationController;
 use App\Http\Controllers\Livewire\OrganizationController;
+use App\Http\Controllers\Livewire\OrganizationInvitationController;
+
+use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
+use Laravel\Jetstream\Http\Controllers\Livewire\PrivacyPolicyController;
+use Laravel\Jetstream\Http\Controllers\Livewire\TermsOfServiceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,9 +50,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/organizations/{organization}', [OrganizationController::class, 'show'])->name('organizations.show');
     Route::put('/current-organization', [CurrentOrganizationController::class, 'update'])->name('current-organization.update');
 
-    Route::get('/organization-invitations/{invitation}', [TeamInvitationController::class, 'accept'])
+    Route::get('/organization-invitations/{invitation}', [OrganizationInvitationController::class, 'accept'])
                 ->middleware(['signed'])
-                ->name('team-invitations.accept');
+                ->name('organization-invitations.accept');
 
     Route::get('organizations/{organization}/forms', FormManager::class)->name('form-manager');
     Route::get('organizations/{organization}/forms/{form}/results', FormResults::class)->name('form-results');

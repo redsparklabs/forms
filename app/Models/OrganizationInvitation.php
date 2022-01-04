@@ -18,11 +18,11 @@ class OrganizationInvitation extends Model
     ];
 
     /**
-     * Get the team that the invitation belongs to.
+     * Get the organization that the invitation belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function team()
+    public function organization()
     {
         return $this->belongsTo(Organization::class);
     }

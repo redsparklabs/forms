@@ -40,9 +40,9 @@ class Organization extends Model
      * @var array
      */
     protected $dispatchesEvents = [
-        'created' => CreateOrganization::class,
+        'created' => OrganizationCreated::class,
         'updated' => OrganizationUpdated::class,
-        'deleted' => DeleteOrganization::class,
+        'deleted' => OrganizationDeleted::class,
     ];
 
     public function teams()

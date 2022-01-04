@@ -4,9 +4,11 @@ namespace App\Http\Livewire\Organizations;
 
 use Illuminate\Support\Facades\Auth;
 use Add\Actions\UpdateOrganizationMemberRole;
-use Add\Actions\AddsOrganizationMembers;
-use Add\Actions\InvitesOrganizationMembers;
-use Add\Actions\RemovesOrganizationMembers;
+use Add\Actions\Jetstream\AddsOrganizationMember;
+use App\Actions\Jetstream\InviteOrganizationMember;
+use Add\Actions\RemoveOrganizationMember;
+use App\Models\Organization;
+use App\Models\OrganizationInvitation;
 use Laravel\Jetstream\Features;
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Role;
@@ -61,14 +63,14 @@ class OrganizationMemberManager extends Component
      *
      * @var int|null
      */
-    public $teamMemberIdBeingRemoved = null;
+    public $organizationMemberIdBeingRemoved = null;
 
     /**
      * The "add organization member" form state.
      *
      * @var array
      */
-    public $addTeamMemberForm = [
+    public $addOrganizationMemberForm = [
         'email' => '',
         'role' => null,
     ];
@@ -89,27 +91,27 @@ class OrganizationMemberManager extends Component
      *
      * @return void
      */
-    public function addTeamMember()
+    public function addOrganizationMember()
     {
         $this->resetErrorBag();
 
         if (Features::sendsTeamInvitations()) {
-            app(InvitesTeamMembers::class)->invite(
-                $this->user,
-                $this->torganizationeam,
-                $this->addTeamMemberForm['email'],
-                $this->addTeamMemberForm['role']
-            );
-        } else {
-            app(AddsTeamMembers::class)->add(
+            app(InviteOrganizationMember::class)->invite(
                 $this->user,
                 $this->organization,
-                $this->addTeamMemberForm['email'],
-                $this->addTeamMemberForm['role']
+                $this->addOrganizationMemberForm['email'],
+                $this->addOrganizationMemberForm['role']
+            );
+        } else {
+            app(AddsOrganizationMember::class)->add(
+                $this->user,
+                $this->organization,
+                $this->addOrganizationMemberForm['email'],
+                $this->addOrganizationMemberForm['role']
             );
         }
 
-        $this->addTeamMemberForm = [
+        $this->addOrganizationMemberForm = [
             'email' => '',
             'role' => null,
         ];
@@ -125,12 +127,11 @@ class OrganizationMemberManager extends Component
      * @param  int  $invitationId
      * @return void
      */
-    public function cancelTeamInvitation($invitationId)
+    public function cancelOrganizationInvitation($invitationId)
     {
         if (! empty($invitationId)) {
-            $model = Jetstream::teamInvitationModel();
 
-            $model::whereKey($invitationId)->delete();
+            OrganizationInvitation::whereKey($invitationId)->delete();
         }
 
         $this->organization = $this->organization->fresh();
@@ -146,16 +147,16 @@ class OrganizationMemberManager extends Component
     {
         $this->currentlyManagingRole = true;
         $this->managingRoleFor = Jetstream::findUserByIdOrFail($userId);
-        $this->currentRole = $this->managingRoleFor->teamRole($this->organization)->key;
+        $this->currentRole = $this->managingRoleFor->organizationRole($this->organization)->key;
     }
 
     /**
      * Save the role for the user being managed.
      *
-     * @param  \Laravel\Jetstream\Actions\UpdateTeamMemberRole  $updater
+     * @param  \Laravel\Jetstream\Actions\UpdateOrganizationMemberRole  $updater
      * @return void
      */
-    public function updateRole(UpdateTeamMemberRole $updater)
+    public function updateRole(UpdateOrganizationMemberRole $updater)
     {
         $updater->update(
             $this->user,
@@ -182,10 +183,10 @@ class OrganizationMemberManager extends Component
     /**
      * Remove the currently authenticated user from the organization.
      *
-     * @param  \Laravel\Jetstream\Contracts\RemovesTeamMembers  $remover
+     * @param  \Laravel\Jetstream\Contracts\RemovesOrganizationMembers  $remover
      * @return void
      */
-    public function leaveTeam(RemovesOrganizationMembers $remover)
+    public function leaveOrganization(RemovesOrganizationMembers $remover)
     {
         $remover->remove(
             $this->user,
@@ -193,7 +194,7 @@ class OrganizationMemberManager extends Component
             $this->user
         );
 
-        $this->confirmingLeavingTeam = false;
+        $this->confirmingLeavingOrganization = false;
 
         $this->organization = $this->organization->fresh();
 
@@ -201,35 +202,35 @@ class OrganizationMemberManager extends Component
     }
 
     /**
-     * Confirm that the given team member should be removed.
+     * Confirm that the given organization member should be removed.
      *
      * @param  int  $userId
      * @return void
      */
-    public function confirmTeamMemberRemoval($userId)
+    public function confirmOrganizationMemberRemoval($userId)
     {
-        $this->confirmingTeamMemberRemoval = true;
+        $this->confirmingOrganizationMemberRemoval = true;
 
-        $this->teamMemberIdBeingRemoved = $userId;
+        $this->organizationMemberIdBeingRemoved = $userId;
     }
 
     /**
-     * Remove a team member from the team.
+     * Remove a organization member from the organization.
      *
-     * @param  \Laravel\Jetstream\Contracts\RemovesTeamMembers  $remover
+     * @param  \Laravel\Jetstream\Contracts\RemovesOrganizationMembers  $remover
      * @return void
      */
-    public function removeTeamMember(RemovesTeamMembers $remover)
+    public function removeOrganizationMember(RemovesOrganizationMembers $remover)
     {
         $remover->remove(
             $this->user,
             $this->organization,
-            $user = Jetstream::findUserByIdOrFail($this->teamMemberIdBeingRemoved)
+            $user = Jetstream::findUserByIdOrFail($this->organizationMemberIdBeingRemoved)
         );
 
-        $this->confirmingTeamMemberRemoval = false;
+        $this->confirmingOrganizationMemberRemoval = false;
 
-        $this->teamMemberIdBeingRemoved = null;
+        $this->organizationMemberIdBeingRemoved = null;
 
         $this->organization = $this->organization->fresh();
     }
