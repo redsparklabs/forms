@@ -3,10 +3,10 @@
 namespace App\Http\Livewire\Organizations;
 
 use Illuminate\Support\Facades\Auth;
-use Add\Actions\UpdateOrganizationMemberRole;
-use Add\Actions\Jetstream\AddsOrganizationMember;
+use App\Actions\Jetstream\UpdateOrganizationMemberRole;
+use App\Actions\Jetstream\AddsOrganizationMember;
 use App\Actions\Jetstream\InviteOrganizationMember;
-use Add\Actions\RemoveOrganizationMember;
+use App\Actions\Jetstream\RemoveOrganizationMember;
 use App\Models\Organization;
 use App\Models\OrganizationInvitation;
 use Laravel\Jetstream\Features;
@@ -153,7 +153,7 @@ class OrganizationMemberManager extends Component
     /**
      * Save the role for the user being managed.
      *
-     * @param  \Laravel\Jetstream\Actions\UpdateOrganizationMemberRole  $updater
+     * @param  \App\Actions\Jetstream\UpdateOrganizationMemberRole  $updater
      * @return void
      */
     public function updateRole(UpdateOrganizationMemberRole $updater)
@@ -183,10 +183,10 @@ class OrganizationMemberManager extends Component
     /**
      * Remove the currently authenticated user from the organization.
      *
-     * @param  \Laravel\Jetstream\Contracts\RemovesOrganizationMembers  $remover
+     * @param  \App\Actions\Jetstream\RemoveOrganizationMember  $remover
      * @return void
      */
-    public function leaveOrganization(RemovesOrganizationMembers $remover)
+    public function leaveOrganization(RemoveOrganizationMember $remover)
     {
         $remover->remove(
             $this->user,
@@ -217,10 +217,10 @@ class OrganizationMemberManager extends Component
     /**
      * Remove a organization member from the organization.
      *
-     * @param  \Laravel\Jetstream\Contracts\RemovesOrganizationMembers  $remover
+     * @param  \App\Actions\Jetstream\RemoveOrganizationMember  $remover
      * @return void
      */
-    public function removeOrganizationMember(RemovesOrganizationMembers $remover)
+    public function removeOrganizationMember(RemoveOrganizationMember $remover)
     {
         $remover->remove(
             $this->user,

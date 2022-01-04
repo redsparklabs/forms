@@ -3,9 +3,8 @@
 namespace App\Actions\Jetstream;
 
 use Illuminate\Support\Facades\DB;
-use Laravel\Jetstream\Contracts\DeletesTeams;
+use App\Actions\Jetstream\DeleteOrganization;
 use Laravel\Jetstream\Contracts\DeletesUsers;
-
 class DeleteUser implements DeletesUsers
 {
 
@@ -15,7 +14,7 @@ class DeleteUser implements DeletesUsers
      * @param  \Laravel\Jetstream\Contracts\DeletesTeams  $deletesOrganzizations
      * @return void
      */
-    public function __construct(public DeletesTeams $deletesOrganzizations)
+    public function __construct(public DeleteOrganization $deletesOrganzizations)
     {
         $this->deletesOrganzizations = $deletesOrganzizations;
     }

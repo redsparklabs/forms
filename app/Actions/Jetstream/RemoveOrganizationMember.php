@@ -5,8 +5,7 @@ namespace App\Actions\Jetstream;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
-use Laravel\Jetstream\Contracts\RemovesOrganizationMembers;
-use Laravel\Jetstream\Events\OrganizationMemberRemoved;
+use App\Events\OrganizationMemberRemoved;
 
 class RemoveOrganizationMember
 {

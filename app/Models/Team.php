@@ -3,16 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Events\CreateTeam;
-use App\Events\DeleteTeam;
-use Laravel\Jetstream\Events\TeamCreated;
-use Laravel\Jetstream\Events\TeamDeleted;
-use Laravel\Jetstream\Events\TeamUpdated;
-use Laravel\Jetstream\Team as JetstreamTeam;
-use App\Models\Club;
-use App\Models\Form;
 
-class Team extends JetstreamTeam
+use Illuminate\Database\Eloquent\Model;
+
+class Team extends Model
 {
     use HasFactory;
 
@@ -22,7 +16,6 @@ class Team extends JetstreamTeam
      * @var array
      */
     protected $casts = [
-        'personal_team' => 'boolean',
     ];
 
     /**
@@ -32,32 +25,17 @@ class Team extends JetstreamTeam
      */
     protected $fillable = [
         'name',
-        'personal_team',
     ];
 
-    /**
-     * The event map for the model.
+        /**
+     * Get the owner of the team.
      *
-     * @var array
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    protected $dispatchesEvents = [
-        'created' =>  CreateTeam::class,
-        'updated' => TeamUpdated::class,
-        'deleted' => DeleteTeam::class,
-    ];
-
-    public function clubs()
+    public function owner()
     {
-        return $this->hasMany(Club::class);
+        return $this->belongsTo(Organization::class, 'organization_id');
     }
 
-    public function forms()
-    {
-        return $this->hasMany(Form::class)->latest();
-    }
 
-    public function questions()
-    {
-        return $this->hasMany(Question::class);
-    }
 }

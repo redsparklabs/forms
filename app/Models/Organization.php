@@ -93,6 +93,7 @@ class Organization extends Model
                         ->as('membership');
     }
 
+
     /**
      * Determine if the given user belongs to the team.
      *

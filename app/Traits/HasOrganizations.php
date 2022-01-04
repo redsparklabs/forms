@@ -7,7 +7,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Organization;
 use App\Models\Membership;
 use App\Models\OwnerRole;
-
+use Laravel\Jetstream\Jetstream;
 trait HasOrganizations
 {
     /**

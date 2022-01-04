@@ -4,8 +4,8 @@ namespace App\Actions\Jetstream;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
-use Laravel\Jetstream\Events\AddingOrganizationMember;
-use Laravel\Jetstream\Events\OrganizationMemberAdded;
+use App\Events\AddingOrganizationMember;
+use App\Events\OrganizationMemberAdded;
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Rules\Role;
 
