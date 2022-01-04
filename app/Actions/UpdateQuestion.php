@@ -2,22 +2,23 @@
 
 namespace App\Actions;
 
+use App\Models\Organization;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Question;
 use App\Models\User;
-use App\Models\Team;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Concerns\AsObject;
 use Lorisleiva\Actions\Concerns\WithAttributes;
-
+use Spatie\ValidationRules\Rules\Delimited;
 
 class UpdateQuestion
 {
     use AsObject, WithAttributes;
 
-    public function handle(User $user, Team $team, Question $question, array $attributes)
+    public function handle(User $user, Organization $organization, Question $question, array $attributes)
     {
-        Gate::forUser($user)->authorize('updateQuestion', $team);
+
+        Gate::forUser($user)->authorize('updateQuestion', $organization);
 
         $this->fill($attributes)->validateAttributes();
 
@@ -34,8 +35,8 @@ class UpdateQuestion
     public function rules(): array
     {
         return [
-            'newQuestion' => ['required'],
-            'events' => [new Delimited('string')],
+            'question' => ['required'],
+            'description' => ['required'],
         ];
     }
 

@@ -3,29 +3,25 @@
 namespace App\Actions;
 
 use Illuminate\Support\Facades\Gate;
-use App\Models\Club;
 use App\Models\User;
-use App\Models\Team;
+use App\Models\Organization;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Concerns\AsObject;
 use Lorisleiva\Actions\Concerns\WithAttributes;
 
-
-class UpdateClub
+class CreateTeam
 {
     use AsObject, WithAttributes;
 
-    public function handle(User $user, Team $team, Club $club, array $attributes)
+    public function handle(User $user, Organization $organization, array $attributes)
     {
-        Gate::forUser($user)->authorize('updateClub', $team);
+        Gate::forUser($user)->authorize('addTeam', $organization);
 
         $this->fill($attributes)->validateAttributes();
 
         $name = Arr::get($attributes, 'name');
 
-        $club->name = $name;
-
-        $club->save();
+        $organization->teams()->create(['name' => $name]);
     }
 
     public function rules(): array
@@ -37,6 +33,6 @@ class UpdateClub
 
     public function getValidationErrorBag(): string
     {
-        return 'updateClub';
+        return 'addTeam';
     }
 }

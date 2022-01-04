@@ -4,7 +4,7 @@ namespace App\Actions;
 
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
-use App\Models\Team;
+use App\Models\Organization;
 use App\Models\Question;
 use Lorisleiva\Actions\Concerns\AsObject;
 use Lorisleiva\Actions\Concerns\WithAttributes;
@@ -13,10 +13,10 @@ class DestroyQuestion
 {
     use AsObject, WithAttributes;
 
-    public function handle(User $user, Team $team, Question $question)
+    public function handle(User $user, Organization $organization, Question $question)
     {
-        Gate::forUser($user)->authorize('removeQuestion', $team);
+        Gate::forUser($user)->authorize('removeQuestion', $organization);
 
-        $team->questions()->find($question)->first()->delete();
+        $organization->questions()->find($question)->first()->delete();
     }
 }

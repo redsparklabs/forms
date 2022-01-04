@@ -4,19 +4,19 @@ namespace App\Actions;
 
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
+use App\Models\Team;
 use App\Models\Organization;
-use App\Models\Form;
 use Lorisleiva\Actions\Concerns\AsObject;
 use Lorisleiva\Actions\Concerns\WithAttributes;
 
-class DestroyForm
+class DestroyTeam
 {
     use AsObject, WithAttributes;
 
-    public function handle(User $user, Organization $organization, Form $form)
+    public function handle(User $user, Organization $organization, Team $team)
     {
-        Gate::forUser($user)->authorize('removeForm', $organization);
+        Gate::forUser($user)->authorize('removeTeam', $organization);
 
-        $organization->forms()->find($form)->first()->delete();
+        $organization->teams()->find($team)->first()->delete();
     }
 }

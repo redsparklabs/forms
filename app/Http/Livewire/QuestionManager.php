@@ -6,15 +6,19 @@ use App\Http\Livewire\BaseComponent;
 use App\Actions\CreateQuestion;
 use App\Actions\DestroyQuestion;
 use App\Actions\UpdateQuestion;
-use App\Models\Question;
-use App\Models\Team;
+use App\Models\Organization;
 
 class QuestionManager extends BaseComponent
 {
+    protected $listeners = [
+        'updated' => 'render',
+        'created' => 'render',
+        'destroyed' => 'render',
+    ];
 
     public $componentName = 'Question';
 
-    public $team;
+    public $organization;
 
     public $createForm = [
         'question' => '',
@@ -26,23 +30,24 @@ class QuestionManager extends BaseComponent
         'description' => ''
     ];
 
-    public function mount(Team $team)
+    public function mount(Organization $organization)
     {
-        $this->team = $team;
+        $this->organization = $organization;
     }
 
     public function createAction()
     {
         CreateQuestion::run(
             $this->user,
-            $this->team,
+            $this->organization,
             $this->createForm,
         );
     }
 
     public function confirmUpdateAction()
     {
-        $question = $this->team->questions()->findOrFail($this->idBeingUpdated);
+
+        $question = $this->organization->questions()->findOrFail($this->idBeingUpdated);
 
         $this->updateForm = [
             'question' => $question->question,
@@ -54,8 +59,8 @@ class QuestionManager extends BaseComponent
     {
         UpdateQuestion::run(
             $this->user,
-            $this->team,
-            $this->team->questions()->findOrFail($this->idBeingUpdated),
+            $this->organization,
+            $this->organization->questions()->findOrFail($this->idBeingUpdated),
             $this->updateForm
         );
     }
@@ -64,8 +69,8 @@ class QuestionManager extends BaseComponent
     {
         DestroyQuestion::run(
             $this->user,
-            $this->team,
-            $this->team->questions()->findOrFail($this->idBeingUpdated)
+            $this->organization,
+            $this->organization->questions()->findOrFail($this->idBeingDestroyed)
         );
     }
 

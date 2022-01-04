@@ -23,8 +23,8 @@ class CreateFormSubmission
 
         $this->customQuestions = $customQuestions;
 
-        if (!$attributes['club']) {
-            $attributes['club'] = $form->clubs->first()->name;
+        if (!$attributes['team']) {
+            $attributes['team'] = $form->teams->first()->name;
         }
 
         $this->fill($attributes)->validateAttributes();
@@ -50,7 +50,7 @@ class CreateFormSubmission
 
         $data = array_merge($data, $data1, [
             'email' => ['required', 'email'],
-            'club' => ['required'],
+            'team' => ['required'],
         ]);
 
         return $data;
@@ -59,7 +59,7 @@ class CreateFormSubmission
     public function getValidationMessages(): array
     {
         $arr = [
-            'club.required' => 'Please choose a team.',
+            'team.required' => 'Please choose a team.',
         ];
 
         foreach ($this->slugQuestions as $item) {

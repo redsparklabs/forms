@@ -5,14 +5,14 @@ namespace App\Http\Livewire;
 use App\Actions\CreateForm;
 use App\Actions\DestroyForm;
 use App\Actions\UpdateForm;
-use App\Models\Team;
+use App\Models\Organization;
 use App\Models\Form;
 use App\Models\FormQuestion;
 use App\Http\Livewire\BaseComponent;
 
 class FormManager extends BaseComponent
 {
-    public $team;
+    public $organization;
 
     public $componentName = 'Form';
 
@@ -20,37 +20,37 @@ class FormManager extends BaseComponent
         'name' => '',
         'events' => '',
         'description' => '',
-        'clubs' => []
+        'teams' => []
     ];
 
     public $update_form = [
         'name' => '',
         'events' => '',
         'description' => '',
-        'clubs' => []
+        'teams' => []
     ];
 
     public $rules = [
         'create_form.name' => 'required',
         'create_form.events' => 'required',
         'create_form.description' => 'required',
-        'create_form.clubs' => 'required'
+        'create_form.teams' => 'required'
     ];
 
     protected $messages = [
         'create_form.name.required' => 'Please enter a form name.',
         'create_form.events.required' => 'Please enter a form event.',
         'create_form.description.required' => 'Please enter a form description.',
-        'create_form.clubs.required' => 'Please choose at least one team.'
+        'create_form.teams.required' => 'Please choose at least one organization.'
     ];
 
     public $assignedQuestions = null;
 
     public $allQuestions = null;
 
-    public function mount(Team $team)
+    public function mount(Organization $organization)
     {
-        $this->team = $team;
+        $this->organization = $organization;
         $this->assignedQuestions = collect();
         $this->allQuestions = collect();
     }
@@ -62,7 +62,7 @@ class FormManager extends BaseComponent
 
         $form = CreateForm::run(
             $this->user,
-            $this->team,
+            $this->organization,
             $this->create_form
         );
 
@@ -71,27 +71,27 @@ class FormManager extends BaseComponent
 
     public function confirmUpdateAction()
     {
-        $form = $this->team->forms()->findOrFail($this->idBeingUpdated);
+        $form = $this->organization->forms()->findOrFail($this->idBeingUpdated);
 
         $this->assignedQuestions = collect($form->questions()->pluck('question_id')->toArray());
 
-        $this->allQuestions = $this->team->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
+        $this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
 
         $this->updateForm = [
             'name' => $form->name,
             'events' => $form->tag_string,
             'description' => $form->description,
-            'clubs' => $form->clubs->pluck('id')->mapWithKeys(fn ($item) => [$item => $item])
+            'teams' => $form->teams->pluck('id')->mapWithKeys(fn ($item) => [$item => $item])
         ];
     }
 
     public function updateAction()
     {
-        $form = $this->team->forms()->findOrFail($this->idBeingUpdated);
+        $form = $this->organization->forms()->findOrFail($this->idBeingUpdated);
 
         UpdateForm::run(
             $this->user,
-            $this->team,
+            $this->organization,
             $form,
             $this->updateForm
         );
@@ -103,7 +103,7 @@ class FormManager extends BaseComponent
     {
         DestroyForm::run(
             $this->user,
-            $this->team,
+            $this->organization,
             Form::findOrFail($this->idBeingDestroyed)
         );
     }
@@ -122,9 +122,9 @@ class FormManager extends BaseComponent
 
         $this->assignedQuestions = collect($form->questions()->pluck('question_id')->toArray());
 
-        $this->allQuestions = $this->team->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
+        $this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
 
-        $this->team = $this->team->fresh();
+        $this->organization = $this->organization->fresh();
     }
 
     public function moveQuestionUp(int $formId, int $questionId)
@@ -136,7 +136,7 @@ class FormManager extends BaseComponent
 
         $question->moveOrderUp();
 
-        $this->allQuestions = $this->team->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
+        $this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
 
         $this->notification()->success(
             'Question Moved',
@@ -153,7 +153,7 @@ class FormManager extends BaseComponent
 
         $question->moveOrderDown();
 
-        $this->allQuestions = $this->team->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
+        $this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
 
         $this->notification()->success(
             'Question Moved',

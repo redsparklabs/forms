@@ -1,8 +1,8 @@
 <div>
-    @if (Gate::check('addClub', $team))
+    @if (Gate::check('addTeam', $organization))
         <x-jet-section-border />
 
-        <!-- Add Team -->
+        <!-- Add Organization -->
         <div class="mt-10 sm:mt-0">
             <x-jet-form-section submit="create">
                 <x-slot name="title">
@@ -23,7 +23,7 @@
                     <!-- Team Name -->
                     <div class="col-span-6 sm:col-span-4">
                         <x-jet-label for="name" value="{{ __('Team Name') }}" />
-                        <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="createForm.name" />
+                        <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="createForm.name" />
                         <x-jet-input-error for="name" class="mt-2" />
                     </div>
 
@@ -44,9 +44,9 @@
 
     @endif
 
-    @if ($team->clubs->isNotEmpty())
+    @if ($organization->teams->isNotEmpty())
         <x-jet-section-border />
-        <!-- Manage Teams -->
+        <!-- Manage Organizations -->
         <div class="mt-10 sm:mt-0">
             <x-jet-action-section>
                 <x-slot name="title">
@@ -57,27 +57,27 @@
                     {{ __('All of the teams that are part of this organization.') }}
                 </x-slot>
 
-                <!-- Organization Team List -->
+                <!-- Organization Organization List -->
                 <x-slot name="content">
                     <div class="space-y-6">
-                        @foreach ($team->clubs->sortBy('name') as $club)
+                        @foreach ($organization->teams->sortBy('name') as $team)
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <img class="w-8 h-8 rounded-full" src="{{ $club->club_image }}" alt="{{ $club->name }}">
-                                    <div class="ml-4">{{ $club->name }}</div>
+                                    <img class="w-8 h-8 rounded-full" src="{{ $team->team_image }}" alt="{{ $team->name }}">
+                                    <div class="ml-4">{{ $team->name }}</div>
                                 </div>
 
                                 <div class="flex items-center">
 
-                                    <!-- Remove Team -->
-                                     @if (Gate::check('updateClub', $team))
-                                        <button class="cursor-pointer ml-6 text-sm text-blue-500 focus:outline-none" wire:click="confirmUpdate('{{ $club->id }}')">
+                                    <!-- Remove Organization -->
+                                     @if (Gate::check('updateTeam', $team))
+                                        <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmUpdate('{{ $team->id }}')">
                                             {{ __('Update') }}
                                         </button>
                                     @endif
 
-                                    @if (Gate::check('removeClub', $team))
-                                        <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none" wire:click="confirmDestroy('{{ $club->id }}')">
+                                    @if (Gate::check('removeTeam', $team))
+                                        <button class="ml-6 text-sm text-red-500 cursor-pointer focus:outline-none" wire:click="confirmDestroy('{{ $team->id }}')">
                                             {{ __('Remove') }}
                                         </button>
                                     @endif
@@ -94,13 +94,13 @@
     <!-- Uodate Club Confirmation Modal -->
     <x-jet-dialog-modal wire:model="confirmingUpdating">
         <x-slot name="title">
-            {{ __('Update Team') }}
+            {{ __('Update Organization') }}
         </x-slot>
 
         <x-slot name="content">
             <!-- Team Name -->
             <x-jet-label for="name" value="{{ __('Team Name') }}" />
-            <x-jet-input id="name" type="text" class="mt-1 block w-full" model="updateForm.name" wire:model.defer="updateForm.name" />
+            <x-jet-input id="name" type="text" class="block w-full mt-1" model="updateForm.name" wire:model.defer="updateForm.name" />
             <x-jet-input-error for="name" class="mt-2" />
         </x-slot>
 

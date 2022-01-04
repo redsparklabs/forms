@@ -2,9 +2,9 @@
 
 namespace App\Http\Livewire;
 
-use App\Actions\CreateClub;
-use App\Actions\DestroyClub;
-use App\Actions\UpdateClub;
+use App\Actions\CreateTeam;
+use App\Actions\DestroyTeam;
+use App\Actions\UpdateTeam;
 use App\Http\Livewire\BaseComponent;
 use App\Models\Team;
 
@@ -28,7 +28,7 @@ class ClubManager extends BaseComponent
 
     public function createAction()
     {
-        CreateClub::run(
+        CreateTeam::run(
             $this->user,
             $this->team,
             $this->createForm
@@ -38,7 +38,7 @@ class ClubManager extends BaseComponent
 
     public function confirmUpdateAction()
     {
-        $form = $this->team->clubs()->find($this->idBeingUpdated);
+        $form = $this->team->teams()->find($this->idBeingUpdated);
 
          $this->updateForm = [
             'name' => $form->name
@@ -47,29 +47,29 @@ class ClubManager extends BaseComponent
 
     public function updateAction()
     {
-        $club  = $this->team->clubs()->find($this->idBeingUpdated);
+        $team  = $this->team->teams()->find($this->idBeingUpdated);
 
-        UpdateClub::run(
+        UpdateTeam::run(
             $this->user,
             $this->team,
-            $club,
+            $team,
             $this->updateForm
         );
     }
 
     public function destroyAction()
     {
-        $club  = $this->team->clubs()->find($this->idBeingDestroyed);
+        $team  = $this->team->teams()->find($this->idBeingDestroyed);
 
-        DestroyClub::run(
+        DestroyTeam::run(
             $this->user,
             $this->team,
-            $club
+            $team
         );
     }
 
     public function render()
     {
-        return view('livewire.club-manager');
+        return view('livewire.team-manager');
     }
 }

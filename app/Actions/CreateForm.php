@@ -4,7 +4,7 @@ namespace App\Actions;
 
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
-use App\Models\Team;
+use App\Models\Organization;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Concerns\AsObject;
 use Lorisleiva\Actions\Concerns\WithAttributes;
@@ -13,24 +13,24 @@ class CreateForm
 {
     use AsObject, WithAttributes;
 
-    public function handle(User $user, Team $team, array $attributes)
+    public function handle(User $user, Organization $organization, array $attributes)
     {
-        Gate::forUser($user)->authorize('addForm', $team);
+        Gate::forUser($user)->authorize('addForm', $organization);
 
         $this->fill($attributes)->validateAttributes();
 
         $name = Arr::get($attributes, 'name');
         $description = Arr::get($attributes, 'description');
         $events = Arr::get($attributes, 'events');
-        $clubs = Arr::get($attributes, 'clubs');
+        $teams = Arr::get($attributes, 'teams');
 
-        $form = $team->forms()->create([
+        $form = $organization->forms()->create([
             'name' => $name,
             'description' => $description
         ]);
 
-        if($clubs) {
-            $form->clubs()->sync(array_filter($clubs));
+        if($teams) {
+            $form->teams()->sync(array_filter($teams));
         }
 
         if($events) {
@@ -43,7 +43,7 @@ class CreateForm
     public function rules(): array
     {
         return [
-            'clubs' => ['required'],
+            'teams' => ['required'],
             'name' => ['required', 'string', 'min:4'],
         ];
     }

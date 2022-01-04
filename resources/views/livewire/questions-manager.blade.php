@@ -1,12 +1,12 @@
 
 <x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+    <h2 class="text-xl font-semibold leading-tight text-gray-800">
         {{ __('Organization Questions') }}
     </h2>
 </x-slot>
 
 <div>
-    <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+    <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
          <div class="mt-10 sm:mt-0">
             <x-jet-form-section submit="create">
                 <x-slot name="title">
@@ -26,13 +26,13 @@
 
                     <div class="col-span-6 sm:col-span-4">
                         <x-jet-label for="question" value="{{ __('Question') }}" />
-                        <x-jet-input id="question" type="text" class="mt-1 block w-full" wire:model.defer="createForm.question" />
+                        <x-jet-input id="question" type="text" class="block w-full mt-1" wire:model.defer="createForm.question" />
                         <x-jet-input-error for="question" class="mt-2" />
                     </div>
 
                     <div class="col-span-6 sm:col-span-4">
                         <x-jet-label for="description" value="{{ __('Description') }}" />
-                        <x-jet-textarea id="description" type="text" class="mt-1 block w-full" wire:model.defer="createForm.description" />
+                        <x-jet-textarea id="description" type="text" class="block w-full mt-1" wire:model.defer="createForm.description" />
                         <x-jet-input-error for="description" class="mt-2" />
                     </div>
                 </x-slot>
@@ -48,7 +48,7 @@
                 </x-slot>
             </x-jet-form-section>
 
-             @if ($team->questions->isNotEmpty())
+             @if ($organization->questions->isNotEmpty())
                 <x-jet-section-border />
                 <!-- Manage Questions -->
                 <div class="mt-10 sm:mt-0">
@@ -63,7 +63,7 @@
 
                         <x-slot name="content">
                             <div class="space-y-6">
-                                @foreach ($team->questions->sortBy('name') as $question)
+                                @foreach ($organization->questions->sortBy('name') as $question)
                                     <div class="flex items-center justify-between">
                                         <div class="">
                                             <div class="ml-4">{{ $question->question }}</div>
@@ -72,14 +72,14 @@
 
                                         <div class="flex items-center">
 
-                                             @if (Gate::check('updateQuestion', $team))
-                                                <button class="cursor-pointer ml-6 text-sm text-blue-500" wire:click="confirmUpdate('{{ $question->id }}')">
+                                             @if (Gate::check('updateQuestion', $organization))
+                                                <button class="ml-6 text-sm text-blue-500 cursor-pointer" wire:click="confirmUpdate('{{ $question->id }}')">
                                                     {{ __('Update') }}
                                                 </button>
                                             @endif
 
-                                            @if (Gate::check('removeQuestion', $team))
-                                                <button class="cursor-pointer ml-6 text-sm text-red-500" wire:click="confirmDestroy('{{ $question->id }}')">
+                                            @if (Gate::check('removeQuestion', $organization))
+                                                <button class="ml-6 text-sm text-red-500 cursor-pointer" wire:click="confirmDestroy('{{ $question->id }}')">
                                                     {{ __('Remove') }}
                                                 </button>
                                             @endif
@@ -99,15 +99,15 @@
                 </x-slot>
 
                 <x-slot name="content">
-                    <div class="col-span-6 sm:col-span-4 mb-4">
+                    <div class="col-span-6 mb-4 sm:col-span-4">
                         <x-jet-label for="question" value="{{ __('Question') }}" />
-                        <x-jet-input id="question" type="text" class="mt-1 block w-full" wire:model.defer="updateForm.question" />
+                        <x-jet-input id="question" type="text" class="block w-full mt-1" wire:model.defer="updateForm.question" />
                         <x-jet-input-error for="question" class="mt-2" />
                     </div>
 
                     <div class="col-span-6 sm:col-span-4">
                         <x-jet-label for="description" value="{{ __('Description') }}" />
-                        <x-jet-textarea id="description" type="text" class="mt-1 block w-full" wire:model.defer="updateForm.description" />
+                        <x-jet-textarea id="description" type="text" class="block w-full mt-1" wire:model.defer="updateForm.description" />
                         <x-jet-input-error for="description" class="mt-2" />
                     </div>
                 </x-slot>

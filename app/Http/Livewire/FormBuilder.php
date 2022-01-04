@@ -17,7 +17,7 @@ class FormBuilder extends BaseComponent
 
     public $create_form = [
         'email' => '',
-        'club' => '',
+        'team' => '',
     ];
 
     public function mount($form)
