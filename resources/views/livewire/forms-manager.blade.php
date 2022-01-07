@@ -8,70 +8,47 @@
 <div>
     <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
          <div class="mt-10 sm:mt-0">
+            <x-jet-form-section submit="create">
+                <x-slot name="title">
+                    {{ __('Add Form') }}
+                </x-slot>
 
-            @if($organization->teams->isEmpty())
-                <div class="p-6 text-center bg-white rounded-md">Please <a href="{{ route('organizations.show', Auth::user()->currentOrganization->id) }}" class="text-blue-900 underline">add</a> at least one team before creating a form.</div>
-            @else
-                <x-jet-form-section submit="create">
-                    <x-slot name="title">
-                        {{ __('Add Form') }}
-                    </x-slot>
+                <x-slot name="description">
+                    {{ __('Add a new form to your organization.') }}
+                </x-slot>
 
-                    <x-slot name="description">
-                        {{ __('Add a new form to your organization.') }}
-                    </x-slot>
-
-                    <x-slot name="form">
-                        <div class="col-span-6">
-                            <div class="max-w-xl text-sm text-gray-600">
-                                {{ __('Please provide the name of the form you would like to add to this organization.') }}
-                            </div>
+                <x-slot name="form">
+                    <div class="col-span-6">
+                        <div class="max-w-xl text-sm text-gray-600">
+                            {{ __('Please provide the name of the form you would like to add to this organization.') }}
                         </div>
+                    </div>
 
-                        <div class="col-span-6 mb-2 sm:col-span-4">
-                            <x-jet-label for="name" value="{{ __('Name') }}" />
-                            <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="create_form.name" />
-                            <x-jet-input-error for="create_form.name" class="mt-2" />
-                        </div>
+                    <div class="col-span-6 mb-2 sm:col-span-4">
+                        <x-jet-label for="name" value="{{ __('Name') }}" />
+                        <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="createForm.name" />
+                        <x-jet-input-error for="createForm.name" class="mt-2" />
+                    </div>
 
-                        <div class="col-span-6 mb-2 sm:col-span-4">
-                            <x-jet-label for="events" value="{{ __('Event') }}" />
-                            <x-jet-input id="events" type="text" class="block w-full mt-1" wire:model.defer="create_form.events" />
-                            <x-jet-input-error for="create_form.events" class="mt-2" />
-                        </div>
 
-                        <div class="col-span-6 mb-2 sm:col-span-4">
-                            <x-jet-label for="description" value="{{ __('Description') }}" />
-                            <x-jet-textarea id="description" type="text" class="block w-full mt-1" wire:model.defer="create_form.description" />
-                            <x-jet-input-error for="create_form.description" class="mt-2" />
-                        </div>
+                    <div class="col-span-6 mb-2 sm:col-span-4">
+                        <x-jet-label for="description" value="{{ __('Description') }}" />
+                        <x-jet-textarea id="description" type="text" class="block w-full mt-1" wire:model.defer="createForm.description" />
+                        <x-jet-input-error for="createForm.description" class="mt-2" />
+                    </div>
 
-                        <div class="col-span-6 sm:col-span-4">
-                            <x-jet-label for="team" value="{{ __('Teams') }}" />
-                            @foreach($organization->teams as $id => $team)
-                            <div class="py-2">
-                                <x-jet-label for="team-{{ $team['name'] }}">
-                                    <x-jet-checkbox id="team-{{$team['name']}}" wire:model="create_form.team.{{ $team['id'] }}" value="{{ $team['id'] }}" />
-                                    {{ $club['name'] }}
-                                </x-jet-label>
+                </x-slot>
 
-                            </div>
-                            @endforeach
-                            <x-jet-input-error for="create_form.teams" class="mt-2" />
-                        </div>
-                    </x-slot>
+                <x-slot name="actions">
+                    <x-jet-action-message class="mr-3" on="created">
+                        {{ __('Added') }}
+                    </x-jet-action-message>
 
-                    <x-slot name="actions">
-                        <x-jet-action-message class="mr-3" on="created">
-                            {{ __('Added') }}
-                        </x-jet-action-message>
-
-                        <x-jet-button spinner="create">
-                            {{ __('Add') }}
-                        </x-jet-button>
-                    </x-slot>
-                </x-jet-form-section>
-            @endif
+                    <x-jet-button spinner="create">
+                        {{ __('Add') }}
+                    </x-jet-button>
+                </x-slot>
+            </x-jet-form-section>
 
             @if ($organization->forms->isNotEmpty())
                 <x-jet-section-border />
@@ -136,11 +113,6 @@
                         <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="updateForm.name" />
                         <x-jet-input-error for="name" class="mt-2" />
                     </div>
-                    <div class="col-span-6 mb-4 sm:col-span-4">
-                        <x-jet-label for="events" value="{{ __('Event') }}" />
-                        <x-jet-input id="events" type="text" class="block w-full mt-1" wire:model.defer="updateForm.events" />
-                        <x-jet-input-error for="event" class="mt-2" />
-                    </div>
 
                     <div class="col-span-6 mb-4 sm:col-span-4">
                         <x-jet-label for="description" value="{{ __('Description') }}" />
@@ -148,16 +120,6 @@
                         <x-jet-input-error for="description" class="mt-2" />
                     </div>
 
-                     <div class="col-span-6 mb-4 sm:col-span-4">
-                        <x-jet-label for="teams" value="{{ __('Organizations') }}" />
-                        @foreach($organization->teams as $team)
-                            <x-jet-label for="update-team-{{ $club['name'] }}">
-                                <x-jet-checkbox id="update-club-{{$team['name']}}" wire:model="updateForm.teams.{{ $team['id'] }}" value="{{ $team['id'] }}" />
-                                {{ $team['name'] }}
-                            </x-jet-label>
-                            <x-jet-input-error for="update-team-{{ $team['name'] }}" class="mt-2" />
-                        @endforeach
-                    </div>
                     @if ($allQuestions->isNotEmpty())
                         @php
                             $counter = 0;

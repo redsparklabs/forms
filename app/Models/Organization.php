@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use App\Events\CreateOrganization;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Events\OrganizationCreated;
 use App\Events\OrganizationDeleted;
 use App\Events\OrganizationUpdated;
-use App\Models\Club;
+use App\Models\Event;
 use App\Models\Form;
 use Illuminate\Database\Eloquent\Model;
 
@@ -59,6 +58,14 @@ class Organization extends Model
     public function forms()
     {
         return $this->hasMany(Form::class)->latest();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function events()
+    {
+        return $this->hasMany(Event::class)->latest();
     }
 
     /**

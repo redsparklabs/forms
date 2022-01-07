@@ -32,23 +32,12 @@ class UpdateForm
         $this->fill($attributes)->validateAttributes();
 
         $name = Arr::get($attributes, 'name');
-        $events = Arr::get($attributes, 'events');
         $description = Arr::get($attributes, 'description');
-        $teams = Arr::get($attributes, 'teams');
 
         $form->update([
             'name' => $name,
             'description' => $description
         ]);
-
-        if($teams) {
-            $form->teams()->sync(array_filter($teams));
-        }
-
-        if($events) {
-            $form->tags()->detach();
-            $form->attachTags(array_filter(explode(',', $events)));
-        }
 
         $form->save();
     }
@@ -60,7 +49,6 @@ class UpdateForm
     {
         return [
             'name' => ['required'],
-            'events' => [new Delimited('string')],
         ];
     }
 

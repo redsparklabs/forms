@@ -31,41 +31,33 @@ class FormManager extends BaseComponent
     /**
      * @var array
      */
-    public $create_form = [
+    public $createForm = [
         'name' => '',
-        'events' => '',
         'description' => '',
-        'teams' => []
     ];
 
     /**
      * @var array
      */
-    public $update_form = [
+    public $updateForm = [
         'name' => '',
-        'events' => '',
         'description' => '',
-        'teams' => []
     ];
 
     /**
      * @var array
      */
     public $rules = [
-        'create_form.name' => 'required',
-        'create_form.events' => 'required',
-        'create_form.description' => 'required',
-        'create_form.teams' => 'required'
+        'createForm.name' => 'required',
+        'createForm.description' => 'required',
     ];
 
     /**
      * @var array
      */
     protected $messages = [
-        'create_form.name.required' => 'Please enter a form name.',
-        'create_form.events.required' => 'Please enter a form event.',
-        'create_form.description.required' => 'Please enter a form description.',
-        'create_form.teams.required' => 'Please choose at least one organization.'
+        'createForm.name.required' => 'Please enter a name.',
+        'createForm.description.required' => 'Please enter a description.',
     ];
 
     /**
@@ -101,7 +93,7 @@ class FormManager extends BaseComponent
         $form = CreateForm::run(
             $this->user,
             $this->organization,
-            $this->create_form
+            $this->createForm
         );
 
         $this->confirmUpdate($form->id);
@@ -121,9 +113,7 @@ class FormManager extends BaseComponent
 
         $this->updateForm = [
             'name' => $form->name,
-            'events' => $form->tag_string,
             'description' => $form->description,
-            'teams' => $form->teams->pluck('id')->mapWithKeys(fn ($item) => [$item => $item])
         ];
     }
 
@@ -142,7 +132,11 @@ class FormManager extends BaseComponent
             $this->updateForm
         );
 
-        $form->questions()->sync($this->assignedQuestions);
+        if ($this->assignedQuestions) {
+            $form->questions()->sync($this->assignedQuestions->toArray());
+        } else {
+            $form->questions()->detach();
+        }
     }
 
     /**
@@ -171,7 +165,11 @@ class FormManager extends BaseComponent
 
         $form = Form::findOrFail($this->idBeingUpdated);
 
-        $form->questions()->sync($this->assignedQuestions);
+        if ($this->assignedQuestions) {
+            $form->questions()->sync($this->assignedQuestions);
+        } else {
+            $form->questions()->detach();
+        }
 
         $this->assignedQuestions = collect($form->questions()->pluck('question_id')->toArray());
 
@@ -209,7 +207,7 @@ class FormManager extends BaseComponent
     {
         $form = Form::findOrFail($formId);
 
-        $question = FormQuestion::whereFormId($formId)->whereQuestionId($questionId)->first()?->moveOrderDown();
+        FormQuestion::whereFormId($formId)->whereQuestionId($questionId)->first()?->moveOrderDown();
 
         $this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
 

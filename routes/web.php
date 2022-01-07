@@ -9,7 +9,7 @@ use App\Http\Livewire\QuestionManager;
 
 
 use App\Http\Controllers\Livewire\TeamController;
-
+use App\Http\Controllers\Livewire\EventController;
 use App\Http\Controllers\Livewire\CurrentOrganizationController;
 use App\Http\Controllers\Livewire\OrganizationController;
 use App\Http\Controllers\Livewire\OrganizationInvitationController;
@@ -47,6 +47,9 @@ Route::get('form/{form}', FormBuilder::class)->name('form-builder');
 Route::group(['middleware' => ['auth', 'verified']], function () {
     // User & Profile...
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
+
+    Route::get('/events', [EventController::class, 'index'])->name('events.index');
+    Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 
     Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
     Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');

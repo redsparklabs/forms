@@ -12,6 +12,7 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link href="https://pagecdn.io/lib/selectize/0.13.3/css/selectize.default.min.css" rel="stylesheet" crossorigin="anonymous"  >
 
         @livewireStyles
         @wireUiScripts
@@ -43,5 +44,7 @@
         @stack('modals')
 
         @livewireScripts
+
+        @stack('scripts')
     </body>
 </html>

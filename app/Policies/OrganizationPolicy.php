@@ -139,6 +139,41 @@ class OrganizationPolicy
     {
         return $user->ownsOrganization($organization);
     }
+     /**
+     * Determine whether the user can add organization members.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Organization  $organization
+     * @return mixed
+     */
+    public function addEvent(User $user, Organization $organization)
+    {
+        return $user->ownsOrganization($organization);
+    }
+
+    /**
+     * Determine whether the user can update organization member permissions.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Organization  $organization
+     * @return mixed
+     */
+    public function updateEvent(User $user, Organization $organization)
+    {
+        return $user->ownsOrganization($organization);
+    }
+
+    /**
+     * Determine whether the user can remove organization members.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Organization  $organization
+     * @return mixed
+     */
+    public function removeEvent(User $user, Organization $organization)
+    {
+        return $user->ownsOrganization($organization);
+    }
     /**
      * Determine whether the user can view the team.
      *

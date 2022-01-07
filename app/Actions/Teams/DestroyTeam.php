@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Teams;
 
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
@@ -23,6 +23,6 @@ class DestroyTeam
     {
         Gate::forUser($user)->authorize('removeTeam', $organization);
 
-        $organization->teams()->find($team)?->first()?->delete();
+        $team->delete();
     }
 }

@@ -24,10 +24,10 @@ class ResponsesFactory extends Factory
     public function definition()
     {
         return [
-            'form_id' => 7,
+            'form_id' => 4,
             'response' => [
                 "email" => $this->faker->safeEmail(),
-                "club" => $this->faker->name(),
+                "team" => rand(1,4),
                 'questions' => [
                     'custom' => [
                         "specific-questions-any-specific-areas-you-would-like-to-see-more-information-or-specific-questions-you-have-for-this-team" => "How do i milk a goat",

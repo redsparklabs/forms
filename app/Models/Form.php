@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Question;
-use App\Models\Team;
+use App\Models\Event;
 use App\Models\Organization;
-use Spatie\Tags\HasTags;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 
 class Form extends Model
 {
-    use HasFactory, HasTags;
+    use HasFactory;
 
     /**
      * Route Key
@@ -83,22 +82,12 @@ class Form extends Model
     }
 
     /**
-     * Teams
+     * Events
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function teams()
+    public function events()
     {
-        return $this->belongsToMany(Team::class);
-    }
-
-    /**
-     * Get Tags
-     *
-     * @return string
-     */
-    public function getTagStringAttribute()
-    {
-        return $this->tags->pluck('name')->implode(',', 'name');
+        return $this->hasMany(Event::class)->withTimestamps();
     }
 }

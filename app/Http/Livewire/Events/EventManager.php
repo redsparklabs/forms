@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Livewire\Teams;
+namespace App\Http\Livewire\Events;
 
-use App\Actions\Teams\CreateTeam;
-use App\Actions\Teams\UpdateTeam;
-use App\Actions\Teams\DestroyTeam;
+use App\Actions\Events\CreateEvent;
+use App\Actions\Events\UpdateEvent;
+use App\Actions\Events\DestroyEvent;
 use App\Models\Organization;
 use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
 
-class TeamManager extends BaseComponent
+class EventManager extends BaseComponent
 {
 
     /**
@@ -40,20 +40,24 @@ class TeamManager extends BaseComponent
     /**
      * @var string
      */
-    public $componentName = 'Team';
+    public $componentName = 'Event';
 
     /**
      * @var array
      */
     public $createForm = [
-        'name' => ''
+        'name' => '',
+        'teams' => [],
+        'forms' => [],
     ];
 
     /**
      * @var array
      */
     public $updateForm = [
-        'name' => ''
+        'name' => '',
+        'teams' => [],
+        'forms' => [],
     ];
 
     /**
@@ -76,11 +80,13 @@ class TeamManager extends BaseComponent
      */
     public function createAction()
     {
-        CreateTeam::run(
+        CreateEvent::run(
             $this->user,
             $this->organization,
             $this->createForm
         );
+
+        // $this->reset('createForm');
 
         $this->emit('refresh-navigation-menu');
     }
@@ -90,10 +96,12 @@ class TeamManager extends BaseComponent
      */
     public function confirmUpdateAction()
     {
-        $form = $this->organization->teams()->find($this->idBeingUpdated);
+        $event = $this->organization->events()->find($this->idBeingUpdated);
 
         $this->updateForm = [
-            'name' => $form?->name
+            'name' => $event->name,
+            'teams' => array_fill_keys($event->teams->pluck('id')->toArray(), true),
+            'forms' => array_fill_keys($event->forms->pluck('id')->toArray(), true),
         ];
     }
 
@@ -104,14 +112,16 @@ class TeamManager extends BaseComponent
      */
     public function updateAction()
     {
-        $organization  = $this->organization->teams()->find($this->idBeingUpdated);
+        $organization  = $this->organization->events()->find($this->idBeingUpdated);
 
-        UpdateTeam::run(
+        UpdateEvent::run(
             $this->user,
             $this->organization,
             $organization,
             $this->updateForm
         );
+
+        $this->reset('updateForm');
 
         $this->emit('refresh-navigation-menu');
     }
@@ -123,9 +133,9 @@ class TeamManager extends BaseComponent
      */
     public function destroyAction()
     {
-        $organization  = $this->organization->teams()->find($this->idBeingDestroyed);
+        $organization  = $this->organization->events()->find($this->idBeingDestroyed);
 
-        DestroyTeam::run(
+        DestroyEvent::run(
             $this->user,
             $this->organization,
             $organization
@@ -141,6 +151,6 @@ class TeamManager extends BaseComponent
      */
     public function render()
     {
-        return view('teams.team-manager');
+        return view('events.event-manager');
     }
 }

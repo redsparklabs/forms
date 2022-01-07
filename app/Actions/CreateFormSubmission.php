@@ -39,15 +39,14 @@ class CreateFormSubmission
 
         $this->customQuestions = $customQuestions;
 
-        if (!$attributes['team']) {
-            $attributes['team'] = $form->teams->first()?->name;
-        }
 
         $this->fill($attributes)->validateAttributes();
 
         $form->responses()->create([
             'response' => $attributes
         ]);
+
+        $form->save();
     }
 
     /**

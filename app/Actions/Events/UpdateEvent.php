@@ -1,38 +1,38 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Events;
 
 use Illuminate\Support\Facades\Gate;
 use App\Models\Organization;
 use App\Models\User;
-use App\Models\Team;
+use App\Models\Event;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Concerns\AsObject;
 use Lorisleiva\Actions\Concerns\WithAttributes;
 
 
-class UpdateTeam
+class UpdateEvent
 {
     use AsObject, WithAttributes;
 
     /**
      * @param  User         $user
      * @param  Organization $organization
-     * @param  Team         $team
+     * @param  Event         $event
      * @param  array        $attributes
      * @return void
      */
-    public function handle(User $user, Organization $organization, Team $team,  array $attributes)
+    public function handle(User $user, Organization $organization, Event $event,  array $attributes)
     {
-        Gate::forUser($user)->authorize('updateTeam', $organization);
+        Gate::forUser($user)->authorize('updateEvent', $organization);
 
         $this->fill($attributes)->validateAttributes();
 
         $name = Arr::get($attributes, 'name');
 
-        $team->name = $name;
+        $event->name = $name;
 
-        $team->save();
+        $event->save();
     }
 
     /**
@@ -50,6 +50,6 @@ class UpdateTeam
      */
     public function getValidationErrorBag(): string
     {
-        return 'updateTeam';
+        return 'updateEvent';
     }
 }

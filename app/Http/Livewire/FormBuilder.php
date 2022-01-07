@@ -15,7 +15,7 @@ class FormBuilder extends BaseComponent
     public $componentName = 'FormBuilder';
 
     /**
-     * @var \App\Models\Form
+     * @var string
      */
     public $form;
 
@@ -45,8 +45,7 @@ class FormBuilder extends BaseComponent
      */
     public function mount($form)
     {
-
-        $this->form = Form::find($form)->first();
+        $this->form = Form::whereSlug($form)->firstOrFail();
 
         $this->slugQuestions = array_map(function ($item) {
             return Str::slug($item);

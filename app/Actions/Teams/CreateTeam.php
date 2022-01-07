@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Teams;
 
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
@@ -9,32 +9,25 @@ use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Concerns\AsObject;
 use Lorisleiva\Actions\Concerns\WithAttributes;
 
-class CreateForm
+class CreateTeam
 {
     use AsObject, WithAttributes;
 
     /**
-     *
      * @param  User         $user
      * @param  Organization $organization
      * @param  array        $attributes
-     * @return \App\Models\Form
+     * @return void
      */
     public function handle(User $user, Organization $organization, array $attributes)
     {
-        Gate::forUser($user)->authorize('addForm', $organization);
+        Gate::forUser($user)->authorize('addTeam', $organization);
 
         $this->fill($attributes)->validateAttributes();
 
         $name = Arr::get($attributes, 'name');
-        $description = Arr::get($attributes, 'description');
-        $form = $organization->forms()->create([
-            'name' => $name,
-            'description' => $description
-        ]);
 
-
-        return $form;
+        $organization->teams()->create(['name' => $name]);
     }
 
     /**
@@ -43,7 +36,7 @@ class CreateForm
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:4'],
+            'name' => ['required', 'string'],
         ];
     }
 
@@ -52,6 +45,6 @@ class CreateForm
      */
     public function getValidationErrorBag(): string
     {
-        return 'addForm';
+        return 'addTeam';
     }
 }

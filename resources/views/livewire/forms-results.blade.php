@@ -155,7 +155,7 @@
                 <tbody>
                     @foreach($this->form->responses as $response)
                     <tr class="border-b-2 border-black border-solid">
-                        <td class="px-4 py-2">{{ $response->email }} </td>
+                        <td class="px-4 py-2">{{ $response->email }} {{ $response->team }} </td>
                         @foreach($response->response['questions']['custom'] as $custom)
                             <td class="px-4 py-2"> {{ $custom }} </td>
                         @endforeach

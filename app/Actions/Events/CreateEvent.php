@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Events;
 
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Concerns\AsObject;
 use Lorisleiva\Actions\Concerns\WithAttributes;
 
-class CreateTeam
+class CreateEvent
 {
     use AsObject, WithAttributes;
 
@@ -21,13 +21,17 @@ class CreateTeam
      */
     public function handle(User $user, Organization $organization, array $attributes)
     {
-        Gate::forUser($user)->authorize('addTeam', $organization);
+        Gate::forUser($user)->authorize('addEvent', $organization);
 
         $this->fill($attributes)->validateAttributes();
 
         $name = Arr::get($attributes, 'name');
+        $teams = Arr::get($attributes, 'teams');
+        $forms = Arr::get($attributes, 'forms');
 
-        $organization->teams()->create(['name' => $name]);
+        $event = $organization->events()->create(['name' => $name]);
+        $event->teams()->sync($teams);
+        $event->forms()->sync($forms);
     }
 
     /**
@@ -45,6 +49,6 @@ class CreateTeam
      */
     public function getValidationErrorBag(): string
     {
-        return 'addTeam';
+        return 'addEvent';
     }
 }

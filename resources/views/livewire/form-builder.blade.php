@@ -1,5 +1,5 @@
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 mt-5">
+<div class="px-4 py-4 mx-auto mt-5 max-w-7xl sm:px-6 lg:px-8">
     <div class="max-w-3xl mx-auto">
         <div x-data="{ shown: false }"
             x-init="@this.on('created', () => {shown = true})"
@@ -13,40 +13,38 @@
             x-show.transition.out.opacity.duration.1500ms="shown"
             wire:submit.prevent="create"
         >
-            <div class="bg-white border-b border-gray-200 rounded-md mb-4">
-                <h3 class="text-lg leading-6 font-medium text-blue-900 bg-blue-100 p-3 rounded-t-md">Business Model Confidence Scoring</h3>
+            <div class="mb-4 bg-white border-b border-gray-200 rounded-md">
+                <h3 class="p-3 text-lg font-medium leading-6 text-blue-900 bg-blue-100 rounded-t-md">Business Model Confidence Scoring</h3>
                  <div class="p-3">
                     {!! config('questions.overall_description') !!}
                 </div>
             </div>
 
-            <div class="bg-white border-b border-gray-200 rounded-md mb-4 pb-4">
-                <h3 class="text-lg leading-6 font-medium text-blue-900 bg-blue-100 p-3 rounded-t-md">Confidence Score Scale</h3>
+            <div class="pb-4 mb-4 bg-white border-b border-gray-200 rounded-md">
+                <h3 class="p-3 text-lg font-medium leading-6 text-blue-900 bg-blue-100 rounded-t-md">Confidence Score Scale</h3>
                 <img src="{{ url('img/confidence_store.png') }}" alt="Confidence Score"/>
             </div>
 
-            <div class="bg-white border-b border-gray-200 rounded-md mb-4">
-                <h3 class="text-lg leading-6 font-medium text-blue-900 bg-blue-100 p-3 rounded-t-md">Email</h3>
+            <div class="mb-4 bg-white border-b border-gray-200 rounded-md">
+                <h3 class="p-3 text-lg font-medium leading-6 text-blue-900 bg-blue-100 rounded-t-md">Email</h3>
                 <div class="p-4">
                     <label for="email">
-                        <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model.defer="create_form.email" />
+                        <x-jet-input id="email" type="email" class="block w-full mt-1" wire:model.defer="create_form.email" />
                     </label>
                     <x-jet-input-error for="email" class="mt-2" />
                 </div>
             </div>
 
-            @if($form->clubs->count() > 1)
-                <div class="bg-white border-b border-gray-200 rounded-md mb-4">
-                    <h3 class="text-lg leading-6 font-medium text-blue-900 bg-blue-100 p-3 rounded-t-md">Team</h3>
+            @if($form->teams->count() > 1)
+                <div class="mb-4 bg-white border-b border-gray-200 rounded-md">
+                    <h3 class="p-3 text-lg font-medium leading-6 text-blue-900 bg-blue-100 rounded-t-md">Team</h3>
                     <div class="p-4">
-                        @foreach($form->clubs->all() as $club)
+                        @foreach($form->teams->all() as $team)
                             <div class="p-3">
-                                <x-jet-label for="{{ $club['name'] }}">
-                                    <x-jet-checkbox name="{{ $club['name'] }}" id="{{ $club['name'] }}" wire:model.defer="create_form.club.{{ $club['id'] }}" value="{{ $club['id'] }}" /> {{ $club['name'] }}
-                                </x-jet-label>
+                                <x-radio name="team" id="{{ $team['name'] }}" wire:model.defer="create_form.team" value="{{ $team['id'] }}" :label="$team['name']"/>
                             </div>
                         @endforeach
-                        <x-jet-input-error for="club" class="mt-2" />
+                        <x-jet-input-error for="team" class="mt-2" />
                     </div>
                 </div>
             @endif
@@ -55,11 +53,11 @@
                 @php
                     $slug = Str::slug($question['question'])
                 @endphp
-                <div class="bg-white border-b border-gray-200 rounded-md mb-4 p-4">
-                    <h3 class="text-lg leading-6 font-medium">{{ $question['question'] }}</h3>
+                <div class="p-4 mb-4 bg-white border-b border-gray-200 rounded-md">
+                    <h3 class="text-lg font-medium leading-6">{{ $question['question'] }}</h3>
                     <div>{{ $question['description'] }}</div>
 
-                    <div class="flex items-center mt-5 m-auto">
+                    <div class="flex items-center m-auto mt-5">
                         <div class="flex-initial">
                             Not Applicable (N/A)
                         </div>
@@ -95,11 +93,11 @@
                 @php
                     $slug = Str::slug($question['question'])
                 @endphp
-                <div class="bg-white border-b border-gray-200 rounded-md mb-4 p-4">
-                    <h3 class="text-lg leading-6 font-medium">{{ $question['question'] }}</h3>
+                <div class="p-4 mb-4 bg-white border-b border-gray-200 rounded-md">
+                    <h3 class="text-lg font-medium leading-6">{{ $question['question'] }}</h3>
                     <div>{{ $question['description'] }}</div>
 
-                    <div class="flex items-center mt-5 m-auto">
+                    <div class="flex items-center m-auto mt-5">
                         <div class="flex-initial">
                             Not Applicable (N/A)
                         </div>
@@ -136,11 +134,11 @@
                 @php
                     $slug = Str::slug($question['question'])
                 @endphp
-                <div class="bg-white border-b border-gray-200 rounded-md mb-4 p-4">
-                    <h3 class="text-lg leading-6 font-medium">{{ $question['question'] }}</h3>
+                <div class="p-4 mb-4 bg-white border-b border-gray-200 rounded-md">
+                    <h3 class="text-lg font-medium leading-6">{{ $question['question'] }}</h3>
                     <div>{{ $question['description'] }}</div>
 
-                    <div class="flex items-center mt-5 m-auto">
+                    <div class="flex items-center m-auto mt-5">
                         <div class="flex-initial">
                             Not Applicable (N/A)
                         </div>
@@ -177,7 +175,7 @@
                 @php
                     $slug = Str::slug($question['question'])
                 @endphp
-                <div class="bg-white border-b border-gray-200 rounded-md mb-4 p-4">
+                <div class="p-4 mb-4 bg-white border-b border-gray-200 rounded-md">
                     <x-textarea label="{{ $question['question'] }}" tabindex="" wire:model.defer="create_form.questions.custom.{{ $slug }}" />
                     <x-jet-input-error for="questions.custom.{{ $slug }}" class="mt-2" />
                 </div>
@@ -187,7 +185,7 @@
                 @php
                     $slug = Str::slug($question['question'])
                 @endphp
-                <div class="bg-white border-b border-gray-200 rounded-md mb-4 p-4">
+                <div class="p-4 mb-4 bg-white border-b border-gray-200 rounded-md">
                     <x-textarea label="{{ $question['question'] }}" tabindex="" wire:model.defer="create_form.questions.custom.{{ $slug }}" :hint="$question['description']"/>
                     <x-jet-input-error for="questions.custom.{{ $slug }}" class="mt-2" />
                 </div>
@@ -195,7 +193,7 @@
 
             <div class="pt-5">
                 <div class="flex justify-end">
-                    <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <button type="submit" class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         {{ __('Save') }}
                     </button>
                 </div>

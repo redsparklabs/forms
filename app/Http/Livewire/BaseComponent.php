@@ -85,7 +85,7 @@ abstract class BaseComponent extends Component {
 
         $this->emit('created');
 
-        $this->reloadTeam();
+        // $this->reloadOrganization();
     }
 
     /**
@@ -140,7 +140,7 @@ abstract class BaseComponent extends Component {
 
         $this->idBeingUpdated = null;
 
-        $this->reloadTeam();
+        // $this->reloadOrganization();
     }
 
     /**
@@ -183,7 +183,7 @@ abstract class BaseComponent extends Component {
 
         $this->emit('destroyed');
 
-        $this->reloadTeam();
+        // $this->reloadOrganization();
     }
 
     /**
@@ -206,8 +206,8 @@ abstract class BaseComponent extends Component {
     /**
      * @return void
      */
-    public function reloadTeam()
-    {
-        $this->team = $this->team->fresh();
-    }
+    // public function reloadOrganization()
+    // {
+    //     $this->organization = $this->organization->fresh();
+    // }
 }
