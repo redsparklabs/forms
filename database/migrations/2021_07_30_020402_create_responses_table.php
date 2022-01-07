@@ -19,6 +19,8 @@ class CreateResponsesTable extends Migration
             $table->timestamps();
 
             $table->foreignId('form_id');
+            $table->foreignId('team_id');
+            $table->foreignId('event_id');
         });
     }
 

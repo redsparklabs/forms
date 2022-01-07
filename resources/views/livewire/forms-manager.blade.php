@@ -76,10 +76,6 @@
                                                 {{ __('View') }}
                                             </a>
 
-                                            <a class="ml-6 text-sm text-blue-500 cursor-pointer hover:text-blue-700 focus:outline-none" href="{{ route('form-results', [$organization->id, $form->id]) }}">
-                                                {{ __('Results') }}
-                                            </a>
-
                                              @if (Gate::check('updateForm', $organization))
                                                 <button class="ml-6 text-sm text-blue-500 cursor-pointer hover:text-blue-700 focus:outline-none" wire:click="confirmUpdate('{{ $form->id }}')">
                                                     {{ __('Update') }}

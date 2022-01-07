@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use Illuminate\Support\Facades\Gate;
 use App\Models\Form;
+use App\Models\Event;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Concerns\AsObject;
 use Lorisleiva\Actions\Concerns\WithAttributes;
@@ -33,7 +34,7 @@ class CreateFormSubmission
      * @param  array $customQuestions
      * @return void
      */
-    public function handle(Form $form, array $attributes, array $slugQuestions, array $customQuestions)
+    public function handle(Event $event, Form $form, array $attributes, array $slugQuestions, array $customQuestions)
     {
         $this->slugQuestions = $slugQuestions;
 
@@ -42,11 +43,14 @@ class CreateFormSubmission
 
         $this->fill($attributes)->validateAttributes();
 
-        $form->responses()->create([
+        $response = $form->responses()->create([
             'response' => $attributes
         ]);
+        $response->event()->associate($event);
+        $response->form()->associate($form);
+        $response->team()->associate(Arr::get($attributes, 'team'));
 
-        $form->save();
+        $response->save();
     }
 
     /**

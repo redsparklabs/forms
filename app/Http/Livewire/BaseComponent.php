@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use WireUi\Traits\Actions;
 use App\Models\Team;
 
-abstract class BaseComponent extends Component {
+abstract class BaseComponent extends Component
+{
 
     use Actions;
 
@@ -108,7 +109,6 @@ abstract class BaseComponent extends Component {
         $this->idBeingUpdated = $id;
 
         $this->confirmUpdateAction();
-
     }
 
     /**

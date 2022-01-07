@@ -35,11 +35,11 @@
                 </div>
             </div>
 
-            @if($form->teams->count() > 1)
+            @if($event->teams->count() > 1)
                 <div class="mb-4 bg-white border-b border-gray-200 rounded-md">
                     <h3 class="p-3 text-lg font-medium leading-6 text-blue-900 bg-blue-100 rounded-t-md">Team</h3>
                     <div class="p-4">
-                        @foreach($form->teams->all() as $team)
+                        @foreach($event->teams->all() as $team)
                             <div class="p-3">
                                 <x-radio name="team" id="{{ $team['name'] }}" wire:model.defer="create_form.team" value="{{ $team['id'] }}" :label="$team['name']"/>
                             </div>

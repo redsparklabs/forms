@@ -15,41 +15,15 @@ class Form extends Model
     use HasFactory;
 
     /**
-     * Route Key
-     *
-     * @return string
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
-    /**
      * Filleable attributes
      *
      * @var string[]
      */
     protected $fillable = [
         'name',
-        'slug',
         'description'
     ];
 
-    /**
-     * Boot the model
-     *
-     * @return void
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        static::created(function ($model) {
-            $slug = Str::of(Crypt::encrypt(implode(',', [$model->name, $model->created_at, $model->id])))->limit(40, '');
-            $model->slug = $slug;
-            $model->save();
-        });
-    }
 
     /**
      * Questions

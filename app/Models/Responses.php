@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Form;
+use App\Models\Team;
+use App\Models\Event;
 use App\Models\Question;
 use Illuminate\Support\Arr;
 
@@ -26,6 +28,16 @@ class Responses extends Model
         'response' => 'array'
     ];
 
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -34,6 +46,14 @@ class Responses extends Model
         return $this->belongsTo(Form::class);
     }
 
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -49,16 +69,6 @@ class Responses extends Model
     {
         if($this->response) {
             return Arr::get($this->response, 'email');
-        }
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|null
-     */
-    public function getTeamAttribute()
-    {
-        if($this->response) {
-            return Arr::get($this->response, 'team');
         }
     }
 

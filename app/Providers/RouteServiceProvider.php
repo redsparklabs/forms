@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use App\Models\Form;
 use App\Models\Organization;
+use App\Models\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         Route::model('organization', Organization::class);
+        Route::model('event', Event::class);
 
         $this->routes(function () {
 

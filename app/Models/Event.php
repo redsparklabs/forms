@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Team;
 use App\Models\Organization;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
 
 class Event extends Model
 {
@@ -27,7 +29,24 @@ class Event extends Model
      */
     protected $fillable = [
         'name',
+        'slug'
     ];
+
+        /**
+     * Boot the model
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($model) {
+            $slug = Str::of(Crypt::encrypt(implode(',', [$model->name, $model->created_at, $model->id])))->limit(40, '');
+            $model->slug = $slug;
+            $model->save();
+        });
+    }
 
         /**
      * Get the owner of the team.

@@ -1,12 +1,14 @@
 <?php
 
-/**
- * Colorize
- *
- * @param  integer $number
- * @return string|null
- */
+
 if (!function_exists('colorize')) {
+    /**
+     * Colorize
+     *
+     * @param  integer $number
+     *
+     * @return string|null
+     */
     function colorize($number)
     {
 
@@ -34,15 +36,17 @@ if (!function_exists('colorize')) {
     }
 }
 
-/**
- * Check if a number is between two other numbers
- *
- * @param  integer $val
- * @param  integer $min
- * @param  float $max
- * @return bool
- */
+
 if (!function_exists('inbetween')) {
+    /**
+     * Check if a number is between two other numbers
+     *
+     * @param  integer $val
+     * @param  integer $min
+     * @param  float $max
+     *
+     * @return bool
+     */
     function inbetween($val, $min, $max)
     {
         return ($val >= $min && $val <= $max);

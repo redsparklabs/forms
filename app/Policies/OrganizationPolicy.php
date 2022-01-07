@@ -139,6 +139,20 @@ class OrganizationPolicy
     {
         return $user->ownsOrganization($organization);
     }
+
+        /**
+     * Determine whether the user can view the team.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Organization  $organization
+     * @return mixed
+     */
+    public function viewEvent(User $user, Organization $organization)
+    {
+        return $user->ownsOrganization($organization);
+    }
+
+
      /**
      * Determine whether the user can add organization members.
      *

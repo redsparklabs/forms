@@ -97,7 +97,7 @@
                                 <div class="flex items-center">
 
                                     @if (Gate::check('viewEvent', $organization))
-                                        <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('event.show', $event->id) }}">
+                                        <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.show', $event->id) }}">
                                             {{ __('View') }}
                                         </a>
                                     @endif

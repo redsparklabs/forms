@@ -1,11 +1,12 @@
 
-<x-slot name="header">
-    <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        {{ $form->name }}
-    </h2>
-</x-slot>
+<x-app-layout>
 
-<div>
+    <x-slot name="header">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
+        Results &middot; {{ $event->name }} &middot; {{ $form->name }} &middot; @if($team) {{ $team->name }} @endif
+        </h2>
+    </x-slot>
+
     <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
          <div>
             <table class="w-1/2 m-auto border-collapse">
@@ -47,7 +48,7 @@
                         $sections = collect($questions)->groupBy('section')->reject(fn($item, $key) => $key == 'custom');
                         $sectiontotals = $sections->keys()->mapWithkeys(fn($item) => [$item.'_count' => 0])->all();
                     @endphp
-                    @foreach($this->form->responses as $response)
+                    @foreach($responses as $response)
                         <tr class="border">
                             <td class="p-2"> {{ $response->email }} </td>
 
@@ -108,14 +109,14 @@
                         <td></td>
                         <td class="p-2 font-bold text-right text-white bg-blue-500 border-2">
                             @if($progressMetricTotal > 0)
-                                {{ number_format($progressMetricTotal / $this->form->responses->count(), 1) }}
+                                {{ number_format($progressMetricTotal / $form->responses->count(), 1) }}
                             @endif
                         </td>
 
                         @foreach($questions as $question)
                             <td class="p-2 text-center bg-blue-100 border-2">
                                 @php
-                                    $mappedQuestions = collect($this->form->responses)->map(function ($value) {
+                                    $mappedQuestions = collect($responses)->map(function ($value) {
                                         return $value->response['questions'];
                                     });
 
@@ -130,7 +131,7 @@
                         @foreach($sections->all() as $section => $sectionData)
                             <td class="bg-{{ $sectionData->first()['color'] }} border-2 text-center p-2">
                                 @if($sectiontotals[$section .'_count'])
-                                    {{ number_format($sectiontotals[$section .'_count'] / $this->form->responses->count(), 1) }}
+                                    {{ number_format($sectiontotals[$section .'_count'] / $form->responses->count(), 1) }}
                                 @endif
                             </td>
                         @endforeach
@@ -153,7 +154,7 @@
                 </thead>
 
                 <tbody>
-                    @foreach($this->form->responses as $response)
+                    @foreach($responses as $response)
                     <tr class="border-b-2 border-black border-solid">
                         <td class="px-4 py-2">{{ $response->email }} {{ $response->team }} </td>
                         @foreach($response->response['questions']['custom'] as $custom)
@@ -172,7 +173,7 @@
 
                      @foreach($questions->where('hidden', false)->sortBy('order')->take(7) as $question)
                         @php
-                            $mappedQuestions = collect($this->form->responses)->map(function ($value) {
+                            $mappedQuestions = collect($responses)->map(function ($value) {
                                 return $value->response['questions'];
                             });
                             $number = 0;
@@ -189,7 +190,7 @@
                 <div class="grid grid-flow-col gap-2 mt-2 grid-rows-">
                      @foreach($questions->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
                         @php
-                            $mappedQuestions = collect($this->form->responses)->map(function ($value) {
+                            $mappedQuestions = collect($responses)->map(function ($value) {
                                 return $value->response['questions'];
                             });
                             $number = 0;
@@ -202,8 +203,6 @@
                     @endforeach
                 </div>
             </div>
-
         </div>
     </div>
-</div>
-
+</x-app-layout>

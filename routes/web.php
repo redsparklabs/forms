@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Jetstream;
 use App\Http\Livewire\FormManager;
 use App\Http\Livewire\FormBuilder;
-use App\Http\Livewire\FormResults;
 use App\Http\Livewire\QuestionManager;
 
 
@@ -41,7 +40,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('form/{form}', FormBuilder::class)->name('form-builder');
+Route::get('form/{eventid}', FormBuilder::class)->name('form-builder');
 
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
@@ -50,6 +49,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
     Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+    Route::get('/events/{event}/form/{form}/team/{team}/results', [EventController::class, 'results'])->name('events.team.results');
+    Route::get('/events/{event}/form/{form}/results', [EventController::class, 'results'])->name('events.results');
+
 
     Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
     Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
@@ -63,6 +65,5 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 ->name('organization-invitations.accept');
 
     Route::get('organizations/{organization}/forms', FormManager::class)->name('form-manager');
-    Route::get('organizations/{organization}/forms/{form}/results', FormResults::class)->name('form-results');
     Route::get('organizations/{organization}/questions', QuestionManager::class)->name('question-manager');
 });
