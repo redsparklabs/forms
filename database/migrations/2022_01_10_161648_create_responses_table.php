@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrganizationUserTable extends Migration
+class CreateResponsesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateOrganizationUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('organization_user', function (Blueprint $table) {
+        Schema::create('responses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('organization_id');
-            $table->foreignId('user_id');
-            $table->string('role')->nullable();
+            $table->json('response')->nullable();
             $table->timestamps();
-
-            $table->unique(['organization_id', 'user_id']);
+            $table->unsignedBigInteger('event_id')->nullable();
+            $table->unsignedBigInteger('team_id')->nullable();
+            $table->unsignedBigInteger('form_id')->nullable();
         });
     }
 
@@ -31,6 +30,6 @@ class CreateOrganizationUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organization_user');
+        Schema::dropIfExists('responses');
     }
 }

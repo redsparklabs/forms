@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateResponsesTable extends Migration
+class CreateFormQuestionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateResponsesTable extends Migration
      */
     public function up()
     {
-        Schema::create('responses', function (Blueprint $table) {
+        Schema::create('form_question', function (Blueprint $table) {
             $table->id();
-            $table->json('response')->nullable();
+            $table->unsignedBigInteger('form_id');
+            $table->unsignedBigInteger('question_id');
+            $table->integer('order');
             $table->timestamps();
-
-            $table->foreignId('form_id');
-            $table->foreignId('team_id');
-            $table->foreignId('event_id');
         });
     }
 
@@ -31,6 +29,6 @@ class CreateResponsesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('responses');
+        Schema::dropIfExists('form_question');
     }
 }

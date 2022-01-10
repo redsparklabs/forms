@@ -16,16 +16,14 @@ class CreateQuestionsTable extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->string('question');
-            $table->text('description')->nullable();
-            $table->text('color')->nullable();
-            $table->text('section')->nullable();
-            $table->boolean('hidden')->nullable();
+            $table->text('description');
+            $table->text('color');
+            $table->text('section');
+            $table->tinyInteger('hidden')->nullable();
             $table->timestamps();
-
-            $table->foreignId('organization_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->unsignedBigInteger('organization_id');
+            
+            $table->foreign('organization_id', 'questions_organization_id_foreign')->references('id')->on('organizations')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

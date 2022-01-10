@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFormQuestionTable extends Migration
+class CreateEventTeamTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateFormQuestionTable extends Migration
      */
     public function up()
     {
-        Schema::create('form_question', function (Blueprint $table) {
+        Schema::create('event_team', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('form_id');
-            $table->foreignId('question_id');
-            $table->integer('order');
+            $table->unsignedBigInteger('event_id');
+            $table->unsignedBigInteger('team_id');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateFormQuestionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('form_question');
+        Schema::dropIfExists('event_team');
     }
 }
