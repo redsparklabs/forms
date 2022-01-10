@@ -33,7 +33,7 @@ class Team extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function owner()
+    public function organization()
     {
         return $this->belongsTo(Organization::class, 'organization_id');
     }
