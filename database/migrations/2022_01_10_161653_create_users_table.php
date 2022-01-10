@@ -19,8 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique('users_email_unique');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->text('two_factor_secret');
-            $table->text('two_factor_recovery_codes');
+            $table->text('two_factor_secret')->nullable();
+            $table->text('two_factor_recovery_codes')->nullable();
             $table->rememberToken();
             $table->unsignedBigInteger('current_organization_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
