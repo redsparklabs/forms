@@ -72,9 +72,6 @@
                                         </div>
 
                                         <div class="flex items-center">
-                                            <a class="ml-6 text-sm text-blue-500 cursor-pointer hover:text-blue-700 focus:outline-none" href="{{ route('form-builder', $form->slug) }}">
-                                                {{ __('View') }}
-                                            </a>
 
                                              @if (Gate::check('updateForm', $organization))
                                                 <button class="ml-6 text-sm text-blue-500 cursor-pointer hover:text-blue-700 focus:outline-none" wire:click="confirmUpdate('{{ $form->id }}')">
