@@ -32,9 +32,6 @@
                                             <a class="ml-6 text-sm text-blue-500 cursor-pointer hover:text-blue-700 focus:outline-none" href="{{ route('form-builder', $event->slug) }}">
                                                 {{ __('View') }}
                                             </a>
-                                            <a class="ml-6 text-sm text-blue-500 cursor-pointer hover:text-blue-700 focus:outline-none" href="{{ route('events.results', [$event->id, $form->id]) }}">
-                                                {{ __('Results') }}
-                                            </a>
                                         </div>
                                     </div>
                                 @endforeach

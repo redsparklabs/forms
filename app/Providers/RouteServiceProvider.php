@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
-use App\Models\Form;
+use App\Models\Team;
 use App\Models\Organization;
 use App\Models\Event;
 use Illuminate\Support\Facades\RateLimiter;
@@ -34,6 +34,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::model('organization', Organization::class);
         Route::model('event', Event::class);
+        Route::model('team', Team::class);
 
         $this->routes(function () {
 

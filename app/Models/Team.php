@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Models\Event;
+
 class Team extends Model
 {
     use HasFactory;
@@ -26,7 +28,7 @@ class Team extends Model
         'name',
     ];
 
-        /**
+            /**
      * Get the owner of the team.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -34,6 +36,16 @@ class Team extends Model
     public function owner()
     {
         return $this->belongsTo(Organization::class, 'organization_id');
+    }
+
+        /**
+     * Get the owner of the team.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function events()
+    {
+        return $this->belongsToMany(Event::class);
     }
 
     /**

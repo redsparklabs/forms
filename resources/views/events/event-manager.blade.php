@@ -90,8 +90,6 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
                                     <div class="ml-4">{{ $event->name }}</div>
-                                    <div class="ml-4">{{ $event->teams->pluck('name')->implode(', ') }}</div>
-                                    <div class="ml-4">{{ $event->forms->pluck('name')->implode(', ') }}</div>
                                 </div>
 
                                 <div class="flex items-center">
