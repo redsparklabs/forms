@@ -18,9 +18,6 @@
                                 <span class="p-2 text-white ">PROGRESS METRIC</span>
                             </div>
                         </th>
-                        @php
-                            $questions = collect($questions)->reject(fn($item) => $item['section'] == 'custom');
-                        @endphp
                         @foreach($questions as $question)
                             <th scope="col" class="w-10 bg-white border whitespace-nowrap">
                                 <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
@@ -28,10 +25,6 @@
                                 </div>
                             </th>
                         @endforeach
-
-                        @php
-                            $sections = collect($questions)->groupBy('section')->reject(fn($item, $key) => $key == 'custom');
-                        @endphp
 
                         @foreach($sections->all() as $section => $sectionData)
                             <th scope="col" class="w-10 bg-white border whitespace-nowrap">
@@ -43,11 +36,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $progressMetricTotal = 0;
-                        $sections = collect($questions)->groupBy('section')->reject(fn($item, $key) => $key == 'custom');
-                        $sectiontotals = $sections->keys()->mapWithkeys(fn($item) => [$item.'_count' => 0])->all();
-                    @endphp
+
                     @foreach($responses as $response)
                         <tr class="border">
                             <td class="p-2"> {{ $response->email }} </td>
@@ -55,16 +44,8 @@
                             @php
                                 $total = 0;
                             @endphp
-                            <?php
-                                $totalSections = $sections->reject(function($item, $key) {
-                                    return $key == 'Intutive_Scoring';
-                                })->flatten(1)->count();
-                            ?>
-                            @foreach($sections->all() as $section => $sectionData)
-                                @if($section == 'Intutive_Scoring')
-                                    @continue
-                                @endif
 
+                            @foreach($sections->reject(fn($item, $key) => $key == 'Intutive_Scoring')->all() as $section => $sectionData)
                                 @php
                                     $sectionQuestions = $sectionData->pluck('question')->map(fn($item) => Str::slug($item))->toArray();
 
@@ -84,10 +65,6 @@
                                 <td class="p-2 text-center bg-white border-2">{{ Arr::get($response->questions, Str::slug($question['question'])) }}</td>
                             @endforeach
 
-                            @php
-                                $sections = collect($questions)->groupBy('section')->reject(fn($item, $key) => $key == 'custom');
-                            @endphp
-
                             @foreach($sections->all() as $section => $sectionData)
                                 <td class="p-2 text-center bg-white border-2">
                                     @php
@@ -96,7 +73,7 @@
                                             return in_array($key, $sectionQuestions);
                                         })->sum();
 
-                                        $sectiontotals[$section .'_count'] += number_format($total / $sections->count(), 1);
+                                        $sectionTotals[$section .'_count'] += number_format($total / $sections->count(), 1);
                                         echo number_format($total / $sections->count(), 1);
                                     @endphp
                                 </td>
@@ -109,7 +86,7 @@
                         <td></td>
                         <td class="p-2 font-bold text-right text-white bg-blue-500 border-2">
                             @if($progressMetricTotal > 0)
-                                {{ number_format($progressMetricTotal / $form->responses->count(), 1) }}
+                                {{ number_format($progressMetricTotal / $responses->count(), 1) }}
                             @endif
                         </td>
 
@@ -130,8 +107,8 @@
 
                         @foreach($sections->all() as $section => $sectionData)
                             <td class="bg-{{ $sectionData->first()['color'] }} border-2 text-center p-2">
-                                @if($sectiontotals[$section .'_count'])
-                                    {{ number_format($sectiontotals[$section .'_count'] / $form->responses->count(), 1) }}
+                                @if($sectionTotals[$section .'_count'])
+                                    {{ number_format($sectionTotals[$section .'_count'] / $form->responses->count(), 1) }}
                                 @endif
                             </td>
                         @endforeach

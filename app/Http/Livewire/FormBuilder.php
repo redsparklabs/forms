@@ -74,7 +74,6 @@ class FormBuilder extends BaseComponent
      */
     public function create()
     {
-        ray($this->create_form);
         CreateFormSubmission::run(
             $this->event,
             $this->form,

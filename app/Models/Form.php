@@ -64,4 +64,27 @@ class Form extends Model
     {
         return $this->hasMany(Event::class)->withTimestamps();
     }
+
+    public function allQuestions()
+    {
+        $customQuestion = $this->questions->map(function($item) {
+            return [
+                'question' => $item['question'],
+                'description' => $item['description'],
+                'color' => '',
+                'section' => 'custom'
+            ];
+        })->toArray();
+
+        $questions = array_merge( config('questions.business-model'), config('questions.qualitative-intuitive-scoring'), $customQuestion);
+
+        $questions = collect($questions)->reject(fn($item) => $item['section'] == 'custom');
+
+        return $questions;
+    }
+
+    public function feedbackQuestions()
+    {
+        return config('questions.qualitative-intuitive-scoring-feedback');
+    }
 }

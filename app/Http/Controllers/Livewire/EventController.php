@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Team;
 use App\Models\Form;
 use App\Models\Event;
+use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
@@ -61,23 +62,12 @@ class EventController extends Controller
     {
         $form = $event->forms()->findOrFail($form->id);
 
-        $customQuestion = $form->questions->map(function($item) {
-            return [
-                'question' => $item['question'],
-                'description' => $item['description'],
-                'color' => '',
-                'section' => 'custom'
-            ];
-        })->toArray();
-
-        $questions = array_merge(
-            config('questions.business-model'),
-            config('questions.qualitative-intuitive-scoring'),
-            $customQuestion,
-
-        );
-
-        $feedback_questions = config('questions.qualitative-intuitive-scoring-feedback');
+        $progressMetricTotal = 0;
+        $questions = $form->allQuestions();
+        $feedback_questions = $form->feedbackQuestions();
+        $sections = collect($questions)->groupBy('section')->reject(fn($item, $key) => $key == 'custom');
+        $sectionTotals = $sections->keys()->mapWithkeys(fn($item) => [$item.'_count' => 0])->all();
+        $totalSections = $sections->reject(fn($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
 
         if($team) {
             $responses = $form->responses()->where('team_id', $team->id)->get();
@@ -85,8 +75,16 @@ class EventController extends Controller
             $responses = $form->responses()->get();
         }
 
-
-        return view('events.results', compact('event', 'form', 'team', 'questions', 'feedback_questions', 'responses'));
+        return view('events.results', compact(
+            'event',
+            'form',
+            'team',
+            'questions',
+            'sections',
+            'responses',
+            'progressMetricTotal',
+            'sectionTotals',
+            'totalSections'
+        ));
     }
-
 }
