@@ -17,6 +17,7 @@ class CreateResponsesTable extends Migration
             $table->id();
             $table->json('response')->nullable();
             $table->timestamps();
+            $table->softDeletes();
             $table->unsignedBigInteger('event_id')->nullable();
             $table->unsignedBigInteger('team_id')->nullable();
             $table->unsignedBigInteger('form_id')->nullable();

@@ -3,13 +3,11 @@
 namespace App\Http\Livewire\Teams;
 
 use App\Actions\Teams\CreateTeam;
-use App\Actions\Teams\UpdateTeam;
-use App\Actions\Teams\DestroyTeam;
 use App\Models\Organization;
 use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
 
-class TeamManager extends BaseComponent
+class TeamCreate extends BaseComponent
 {
 
     /**
@@ -32,8 +30,7 @@ class TeamManager extends BaseComponent
      * @var array
      */
     protected $listeners = [
-        'updated' => '$refresh',
-        'destroyed' => '$refresh',
+        'created' => '$refresh',
     ];
 
     /**
@@ -44,16 +41,13 @@ class TeamManager extends BaseComponent
     /**
      * @var array
      */
-    public $updateForm = [
+    public $createForm = [
         'name' => '',
         'priority_level' => '',
         'start_date' => ''
     ];
 
-    public function createAction()
-    {
 
-    }
     /**
      * Mount the component
      *
@@ -66,58 +60,38 @@ class TeamManager extends BaseComponent
         $this->user = Auth::user();
         $this->organization = $organization;
     }
+
     /**
-     * Confirm the update of a team
+     * Create a new team
+     *
+     * @return void
      */
+    public function createAction()
+    {
+        CreateTeam::run(
+            $this->user,
+            $this->organization,
+            $this->createForm
+        );
+
+        $this->emit('refresh-navigation-menu');
+
+        return redirect()->to(route('teams.index'));
+    }
+
     public function confirmUpdateAction()
     {
-        $team = $this->organization->teams()->find($this->idBeingUpdated);
 
-        $this->updateForm = [
-            'name' => $team?->name,
-            'priority_level' => $team?->priority_level,
-            'start_date' => $team?->priority_level,
-        ];
     }
-
-
-    /**
-     * Update a team
-     *
-     * @return void
-     */
     public function updateAction()
     {
-        $organization  = $this->organization->teams()->find($this->idBeingUpdated);
 
-        UpdateTeam::run(
-            $this->user,
-            $this->organization,
-            $organization,
-            $this->updateForm
-        );
-
-        $this->emit('refresh-navigation-menu');
     }
 
-    /**
-     * Delete a team
-     *
-     * @return void
-     */
     public function destroyAction()
     {
-        $organization  = $this->organization->teams()->find($this->idBeingDestroyed);
 
-        DestroyTeam::run(
-            $this->user,
-            $this->organization,
-            $organization
-        );
-
-        $this->emit('refresh-navigation-menu');
     }
-
     /**
      * Render the component
      *
@@ -125,6 +99,6 @@ class TeamManager extends BaseComponent
      */
     public function render()
     {
-        return view('teams.team-manager');
+        return view('teams.team-create');
     }
 }

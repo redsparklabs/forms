@@ -17,6 +17,7 @@ class CreateEventFormTable extends Migration
             $table->id();
             $table->unsignedBigInteger('event_id');
             $table->unsignedBigInteger('form_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

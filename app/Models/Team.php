@@ -2,14 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use App\Models\Event;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Team extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
+    /**
+     * The attributes that are dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at', 'start_date'];
 
     /**
      * The attributes that should be cast.
@@ -26,6 +35,8 @@ class Team extends Model
      */
     protected $fillable = [
         'name',
+        'start_date',
+        'priority_level'
     ];
 
             /**
@@ -58,6 +69,15 @@ class Team extends Model
         return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
     }
 
+    public function getProgressMetricAttribute()
+    {
+        if($this->events->isNotEmpty()) {
+            $form = $this->events()->first()->forms()->first();
+            $data = $this->calculateSections($form);
+
+            return $data['progressMetricTotal'];
+        }
+    }
     /**
      * Undocumented function
      *

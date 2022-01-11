@@ -31,32 +31,35 @@
                                         <img class="w-8 h-8 rounded-full" src="{{ $team->team_image }}" alt="{{ $team->name }}">
                                         <div class="ml-4">{{ $team->name }}</div>
                                     </div>
-
-                                    <div class="flex items-center">
-                                        <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.team.results', [$event->id, $form->id, $team->id]) }}">
-                                            {{ __('Results') }}
-                                        </a>
-                                    </div>
+                                    @if($data['progressMetricTotal'] > 0)
+                                        <div class="flex items-center">
+                                            <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.team.results', [$event->id, $form->id, $team->id]) }}">
+                                                {{ __('Results') }}
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
-                                <div class="items-center block">
-                                    <table class="">
-                                        <tr>
-                                            <td class="p-2 font-bold text-right text-white bg-blue-500">
-                                            @if($data['progressMetricTotal'] > 0)
-                                                {{ number_format($data['progressMetricTotal'] / $data['responses']->count(), 1) }}
-                                            @endif
-                                            </td>
-
-                                            @foreach($data['allSections']->all() as $section => $sectionData)
-                                                <td class="bg-{{ $sectionData->first()['color'] }} text-center p-2">
-                                                    @if($data['sectionCount'][$section .'_count'])
-                                                        {{ number_format($data['sectionCount'][$section .'_count'] / $data['responses']->count(), 1) }}
-                                                    @endif
+                                @if($data['progressMetricTotal'] > 0)
+                                    <div class="items-center block">
+                                        <table class="">
+                                            <tr>
+                                                <td class="p-2 font-bold text-right text-white bg-blue-500">
+                                                @if($data['progressMetricTotal'] > 0)
+                                                    {{ number_format($data['progressMetricTotal'] / $data['responses']->count(), 1) }}
+                                                @endif
                                                 </td>
-                                            @endforeach
-                                        </tr>
-                                    </table>
-                                </div>
+
+                                                @foreach($data['allSections']->all() as $section => $sectionData)
+                                                    <td class="bg-{{ $sectionData->first()['color'] }} text-center p-2">
+                                                        @if($data['sectionCount'][$section .'_count'])
+                                                            {{ number_format($data['sectionCount'][$section .'_count'] / $data['responses']->count(), 1) }}
+                                                        @endif
+                                                    </td>
+                                                @endforeach
+                                            </tr>
+                                        </table>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                     </x-slot>

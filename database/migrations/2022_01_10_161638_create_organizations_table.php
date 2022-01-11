@@ -18,6 +18,7 @@ class CreateOrganizationsTable extends Migration
             $table->unsignedBigInteger('user_id')->index('organizations_user_id_index');
             $table->string('name');
             $table->tinyInteger('personal_organization');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

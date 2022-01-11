@@ -13,14 +13,3 @@ Breadcrumbs::for('portfolio', function (BreadcrumbTrail $trail) {
     $trail->push('Portfolio', route('portfolio'));
 });
 
-// Home > Blog
-Breadcrumbs::for('portfolio', function (BreadcrumbTrail $trail) {
-    $trail->parent('portfolio');
-    $trail->push('Profile', route('profile'));
-});
-
-// Home > Blog > [Category]
-Breadcrumbs::for('category', function (BreadcrumbTrail $trail, $category) {
-    $trail->parent('blog');
-    $trail->push($category->title, route('category', $category));
-});

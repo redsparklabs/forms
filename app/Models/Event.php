@@ -2,18 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
 use App\Models\Team;
-use App\Models\Organization;
+use App\Models\EventTeam;
 use Illuminate\Support\Str;
+use App\Models\Organization;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Event extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
+    /**
+     * The attributes that are dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be cast.
      *
@@ -69,13 +78,13 @@ class Event extends Model
         return $this->belongsToMany(Form::class);
     }
 
-        /**
+    /**
      * Get the owner of the team.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function teams()
     {
-        return $this->belongsToMany(Team::class);
+        return $this->belongsToMany(Team::class)->using(EventTeam::class)->withPivot('net_projected_value', 'investment');
     }
 }

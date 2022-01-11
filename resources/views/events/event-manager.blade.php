@@ -1,8 +1,11 @@
 <div>
     @if (Gate::check('addEvent', $organization))
         <div class="mt-10 sm:mt-0">
-            @if($organization->teams->isEmpty())
-                <div class="p-6 text-center bg-white rounded-md">Please <a href="{{ route('teams.index', Auth::user()->currentOrganization->id) }}" class="text-blue-900 underline">add</a> at least one team before creating a form.</div>
+             @if($organization->forms->isEmpty())
+                <div class="p-6 text-center bg-white rounded-md">Please <a href="{{ route('form-manager', Auth::user()->currentOrganization->id) }}" class="text-blue-900 underline">add</a> at least one Form before creating a Growth Board.</div>
+
+            @elseif($organization->teams->isEmpty())
+                <div class="p-6 text-center bg-white rounded-md">Please <a href="{{ route('teams.index', Auth::user()->currentOrganization->id) }}" class="text-blue-900 underline">add</a> at least one Project before creating a Growth Board.</div>
             @else
                 <x-jet-form-section submit="create">
                     <x-slot name="title">
@@ -22,7 +25,7 @@
                         </div>
 
                         <div class="col-span-6 sm:col-span-4">
-                            <x-jet-label for="team" value="{{ __('Teams') }}" />
+                            <x-jet-label for="team" value="{{ __('Projects') }}" />
                             @foreach($organization->teams as $id => $team)
                                 <div class="py-2">
                                     <x-jet-label :for="Str::slug('createTeam-'.$team['name'])">
@@ -97,7 +100,7 @@
 
                                     @if (Gate::check('removeEvent', $organization))
                                         <button class="ml-6 text-sm text-red-500 cursor-pointer focus:outline-none" wire:click="confirmDestroy('{{ $event->id }}')">
-                                            {{ __('Remove') }}
+                                            {{ __('Archive') }}
                                         </button>
                                     @endif
                                 </div>
@@ -161,11 +164,11 @@
     <!-- Remove Event Confirmation Modal -->
     <x-jet-confirmation-modal wire:model="confirmingDestroying">
         <x-slot name="title">
-            {{ __('Remove Growth Board') }}
+            {{ __('Archive Growth Board') }}
         </x-slot>
 
         <x-slot name="content">
-            {{ __('Are you sure you would like to remove this Growth Board from the organization?') }}
+            {{ __('Are you sure you would like to archive this Growth Board from the organization?') }}
         </x-slot>
 
         <x-slot name="footer">
@@ -174,7 +177,7 @@
             </x-jet-secondary-button>
 
             <x-jet-danger-button class="ml-2" wire:click="destroy" spinner="destroy">
-                {{ __('Remove') }}
+                {{ __('Archive') }}
             </x-jet-danger-button>
         </x-slot>
     </x-jet-confirmation-modal>

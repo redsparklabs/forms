@@ -18,6 +18,7 @@ class CreateEventsTable extends Migration
             $table->string('slug')->nullable();
             $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
             $table->unsignedBigInteger('organization_id');
             
             $table->foreign('organization_id', 'events_organization_id_foreign')->references('id')->on('organizations')->onDelete('cascade')->onUpdate('cascade');

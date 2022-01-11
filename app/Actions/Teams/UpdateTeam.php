@@ -28,9 +28,9 @@ class UpdateTeam
 
         $this->fill($attributes)->validateAttributes();
 
-        $name = Arr::get($attributes, 'name');
-
-        $team->name = $name;
+        $team->name = Arr::get($attributes, 'name');
+        $team->priority_level = Arr::get($attributes, 'priority_level');
+        $team->start_date = Arr::get($attributes, 'start_date');
 
         $team->save();
     }

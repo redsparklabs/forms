@@ -29,9 +29,15 @@ class TeamController extends Controller
         ]);
     }
 
-    public function create(Request $request, $team)
+/**
+ * @param  Request $request
+ * @param  [type] $team
+ * @return [type]
+ */
+    public function create(Request $request)
     {
         return view('teams.create', [
+            'organization' => $request->user()->currentOrganization,
             'user' => $request->user(),
         ]);
     }

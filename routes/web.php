@@ -47,15 +47,15 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // User & Profile...
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
 
-    Route::get('/events', [EventController::class, 'index'])->name('events.index');
-    Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
-    Route::get('/events/{event}/form/{form}/team/{team}/results', [EventController::class, 'results'])->name('events.team.results');
-    Route::get('/events/{event}/form/{form}/results', [EventController::class, 'results'])->name('events.results');
+    Route::get('/growth-boards', [EventController::class, 'index'])->name('events.index');
+    Route::get('/growth-boards/{event}', [EventController::class, 'show'])->name('events.show');
+    Route::get('/growth-boards/{event}/form/{form}/projects/{team}/results', [EventController::class, 'results'])->name('events.team.results');
+    Route::get('/growth-boards/{event}/form/{form}/results', [EventController::class, 'results'])->name('events.results');
 
 
-    Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
-    Route::get('/teams/create', [TeamController::class, 'create'])->name('teams.create');
-    Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
+    Route::get('/projects', [TeamController::class, 'index'])->name('teams.index');
+    Route::get('/projects/create', [TeamController::class, 'create'])->name('teams.create');
+    Route::get('/projects/{team}', [TeamController::class, 'show'])->name('teams.show');
 
     Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
     Route::get('/organizations/{organization}', [OrganizationController::class, 'show'])->name('organizations.show');

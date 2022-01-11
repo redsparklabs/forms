@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Auth;
 class FormManager extends BaseComponent
 {
     /**
+     * @var array
+     */
+    protected $listeners = [
+        'updated' => 'render',
+        'created' => 'render',
+        'destroyed' => 'render',
+    ];
+
+    /**
      * @var \App\Models\Organization
      */
     public $organization;
@@ -87,7 +96,6 @@ class FormManager extends BaseComponent
      */
     public function createAction()
     {
-
         $this->validate();
 
         $form = CreateForm::run(

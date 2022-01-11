@@ -19,6 +19,7 @@ class CreateFormsTable extends Migration
             $table->string('slug')->nullable();
             $table->text('description');
             $table->timestamps();
+            $table->softDeletes();
             $table->unsignedBigInteger('organization_id');
             
             $table->foreign('organization_id', 'forms_organization_id_foreign')->references('id')->on('organizations')->onDelete('cascade')->onUpdate('cascade');

@@ -173,8 +173,8 @@ abstract class BaseComponent extends Component
         $this->destroyAction();
 
         $this->notification()->success(
-            $this->componentName . ' Removed',
-            'Your ' . strtolower($this->componentName) . ' was successfully removed.'
+            $this->componentName . ' Archived',
+            'Your ' . strtolower($this->componentName) . ' was successfully archived.'
         );
 
         $this->confirmingDestroying = false;
@@ -183,7 +183,6 @@ abstract class BaseComponent extends Component
 
         $this->emit('destroyed');
 
-        // $this->reloadOrganization();
     }
 
     /**

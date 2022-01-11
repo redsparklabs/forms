@@ -25,9 +25,7 @@ class CreateTeam
 
         $this->fill($attributes)->validateAttributes();
 
-        $name = Arr::get($attributes, 'name');
-
-        $organization->teams()->create(['name' => $name]);
+        $organization->teams()->create($attributes);
     }
 
     /**

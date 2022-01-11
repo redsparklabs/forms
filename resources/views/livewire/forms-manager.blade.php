@@ -81,7 +81,7 @@
 
                                             @if (Gate::check('removeForm', $organization))
                                                 <button class="ml-6 text-sm text-red-500 cursor-pointer hover:text-red-700 focus:outline-none" wire:click="confirmDestroy('{{ $form->id }}')">
-                                                    {{ __('Remove') }}
+                                                    {{ __('Archive') }}
                                                 </button>
                                             @endif
                                         </div>
@@ -188,11 +188,11 @@
             <!-- Remove Form Confirmation Modal -->
             <x-jet-confirmation-modal wire:model="confirmingDestroying">
                 <x-slot name="title">
-                    {{ __('Remove Form') }}
+                    {{ __('Archive Form') }}
                 </x-slot>
 
                 <x-slot name="content">
-                    {{ __('Are you sure you would like to remove this form from the organization?') }}
+                    {{ __('Are you sure you would like to archive this form?') }}
                 </x-slot>
 
                 <x-slot name="footer">
@@ -201,7 +201,7 @@
                     </x-jet-secondary-button>
 
                     <x-jet-danger-button class="ml-2" wire:click="destroy" spinner="destroy">
-                        {{ __('Remove') }}
+                        {{ __('Archive') }}
                     </x-jet-danger-button>
                 </x-slot>
             </x-jet-confirmation-modal>

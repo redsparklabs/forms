@@ -17,6 +17,8 @@ class CreateEventTeamTable extends Migration
             $table->id();
             $table->unsignedBigInteger('event_id');
             $table->unsignedBigInteger('team_id');
+            $table->string('investment')->nullable();
+            $table->string('net_projected_value')->nullable();
             $table->timestamps();
         });
     }

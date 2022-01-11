@@ -24,9 +24,9 @@ class ResponsesFactory extends Factory
     public function definition()
     {
         return [
-            'event_id' => rand(1,5),
-            'form_id' => rand(1,5),
-            "team_id" => rand(1,5),
+            'event_id' => rand(1,100),
+            'form_id' => rand(1,100),
+            "team_id" => rand(1,100),
             'response' => [
                 "email" => $this->faker->safeEmail(),
                 'questions' => [

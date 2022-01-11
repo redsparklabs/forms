@@ -21,6 +21,7 @@ class CreateQuestionsTable extends Migration
             $table->text('section');
             $table->tinyInteger('hidden')->nullable();
             $table->timestamps();
+            $table->softDeletes();
             $table->unsignedBigInteger('organization_id');
             
             $table->foreign('organization_id', 'questions_organization_id_foreign')->references('id')->on('organizations')->onDelete('cascade')->onUpdate('cascade');

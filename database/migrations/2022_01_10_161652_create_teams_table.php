@@ -16,8 +16,12 @@ class CreateTeamsTable extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('priority_level');
+            $table->dateTime('start_date');
+
             $table->timestamps();
             $table->unsignedBigInteger('organization_id');
+            $table->softDeletes();
             
             $table->foreign('organization_id', 'teams_organization_id_foreign')->references('id')->on('organizations')->onDelete('cascade')->onUpdate('cascade');
         });

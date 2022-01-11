@@ -80,7 +80,7 @@
 
                                             @if (Gate::check('removeQuestion', $organization))
                                                 <button class="ml-6 text-sm text-red-500 cursor-pointer" wire:click="confirmDestroy('{{ $question->id }}')">
-                                                    {{ __('Remove') }}
+                                                    {{ __('Archive') }}
                                                 </button>
                                             @endif
                                         </div>
@@ -126,11 +126,11 @@
             <!-- Remove Question Confirmation Modal -->
             <x-jet-confirmation-modal wire:model="confirmingDestroying">
                 <x-slot name="title">
-                    {{ __('Remove Question') }}
+                    {{ __('Archive Question') }}
                 </x-slot>
 
                 <x-slot name="content">
-                    {{ __('Are you sure you would like to remove this question from the organization?') }}
+                    {{ __('Are you sure you would like to archive this question?') }}
                 </x-slot>
 
                 <x-slot name="footer">
@@ -139,7 +139,7 @@
                     </x-jet-secondary-button>
 
                     <x-jet-danger-button class="ml-2" wire:click="destroy" spinner="destroy">
-                        {{ __('Remove') }}
+                        {{ __('Archive') }}
                     </x-jet-danger-button>
                 </x-slot>
             </x-jet-confirmation-modal>

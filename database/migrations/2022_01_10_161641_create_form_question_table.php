@@ -18,6 +18,7 @@ class CreateFormQuestionTable extends Migration
             $table->unsignedBigInteger('form_id');
             $table->unsignedBigInteger('question_id');
             $table->integer('order');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
