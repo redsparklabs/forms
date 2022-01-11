@@ -36,9 +36,9 @@ if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
     Route::get('/privacy-policy', [PrivacyPolicyController::class, 'show'])->name('policy.show');
 }
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/portfolio', function () {
+    return view('portfolio');
+})->name('portfolio');
 
 Route::get('form/{eventid}', FormBuilder::class)->name('form-builder');
 
@@ -54,6 +54,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
 
     Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
+    Route::get('/teams/create', [TeamController::class, 'create'])->name('teams.create');
     Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
 
     Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');

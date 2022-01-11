@@ -1,30 +1,22 @@
 <div>
     @if (Gate::check('addEvent', $organization))
-        <x-jet-section-border />
-
-        <!-- Add Organization -->
         <div class="mt-10 sm:mt-0">
             @if($organization->teams->isEmpty())
                 <div class="p-6 text-center bg-white rounded-md">Please <a href="{{ route('teams.index', Auth::user()->currentOrganization->id) }}" class="text-blue-900 underline">add</a> at least one team before creating a form.</div>
             @else
                 <x-jet-form-section submit="create">
                     <x-slot name="title">
-                        {{ __('Add Event') }}
+                        {{ __('Add Growth Board') }}
                     </x-slot>
 
                     <x-slot name="description">
-                        {{ __('Add a new event to your organization.') }}
+                        {{ __('Add a new Growth Board to your organization.') }}
                     </x-slot>
 
                     <x-slot name="form">
-                        <div class="col-span-6">
-                            <div class="max-w-xl text-sm text-gray-600">
-                                {{ __('Please provide the name of the event you would like to add to this organization.') }}
-                            </div>
-                        </div>
 
                         <div class="col-span-6 sm:col-span-4">
-                            <x-jet-label for="name" value="{{ __('Event Name') }}" />
+                            <x-jet-label for="name" value="{{ __('Growth Board Name') }}" />
                             <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="createForm.name" />
                             <x-jet-input-error for="name" class="mt-2" />
                         </div>
@@ -66,21 +58,18 @@
                 </x-jet-form-section>
             @endif
         </div>
-
-
     @endif
 
     @if ($organization->events->isNotEmpty())
         <x-jet-section-border />
-        <!-- Manage Organizations -->
         <div class="mt-10 sm:mt-0">
             <x-jet-action-section>
                 <x-slot name="title">
-                    {{ __('Events') }}
+                    {{ __('Growth Boards') }}
                 </x-slot>
 
                 <x-slot name="description">
-                    {{ __('All of the events that are part of this organization.') }}
+                    {{ __('All of the Growth Boards that are part of this organization.') }}
                 </x-slot>
 
                 <!-- Organization Organization List -->
@@ -124,12 +113,12 @@
     <!-- Uodate Event Confirmation Modal -->
     <x-jet-dialog-modal wire:model="confirmingUpdating">
         <x-slot name="title">
-            {{ __('Update Event') }}
+            {{ __('Update Growth Board') }}
         </x-slot>
 
         <x-slot name="content">
             <div class="col-span-6 mb-4 sm:col-span-4">
-                <x-jet-label for="name" value="{{ __('Event Name') }}" />
+                <x-jet-label for="name" value="{{ __('Growth Board Name') }}" />
                 <x-jet-input id="name" type="text" class="block w-full mt-1" model="updateForm.name" wire:model.defer="updateForm.name" />
                 <x-jet-input-error for="name" class="mt-2" />
             </div>
@@ -172,11 +161,11 @@
     <!-- Remove Event Confirmation Modal -->
     <x-jet-confirmation-modal wire:model="confirmingDestroying">
         <x-slot name="title">
-            {{ __('Remove Event') }}
+            {{ __('Remove Growth Board') }}
         </x-slot>
 
         <x-slot name="content">
-            {{ __('Are you sure you would like to remove this event from the organization?') }}
+            {{ __('Are you sure you would like to remove this Growth Board from the organization?') }}
         </x-slot>
 
         <x-slot name="footer">

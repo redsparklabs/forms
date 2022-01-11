@@ -29,7 +29,8 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
         "nunomaduro/larastan": "^1.0",
-        "phpunit/phpunit": "^9.5.10"
+        "phpunit/phpunit": "^9.5.10",
+        "thedoctor0/laravel-factory-generator": "^1.1"
     },
     "autoload": {
         "files": [

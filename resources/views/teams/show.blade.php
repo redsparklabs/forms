@@ -7,7 +7,6 @@
     <div>
         <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
             @if ($team->events->isNotEmpty())
-                <x-jet-section-border />
                 <!-- Manage Organizations -->
                 <div class="mt-10 sm:mt-0">
                     <x-jet-action-section>

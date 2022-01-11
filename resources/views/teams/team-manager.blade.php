@@ -1,22 +1,19 @@
 <div>
     @if (Gate::check('addTeam', $organization))
-        <x-jet-section-border />
-
-        <!-- Add Organization -->
         <div class="mt-10 sm:mt-0">
             <x-jet-form-section submit="create">
                 <x-slot name="title">
-                    {{ __('Add Team') }}
+                    {{ __('Add Project') }}
                 </x-slot>
 
                 <x-slot name="description">
-                    {{ __('Add a new team to your organization.') }}
+                    {{ __('Add a new Project to your organization.') }}
                 </x-slot>
 
                 <x-slot name="form">
                     <div class="col-span-6">
                         <div class="max-w-xl text-sm text-gray-600">
-                            {{ __('Please provide the name of the team you would like to add to this organization.') }}
+                            {{ __('Please provide the name of the project you would like to add to this organization.') }}
                         </div>
                     </div>
 

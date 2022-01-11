@@ -9,13 +9,13 @@ use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 // Home
-Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
-    $trail->push('Dashboard', route('dashboard'));
+Breadcrumbs::for('portfolio', function (BreadcrumbTrail $trail) {
+    $trail->push('Portfolio', route('portfolio'));
 });
 
 // Home > Blog
-Breadcrumbs::for('profile', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+Breadcrumbs::for('portfolio', function (BreadcrumbTrail $trail) {
+    $trail->parent('portfolio');
     $trail->push('Profile', route('profile'));
 });
 

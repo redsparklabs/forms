@@ -29,6 +29,12 @@ class TeamController extends Controller
         ]);
     }
 
+    public function create(Request $request, $team)
+    {
+        return view('teams.create', [
+            'user' => $request->user(),
+        ]);
+    }
     /**
      * Show the organization creation screen.
      *

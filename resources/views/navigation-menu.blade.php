@@ -10,8 +10,8 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-jet-nav-link href="{{ route('portfolio') }}" :active="request()->routeIs('portfolio')">
+                        {{ __('Portfolio') }}
                     </x-jet-nav-link>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                         <x-slot name="trigger">
                             <span class="inline-flex rounded-md">
                                 <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition bg-white border border-transparent rounded-md hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50">
-                                        Teams
+                                        {{ __('Projects') }}
                                     <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
                                     </svg>
@@ -95,13 +95,18 @@
                         <x-slot name="content">
                             <div class="w-60">
                                 <x-jet-dropdown-link href="{{ route('teams.index') }}">
-                                    {{ __('All Teams') }}
+                                    {{ __('All Projects') }}
                                 </x-jet-dropdown-link>
+                                @can('create', App\Models\Organization::class)
+                                    <x-jet-dropdown-link href="{{ route('teams.create') }}">
+                                        {{ __('Create New Project') }}
+                                    </x-jet-dropdown-link>
+                                @endcan
 
                                 <div class="border-t border-gray-100"></div>
 
                                 <div class="block px-4 py-2 text-xs text-gray-400">
-                                    {{ __('Manage Teams') }}
+                                    {{ __('Manage Projectss') }}
                                 </div>
 
                                 @foreach (Auth::user()->allOrganizations()->pluck('teams')->all() as $teams)
@@ -121,7 +126,7 @@
                         <x-slot name="trigger">
                             <span class="inline-flex rounded-md">
                                 <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition bg-white border border-transparent rounded-md hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50">
-                                        Events
+                                        {{ __('Growth Boards')}}
                                     <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
                                     </svg>
@@ -132,13 +137,13 @@
                         <x-slot name="content">
                             <div class="w-60">
                                 <x-jet-dropdown-link href="{{ route('events.index') }}">
-                                    {{ __('All Events') }}
+                                    {{ __('All Growth Boards') }}
                                 </x-jet-dropdown-link>
 
                                 <div class="border-t border-gray-100"></div>
 
                                 <div class="block px-4 py-2 text-xs text-gray-400">
-                                    {{ __('Manage Events') }}
+                                    {{ __('Manage Growth Boards') }}
                                 </div>
 
                                 @foreach (Auth::user()->allOrganizations()->pluck('events')->all() as $events)
@@ -220,8 +225,8 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-jet-responsive-nav-link href="{{ route('portfolio') }}" :active="request()->routeIs('portfolio')">
+                {{ __('Portfolio') }}
             </x-jet-responsive-nav-link>
         </div>
 

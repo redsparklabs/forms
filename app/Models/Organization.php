@@ -76,6 +76,7 @@ class Organization extends Model
         return $this->hasMany(Question::class);
     }
 
+
      /**
      * Get the owner of the team.
      *
