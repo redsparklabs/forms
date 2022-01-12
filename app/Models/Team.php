@@ -49,9 +49,9 @@ class Team extends Model
     }
 
     /**
-     * Get the owner of the team.
+     * Get the events
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function events()
     {
@@ -68,9 +68,14 @@ class Team extends Model
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 
+    /**
+     * Get the progress metric total.
+     *
+     * @return void|string
+     */
     public function getProgressMetricAttribute()
     {
-        if ($this->events->isNotEmpty()) {
+        if ($this->events?->isNotEmpty()) {
             $form = $this->events()->first()->forms()->first();
             $data = $this->calculateSections($form);
 

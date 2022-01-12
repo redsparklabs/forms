@@ -99,7 +99,7 @@ class EventManager extends BaseComponent
         $event = $this->organization->events()->find($this->idBeingUpdated);
 
         $this->updateForm = [
-            'name' => $event->name,
+            'name' => $event?->name,
             'teams' => array_fill_keys($event->teams->pluck('id')->toArray(), true),
             'forms' => array_fill_keys($event->forms->pluck('id')->toArray(), true),
         ];

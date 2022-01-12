@@ -85,18 +85,30 @@ class FormBuilder extends BaseComponent
         $this->emit('created');
     }
 
+    /**
+     * @return void
+     */
     public function createAction()
     {
     }
 
+    /**
+     * @return void
+     */
     public function confirmUpdateAction()
     {
     }
 
+    /**
+     * @return void
+     */
     public function updateAction()
     {
     }
 
+    /**
+     * @return void
+     */
     public function destroyAction()
     {
     }

@@ -21,7 +21,7 @@ class OrganizationInvitationController extends Controller
     public function accept(Request $request, OrganizationInvitation $invitation)
     {
         app(AddOrganizationMember::class)->add(
-            $invitation->organization->owner,
+            $invitation->organization?->owner,
             $invitation->organization,
             $invitation->email,
             $invitation->role
@@ -30,7 +30,7 @@ class OrganizationInvitationController extends Controller
         $invitation->delete();
 
         return redirect(config('fortify.home'))->banner(
-            __('Great! You have accepted the invitation to join the :organization organization.', ['organization' => $invitation->organization->name]),
+            __('Great! You have accepted the invitation to join the :organization organization.', ['organization' => $invitation->organization?->name]),
         );
     }
 

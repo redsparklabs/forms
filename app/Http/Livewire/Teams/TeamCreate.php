@@ -79,18 +79,25 @@ class TeamCreate extends BaseComponent
         return redirect()->to(route('teams.index'));
     }
 
+    /**
+     * @return void
+     */
     public function confirmUpdateAction()
     {
-
     }
+
+    /**
+     * @return void
+     */
     public function updateAction()
     {
-
     }
 
+    /**
+     * @return void
+     */
     public function destroyAction()
     {
-
     }
     /**
      * Render the component

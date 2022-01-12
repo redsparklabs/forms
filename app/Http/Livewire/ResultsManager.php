@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Organization;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
 use App\Models\Form;
 use App\Models\Team;
+use App\Models\User;
 use WireUi\Traits\Actions;
 
 class ResultsManager extends Component
@@ -15,15 +15,48 @@ class ResultsManager extends Component
 
     use Actions;
 
+    /**
+     * @var Event
+     */
     public $event;
+
+    /**
+     * @var Form
+     */
     public $form;
+
+    /**
+     * @var User
+     */
     public $user;
+
+    /**
+     * @var array
+     */
     public $questions;
+    /**
+     * @var array
+     */
     public $sections;
+    /**
+     * @var array
+     */
     public $team;
+    /**
+     * @var array
+     */
     public $responses;
+    /**
+     * @var array
+     */
     public $progressMetricTotal;
+    /**
+     * @var array
+     */
     public $sectionTotals;
+    /**
+     * @var array
+     */
     public $totalSections;
 
 
@@ -53,10 +86,17 @@ class ResultsManager extends Component
 
 
     /**
-     * Mount the component
+     * Undocumented function
      *
-     * @param  Organization $organization
-     *
+     * @param  Event  $event
+     * @param  Form   $form
+     * @param  Team   $team
+     * @param  array $questions
+     * @param  array $sections
+     * @param  array $responses
+     * @param  array $progressMetricTotal
+     * @param  array $sectionTotals
+     * @param  array $totalSections
      * @return void
      */
     public function mount(Event $event, Form $form, Team $team, $questions, $sections, $responses, $progressMetricTotal, $sectionTotals, $totalSections)

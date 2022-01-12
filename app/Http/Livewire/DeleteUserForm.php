@@ -60,7 +60,7 @@ class DeleteUserForm extends Component
             ]);
         }
 
-        $deleter->delete(Auth::user()->fresh());
+        $deleter->delete(Auth::user()?->fresh());
 
         $auth->logout();
 

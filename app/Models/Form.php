@@ -67,12 +67,19 @@ class Form extends Model
     /**
      * Events
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function events()
     {
         return $this->hasMany(Event::class)->withTimestamps();
     }
+
+
+    /**
+     * Feedback questions
+     *
+     * @return array
+     */
 
     public function allQuestions()
     {
@@ -92,6 +99,11 @@ class Form extends Model
         return $questions;
     }
 
+    /**
+     * Feedback questions
+     *
+     * @return array
+     */
     public function feedbackQuestions()
     {
         return config('questions.qualitative-intuitive-scoring-feedback');
