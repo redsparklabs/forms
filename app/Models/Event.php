@@ -28,8 +28,7 @@ class Event extends Model
      *
      * @var array
      */
-    protected $casts = [
-    ];
+    protected $casts = [];
 
     /**
      * The attributes that are mass assignable.
@@ -41,7 +40,7 @@ class Event extends Model
         'slug'
     ];
 
-        /**
+    /**
      * Boot the model
      *
      * @return void
@@ -57,7 +56,7 @@ class Event extends Model
         });
     }
 
-        /**
+    /**
      * Get the owner of the team.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -25,8 +25,7 @@ class Team extends Model
      *
      * @var array
      */
-    protected $casts = [
-    ];
+    protected $casts = [];
 
     /**
      * The attributes that are mass assignable.
@@ -39,7 +38,7 @@ class Team extends Model
         'priority_level'
     ];
 
-            /**
+    /**
      * Get the owner of the team.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -49,7 +48,7 @@ class Team extends Model
         return $this->belongsTo(Organization::class, 'organization_id');
     }
 
-        /**
+    /**
      * Get the owner of the team.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -66,12 +65,12 @@ class Team extends Model
      */
     public function getTeamImageAttribute()
     {
-        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 
     public function getProgressMetricAttribute()
     {
-        if($this->events->isNotEmpty()) {
+        if ($this->events->isNotEmpty()) {
             $form = $this->events()->first()->forms()->first();
             $data = $this->calculateSections($form);
 
@@ -89,31 +88,31 @@ class Team extends Model
         $responses = $form->responses()->where('team_id', $this->id)->get();
         $progressMetricTotal = 0;
         $questions = $form->allQuestions();
-        $allSections = collect($questions)->groupBy('section')->reject(fn($item, $key) => $key == 'custom');
-        $sectionCount = $allSections->keys()->mapWithkeys(fn($item) => [$item.'_count' => 0])->all();
-        $totalSections = $allSections->reject(fn($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
+        $allSections = collect($questions)->groupBy('section')->reject(fn ($item, $key) => $key == 'custom');
+        $sectionCount = $allSections->keys()->mapWithkeys(fn ($item) => [$item . '_count' => 0])->all();
+        $totalSections = $allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
 
 
-        foreach($responses as $response) {
+        foreach ($responses as $response) {
             $total = 0;
-            foreach($allSections->reject(fn($item, $key) => $key == 'Intutive_Scoring')->all() as $section => $sectionData) {
+            foreach ($allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->all() as $section => $sectionData) {
 
-                $sectionQuestions = $sectionData->pluck('question')->map(fn($item) => Str::slug($item))->toArray();
+                $sectionQuestions = $sectionData->pluck('question')->map(fn ($item) => Str::slug($item))->toArray();
 
-                $total += collect($response->questions)->filter(function($item, $key) use ($sectionQuestions) {
+                $total += collect($response->questions)->filter(function ($item, $key) use ($sectionQuestions) {
                     return in_array($key, $sectionQuestions);
                 })->sum();
             }
 
             $progressMetricTotal += number_format($total / $totalSections, 1);
 
-            foreach($allSections->all() as $section => $sectionData) {
-                $sectionQuestions = $sectionData->pluck('question')->map(fn($item) => Str::slug($item))->toArray();
-                $total = collect($response->questions)->filter(function($item, $key) use($sectionQuestions) {
+            foreach ($allSections->all() as $section => $sectionData) {
+                $sectionQuestions = $sectionData->pluck('question')->map(fn ($item) => Str::slug($item))->toArray();
+                $total = collect($response->questions)->filter(function ($item, $key) use ($sectionQuestions) {
                     return in_array($key, $sectionQuestions);
                 })->sum();
 
-                $sectionCount[$section .'_count'] += number_format($total / $allSections->count(), 1);
+                $sectionCount[$section . '_count'] += number_format($total / $allSections->count(), 1);
             }
         }
 
@@ -124,6 +123,5 @@ class Team extends Model
             'sectionCount' => $sectionCount,
             'progressMetricTotal' => $progressMetricTotal,
         ];
-
     }
 }

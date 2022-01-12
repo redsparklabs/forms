@@ -43,7 +43,7 @@ class OrganizationInvitationController extends Controller
      */
     public function destroy(Request $request, OrganizationInvitation $invitation)
     {
-        if (! Gate::forUser($request->user())->check('removeOrganizationMember', $invitation->organization)) {
+        if (!Gate::forUser($request->user())->check('removeOrganizationMember', $invitation->organization)) {
             throw new AuthorizationException;
         }
 

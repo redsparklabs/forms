@@ -65,11 +65,11 @@ class EventController extends Controller
         $progressMetricTotal = 0;
         $questions = $form->allQuestions();
         $feedback_questions = $form->feedbackQuestions();
-        $sections = collect($questions)->groupBy('section')->reject(fn($item, $key) => $key == 'custom');
-        $sectionTotals = $sections->keys()->mapWithkeys(fn($item) => [$item.'_count' => 0])->all();
-        $totalSections = $sections->reject(fn($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
+        $sections = collect($questions)->groupBy('section')->reject(fn ($item, $key) => $key == 'custom');
+        $sectionTotals = $sections->keys()->mapWithkeys(fn ($item) => [$item . '_count' => 0])->all();
+        $totalSections = $sections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
 
-        if($team) {
+        if ($team) {
             $responses = $form->responses()->where('team_id', $team->id)->get();
         } else {
             $responses = $form->responses()->get();

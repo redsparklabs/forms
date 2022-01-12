@@ -18,7 +18,7 @@ class CurrentOrganizationController extends Controller
     {
         $organization = Organization::findOrFail($request->organization_id);
 
-        if (! $request->user()->switchOrganization($organization)) {
+        if (!$request->user()->switchOrganization($organization)) {
             abort(403);
         }
 

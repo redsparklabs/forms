@@ -29,11 +29,10 @@ class TeamController extends Controller
         ]);
     }
 
-/**
- * @param  Request $request
- * @param  [type] $team
- * @return [type]
- */
+    /**
+     * @param  Request $request
+     * @return \Illuminate\View\View
+     */
     public function create(Request $request)
     {
         return view('teams.create', [
