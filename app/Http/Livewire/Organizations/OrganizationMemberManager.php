@@ -138,7 +138,7 @@ class OrganizationMemberManager extends Component
      */
     public function cancelOrganizationInvitation($invitationId)
     {
-        if (! empty($invitationId)) {
+        if (!empty($invitationId)) {
 
             OrganizationInvitation::whereKey($invitationId)->delete();
         }
@@ -231,8 +231,7 @@ class OrganizationMemberManager extends Component
      */
     public function removeOrganizationMember(RemoveOrganizationMember $remover)
     {
-        if($this->organizationMemberIdBeingRemoved)
-        {
+        if ($this->organizationMemberIdBeingRemoved) {
             $remover->remove(
                 $this->user,
                 $this->organization,

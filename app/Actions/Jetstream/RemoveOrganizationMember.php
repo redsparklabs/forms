@@ -38,8 +38,10 @@ class RemoveOrganizationMember
      */
     protected function authorize($user, $organization, $organizationMember)
     {
-        if (! Gate::forUser($user)->check('removeOrganizationMember', $organization) &&
-            $user->id !== $organizationMember->id) {
+        if (
+            !Gate::forUser($user)->check('removeOrganizationMember', $organization) &&
+            $user->id !== $organizationMember->id
+        ) {
             throw new AuthorizationException;
         }
     }

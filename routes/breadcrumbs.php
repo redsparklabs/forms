@@ -12,4 +12,3 @@ use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 Breadcrumbs::for('portfolio', function (BreadcrumbTrail $trail) {
     $trail->push('Portfolio', route('portfolio'));
 });
-

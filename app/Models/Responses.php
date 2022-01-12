@@ -76,7 +76,7 @@ class Responses extends Model
      */
     public function getEmailAttribute()
     {
-        if($this->response) {
+        if ($this->response) {
             return Arr::get($this->response, 'email');
         }
     }
@@ -86,7 +86,7 @@ class Responses extends Model
      */
     public function getQuestionsAttribute()
     {
-        if($this->response) {
+        if ($this->response) {
             return Arr::get($this->response, 'questions');
         }
     }

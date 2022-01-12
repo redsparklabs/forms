@@ -92,7 +92,7 @@ class OrganizationPolicy
         return $user->ownsOrganization($organization);
     }
 
-   /**
+    /**
      * Determine whether the user can view the team.
      *
      * @param  \App\Models\User  $user
@@ -140,7 +140,7 @@ class OrganizationPolicy
         return $user->ownsOrganization($organization);
     }
 
-        /**
+    /**
      * Determine whether the user can view the team.
      *
      * @param  \App\Models\User  $user
@@ -153,7 +153,7 @@ class OrganizationPolicy
     }
 
 
-     /**
+    /**
      * Determine whether the user can add organization members.
      *
      * @param  \App\Models\User  $user

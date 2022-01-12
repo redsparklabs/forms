@@ -83,7 +83,7 @@ class Form extends Model
 
     public function allQuestions()
     {
-        $customQuestion = $this->questions->map(function($item) {
+        $customQuestion = $this->questions->map(function ($item) {
             return [
                 'question' => $item['question'],
                 'description' => $item['description'],
@@ -92,9 +92,9 @@ class Form extends Model
             ];
         })->toArray();
 
-        $questions = array_merge( config('questions.business-model'), config('questions.qualitative-intuitive-scoring'), $customQuestion);
+        $questions = array_merge(config('questions.business-model'), config('questions.qualitative-intuitive-scoring'), $customQuestion);
 
-        $questions = collect($questions)->reject(fn($item) => $item['section'] == 'custom');
+        $questions = collect($questions)->reject(fn ($item) => $item['section'] == 'custom');
 
         return $questions;
     }

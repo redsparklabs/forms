@@ -5,6 +5,7 @@ namespace App\Actions\Jetstream;
 use Illuminate\Support\Facades\DB;
 use App\Actions\Jetstream\DeleteOrganization;
 use Laravel\Jetstream\Contracts\DeletesUsers;
+
 class DeleteUser implements DeletesUsers
 {
 

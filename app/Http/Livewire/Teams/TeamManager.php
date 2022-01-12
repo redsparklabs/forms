@@ -52,7 +52,6 @@ class TeamManager extends BaseComponent
 
     public function createAction()
     {
-
     }
     /**
      * Mount the component

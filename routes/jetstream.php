@@ -22,7 +22,7 @@ Route::group(['middleware' => config('jetstream.middleware', ['web'])], function
     Route::group(['middleware' => ['auth', 'verified']], function () {
         // User & Profile...
         Route::get('/user/profile', [UserProfileController::class, 'show'])
-                    ->name('profile.show');
+            ->name('profile.show');
 
         // Teams... aliased as organizartion
         if (Jetstream::hasTeamFeatures()) {
@@ -31,8 +31,8 @@ Route::group(['middleware' => config('jetstream.middleware', ['web'])], function
             Route::put('/current-organization', [CurrentOrganizationController::class, 'update'])->name('current-organization.update');
 
             Route::get('/organization-invitations/{invitation}', [TeamInvitationController::class, 'accept'])
-                        ->middleware(['signed'])
-                        ->name('team-invitations.accept');
+                ->middleware(['signed'])
+                ->name('team-invitations.accept');
         }
     });
 });

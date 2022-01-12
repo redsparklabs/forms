@@ -62,8 +62,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::put('/current-organization', [CurrentOrganizationController::class, 'update'])->name('current-organization.update');
 
     Route::get('/organization-invitations/{invitation}', [OrganizationInvitationController::class, 'accept'])
-                ->middleware(['signed'])
-                ->name('organization-invitations.accept');
+        ->middleware(['signed'])
+        ->name('organization-invitations.accept');
 
     Route::get('organizations/{organization}/forms', FormManager::class)->name('form-manager');
     Route::get('organizations/{organization}/questions', QuestionManager::class)->name('question-manager');

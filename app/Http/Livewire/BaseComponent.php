@@ -182,7 +182,6 @@ abstract class BaseComponent extends Component
         $this->idBeingDestroyed = null;
 
         $this->emit('destroyed');
-
     }
 
     /**

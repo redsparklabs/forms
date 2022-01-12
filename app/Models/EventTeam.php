@@ -18,7 +18,5 @@ class EventTeam extends Pivot
      *
      * @var string[]
      */
-    protected $fillable = [
-
-    ];
+    protected $fillable = [];
 }

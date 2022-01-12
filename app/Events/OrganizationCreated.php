@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Events;
+
 use App\Models\Organization;
 
 class OrganizationCreated extends OrganizationEvent

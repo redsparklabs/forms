@@ -30,6 +30,7 @@ class UpdateQuestion
         $this->fill($attributes)->validateAttributes();
 
         $newQuestion = Arr::get($attributes, 'question');
+
         $description = Arr::get($attributes, 'description');
 
         $question->question = $newQuestion;

@@ -77,7 +77,7 @@ class Organization extends Model
     }
 
 
-     /**
+    /**
      * Get the owner of the team.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -105,9 +105,9 @@ class Organization extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, Membership::class)
-                        ->withPivot('role')
-                        ->withTimestamps()
-                        ->as('membership');
+            ->withPivot('role')
+            ->withTimestamps()
+            ->as('membership');
     }
 
 
@@ -182,10 +182,10 @@ class Organization extends Model
     public function purge()
     {
         $this->owner()->where('current_organization_id', $this->id)
-                ->update(['current_organization_id' => null]);
+            ->update(['current_organization_id' => null]);
 
         $this->users()->where('current_organization_id', $this->id)
-                ->update(['current_organization_id' => null]);
+            ->update(['current_organization_id' => null]);
 
         $this->users()->detach();
 
