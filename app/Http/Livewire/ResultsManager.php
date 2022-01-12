@@ -8,30 +8,24 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
 use App\Models\Form;
 use App\Models\Team;
+use WireUi\Traits\Actions;
 
 class ResultsManager extends Component
 {
 
-    /**
-     * The organization instance.
-     *
-     * @var \App\Models\Organization
-     */
+    use Actions;
+
     public $event;
-
-    /**
-     * The organization instance.
-     *
-     * @var \App\Models\Organization
-     */
     public $form;
-
-    /**
-     * The user instance.
-     *
-     * @var \App\Models\User|null
-     */
     public $user;
+    public $questions;
+    public $sections;
+    public $team;
+    public $responses;
+    public $progressMetricTotal;
+    public $sectionTotals;
+    public $totalSections;
+
 
     /**
      * Indicates if the a resource should be updated.
@@ -86,39 +80,30 @@ class ResultsManager extends Component
     {
         $this->confirmingUpdating = true;
 
-        $team = $this->organization->teams()->find($this->idBeingUpdated);
+        $pivot = $this->event->teams->find($this->team)->pivot;
 
         $this->updateForm = [
-            'net_projected_value' => $team?->net_projected_value,
-            'investment' => $team?->investment,
+            'net_projected_value' => $pivot?->net_projected_value,
+            'investment' => $pivot?->investment,
         ];
     }
 
-
-    /**
-     * Update a team
-     *
-     * @return void
-     */
-    public function updateAction()
+    public function update()
     {
-        $organization  = $this->organization->teams()->find($this->idBeingUpdated);
+        $this->event->teams()->updateExistingPivot($this->team, [
+            'net_projected_value' => $this->updateForm['net_projected_value'],
+            'investment' => $this->updateForm['investment'],
+        ]);
+        $this->notification()->success(
+            'Data Updated',
+            'Your data was successfully updated.'
+        );
 
-        // UpdateTeam::run(
-        //     $this->user,
-        //     $this->organization,
-        //     $organization,
-        //     $this->updateForm
-        // );
-    }
+        $this->reset('updateForm');
 
-    /**
-     * Delete a team
-     *
-     * @return void
-     */
-    public function destroyAction()
-    {
+        $this->emit('updated');
+
+        $this->confirmingUpdating = false;
     }
 
     /**

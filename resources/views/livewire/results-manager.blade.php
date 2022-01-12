@@ -1,8 +1,22 @@
-
+<div>
+    <header class="bg-white shadow">
+        <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="flex">
+                <div class="w-full">
+                    <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                        Results &middot; {{ $event->name }} &middot; {{ $form->name }} &middot; @if($team) {{ $team->name }} @endif
+                    </h2>
+                </div>
+                <div>
+                    <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmUpdate('{{ $event->id }}', '{{ $form->id }}', '{{ $questions }}')">
+                        {{ __('Update') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
     <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmUpdate('{{ $event->id }}', '{{ $form->id }}', '{{ $questions }}')">
-            {{ __('Update') }}
-        </button>
+
 
          <div>
             <table class="w-1/2 m-auto border-collapse">
@@ -25,7 +39,7 @@
                         @foreach($sections->all() as $section => $sectionData)
                             <th scope="col" class="w-10 bg-white border whitespace-nowrap">
                                 <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
-                                    <span class="text-{{ $sectionData->first()['color'] }} p-2">{{ implode(' ', explode('_', $section)) }}</span>
+                                    <span class="text-{{ Arr::get($sectionData, 'color') }} p-2">{{ implode(' ', explode('_', $section)) }}</span>
                                 </div>
                             </th>
                         @endforeach
@@ -43,7 +57,7 @@
 
                             @foreach($sections->reject(fn($item, $key) => $key == 'Intutive_Scoring')->all() as $section => $sectionData)
                                 @php
-                                    $sectionQuestions = $sectionData->pluck('question')->map(fn($item) => Str::slug($item))->toArray();
+                                    $sectionQuestions = collect($sectionData)->pluck('question')->map(fn($item) => Str::slug($item))->toArray();
 
                                     $total += collect($response->questions)->filter(function($item, $key) use ($sectionQuestions) {
                                         return in_array($key, $sectionQuestions);
@@ -64,7 +78,7 @@
                             @foreach($sections->all() as $section => $sectionData)
                                 <td class="p-2 text-center bg-white border-2">
                                     @php
-                                        $sectionQuestions = $sectionData->pluck('question')->map(fn($item) => Str::slug($item))->toArray();
+                                        $sectionQuestions = collect($sectionData)->pluck('question')->map(fn($item) => Str::slug($item))->toArray();
                                         $total = collect($response->questions)->filter(function($item, $key) use($sectionQuestions) {
                                             return in_array($key, $sectionQuestions);
                                         })->sum();
@@ -102,9 +116,9 @@
                         @endforeach
 
                         @foreach($sections->all() as $section => $sectionData)
-                            <td class="bg-{{ $sectionData->first()['color'] }} border-2 text-center p-2">
+                            <td class="bg-{{ Arr::get($sectionData, 'color') }} border-2 text-center p-2">
                                 @if($sectionTotals[$section .'_count'])
-                                    {{ number_format($sectionTotals[$section .'_count'] / $form->responses->count(), 1) }}
+                                    {{ number_format($sectionTotals[$section .'_count'] / $responses->count(), 1) }}
                                 @endif
                             </td>
                         @endforeach
@@ -113,33 +127,6 @@
                 </tbody>
             </table>
 
-           {{--  <table class="w-full m-auto mt-10 border-collapse">
-                <thead class="table-auto">
-                    <tr>
-                        <th scope="col"></th>
-                        @foreach($feedback_questions as $question)
-                            <th scope="col" class="px-4 py-2 text-left">
-                                <div class="mb-2 text-lg">{{ $question['question'] }}</div>
-                                <div class="text-xs font-normal">{{ $question['description'] }}</div>
-                            </th>
-                        @endforeach
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach($responses as $response)
-                    <tr class="border-b-2 border-black border-solid">
-                        <td class="px-4 py-2">{{ $response->email }} {{ $response->team }} </td>
-                        @foreach($response->response['questions']['custom'] as $custom)
-                            <td class="px-4 py-2"> {{ $custom }} </td>
-                        @endforeach
-                    </tr>
-                    @endforeach
-                    <tr>
-                        <td class="p-2 text-sm italic" colspan="{{ count($feedback_questions) + 1 }}">*Note: All Scores are calculated based on the last Evaluation, they are not a aggregate of all Progress scores.</td>
-                    </tr>
-                </tbody>
-            </table> --}}
 
             <div class="w-2/3 m-auto mt-10">
                 <div class="grid grid-flow-col gap-2 grid-rows-">
@@ -181,26 +168,21 @@
 
     <x-jet-dialog-modal wire:model="confirmingUpdating">
         <x-slot name="title">
-            {{ __('Update Project') }}
+            {{ __('Update Fields') }}
         </x-slot>
 
         <x-slot name="content">
-            <div>
-                <x-jet-label for="name" value="{{ __('Project Name') }}" />
-                <x-jet-input id="name" type="text" class="block w-full mt-1" model="updateForm.name" wire:model.defer="updateForm.name" />
-                <x-jet-input-error for="name" class="mt-2" />
+
+            <div class="mt-4">
+                <x-jet-label for="net_projected_value" value="{{ __('Net Projected Value') }}" />
+                <x-jet-input id="net_projected_value" type="text" class="block w-full mt-1" wire:model.defer="updateForm.net_projected_value" />
+                <x-jet-input-error for="net_projected_value" class="mt-2" />
             </div>
 
             <div class="mt-4">
-                <x-jet-label for="priority_level" value="{{ __('Priority Level') }}" />
-                <x-jet-input id="priority_level" type="text" class="block w-full mt-1" wire:model.defer="updateForm.priority_level" />
-                <x-jet-input-error for="priority_level" class="mt-2" />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label for="start_date" value="{{ __('Start Date') }}" />
-                <x-jet-input type="date" id="start_date" class="block w-full mt-1" wire:model.defer="updateForm.start_date" />
-                <x-jet-input-error for="start_date" class="mt-2" />
+                <x-jet-label for="investment" value="{{ __('Investment') }}" />
+                <x-jet-input type="text" id="investment" class="block w-full mt-1" wire:model.defer="updateForm.investment" />
+                <x-jet-input-error for="investment" class="mt-2" />
             </div>
         </x-slot>
 
@@ -215,3 +197,4 @@
         </x-slot>
     </x-jet-dialog-modal>
 
+</div>
