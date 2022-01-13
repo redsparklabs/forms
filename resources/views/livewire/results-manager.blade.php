@@ -3,9 +3,27 @@
         <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="flex">
                 <div class="w-full">
-                    <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                        Results &middot; {{ $event->name }} &middot; {{ $form->name }} &middot; @if($team) {{ $team->name }} @endif
-                    </h2>
+                    <div>
+                        <span class="font-semibold leading-tight text-gray-800 text-md">
+                            Growth Board:
+                        </span>
+                        <span class="text-gray-400 text-md">{{ $event->name }}</span>
+                    </div>
+                    @if($team)
+                        <div>
+                            <span class="font-semibold leading-tight text-gray-800 text-md">Project:</span>
+                            <span class="text-gray-400 text-md">{{ $team->name }}</span>
+                        </div>
+                    @endif
+                    <div>
+                        <span class="font-semibold leading-tight text-gray-800 text-md">Form:</span>
+                        <span class="text-gray-400 text-md">{{ $form->name }}</span>
+                    </div>
+
+                    <div>
+                        <span class="font-semibold leading-tight text-gray-800 text-md">Current Progress Metric:</span>
+                        <span class="inline-block font-bold text-center text-blue-500">{{ $team->progress_metric }}</span>
+                    </div>
                 </div>
                 <div>
                     <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmUpdate('{{ $event->id }}', '{{ $form->id }}', '{{ $questions }}')">
@@ -16,7 +34,6 @@
         </div>
     </header>
     <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
-
 
          <div>
             <table class="w-1/2 m-auto border-collapse">
@@ -110,7 +127,6 @@
                                     if( $mappedQuestions->pluck(Str::slug($question['question']))->sum() > 0) {
                                         echo number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
                                     }
-
                                 @endphp
                             </td>
                         @endforeach
@@ -122,14 +138,45 @@
                                 @endif
                             </td>
                         @endforeach
+                    </tr>
+                </tbody>
+            </table>
 
+
+           <table class="w-full m-auto mt-10 border-collapse">
+                <thead class="table-auto">
+                    <tr>
+                        <th scope="col">
+                            <div class="mb-2 text-lg text-left">Qualitative Feedback</div>
+                            <div class="text-xs font-normal">Feedback, Questions, Ideas, and follow-up items.</div>
+                        </th>
+                        @foreach($feedback_questions as $question)
+                            <th scope="col" class="px-4 py-2 text-left">
+                                <div class="mb-2 text-lg text-blue-600">{{ $question['question'] }}</div>
+                                <div class="text-xs font-normal">{{ $question['description'] }}</div>
+                            </th>
+                        @endforeach
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach($responses as $response)
+                    <tr class="border-b-2 border-black border-solid">
+                        <td class="py-2 text-left">{{ $response->email }} </td>
+                        @foreach($response->response['questions']['custom'] as $custom)
+                            <td class="px-4 py-2"> {{ $custom }} </td>
+                        @endforeach
+                    </tr>
+                    @endforeach
+                    <tr>
+                        <td class="p-2 text-sm italic" colspan="{{ count($feedback_questions) + 1 }}">*Note: All Scores are calculated based on the last Evaluation, they are not a aggregate of all Progress scores.</td>
                     </tr>
                 </tbody>
             </table>
 
 
             <div class="w-2/3 m-auto mt-10">
-                <div class="grid grid-flow-col gap-2 grid-rows-">
+                <div class="grid grid-flow-col grid-rows-2 gap-4">
 
                      @foreach($questions->where('hidden', false)->sortBy('order')->take(7) as $question)
                         @php
@@ -141,13 +188,11 @@
                                 $number = number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
                             }
                         @endphp
-
-                        <div class="{{ $question['classes']}} {{ colorize($number) }} flex items-center justify-center">{{ $question['question'] }}<br/>{{ $number}}</div>
+                        <div class="{{ $question['classes'] }} {{ colorize($number) }} flex items-center justify-center text-center p-4">{{ $question['question'] }}<br/>{{ $number}}</div>
                     @endforeach
                 </div>
 
-
-                <div class="grid grid-flow-col gap-2 mt-2 grid-rows-">
+                <div class="grid grid-flow-col gap-4 mt-2">
                      @foreach($questions->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
                         @php
                             $mappedQuestions = collect($responses)->map(function ($value) {
@@ -159,7 +204,7 @@
                             }
                         @endphp
 
-                        <div class="{{ $question['classes']}} {{ colorize($number) }} flex items-center justify-center">{{ $question['question'] }}<br/>{{ $number}}</div>
+                        <div class="{{ $question['classes']}} {{ colorize($number) }} flex text-center items-center justify-center">{{ $question['question'] }}<br/>{{ $number}}</div>
                     @endforeach
                 </div>
             </div>
@@ -183,6 +228,18 @@
                 <x-jet-label for="investment" value="{{ __('Investment') }}" />
                 <x-jet-input type="text" id="investment" class="block w-full mt-1" wire:model.defer="updateForm.investment" />
                 <x-jet-input-error for="investment" class="mt-2" />
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="priority_level" value="{{ __('Priority Level') }}" />
+                <x-jet-input id="priority_level" type="text" class="block w-full mt-1" wire:model.defer="updateForm.priority_level" />
+                <x-jet-input-error for="priority_level" class="mt-2" />
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="start_date" value="{{ __('Start Date') }}" />
+                <x-jet-input id="start_date" type="date" class="block w-full mt-1" wire:model.defer="updateForm.start_date" />
+                <x-jet-input-error for="start_date" class="mt-2" />
             </div>
         </x-slot>
 

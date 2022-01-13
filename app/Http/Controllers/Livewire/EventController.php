@@ -69,10 +69,8 @@ class EventController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function results(Request $request, Event $event, Form $form, Team $team = null)
+    public function results(Request $request, Event $event, Form $form, $team = null)
     {
-        $form = $event->forms()->findOrFail($form->id);
-
         $progressMetricTotal = 0;
         $questions = $form->allQuestions();
         $feedback_questions = $form->feedbackQuestions();
@@ -93,6 +91,7 @@ class EventController extends Controller
             'questions',
             'sections',
             'responses',
+            'feedback_questions',
             'progressMetricTotal',
             'sectionTotals',
             'totalSections'

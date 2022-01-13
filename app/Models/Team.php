@@ -69,6 +69,25 @@ class Team extends Model
     }
 
     /**
+     * Get the latest event
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function latestEvent()
+    {
+        return $this->events()->latest()->first();
+    }
+
+    /**
+     * Get the latest form
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function latestform()
+    {
+        return $this->latestEvent()->forms()->latest()->first();
+    }
+    /**
      * Get the progress metric total.
      *
      * @return void|string
@@ -76,7 +95,7 @@ class Team extends Model
     public function getProgressMetricAttribute()
     {
         if ($this->events?->isNotEmpty()) {
-            $form = $this->events()->first()->forms()->first();
+            $form = $this->events()->latest()->first()->forms()->latest()->first();
             $data = $this->calculateSections($form);
 
             return $data['progressMetricTotal'];

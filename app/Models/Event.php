@@ -78,6 +78,13 @@ class Event extends Model
     }
 
     /**
+     * Get the latest form
+     */
+    public function latestForm()
+    {
+        return $this->forms()->latest();
+    }
+    /**
      * Get the owner of the team.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

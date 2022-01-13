@@ -16,19 +16,17 @@
 
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <img class="w-8 h-8 rounded-full" src="{{ $team->team_image }}" alt="{{ $team->name }}">
                                     <div class="ml-4">{{ $team->name }}</div>
                                     @if($team->progress_metric)
-                                        <div class="ml-2 p-2 font-bold text-right text-white bg-blue-500 ">{{ $team->progress_metric }}</div>
+                                        <div class="p-2 ml-2 font-bold text-right text-white bg-blue-500 ">{{ $team->progress_metric }}</div>
                                     @endif
 
                                 </div>
 
                                 <div class="flex items-center">
-
                                     @if (Gate::check('viewTeam', $organization))
-                                        <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('teams.show', $team->id) }}">
-                                            {{ __('View') }}
+                                        <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.results', [$team->latestEvent()->id, $team->latestform()->id]) }}">
+                                            {{ __('View Results') }}
                                         </a>
                                     @endif
 

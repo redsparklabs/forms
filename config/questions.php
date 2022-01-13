@@ -48,14 +48,14 @@ return [
             'color' => 'purple-500',
             'section' => 'Feasability_(Technical)',
             'order' => 2,
-            'classes' => 'col-span-2 row-span-2 h-20'
+            'classes' => 'col-span-2 row-span-2'
         ], [
             'question' => 'Channels',
             'description' => 'There is clear evidence of the channel(s) through which value can be delivered to the customer.',
             'color' => 'purple-500',
             'section' => 'Feasability_(Technical)',
             'order' => 6,
-            'classes' => 'col-span-2 h-20'
+            'classes' => 'col-span-2'
         ], [
             'question' => 'Competitive Advantage',
             'description' => 'There is a clear definition of how the solution is different or more valuable compared to competing solutions and offerings.',
@@ -69,21 +69,21 @@ return [
             'color' => 'green-500',
             'section' => 'Viability_(Regulatory)',
             'order' => 3,
-            'classes' => 'col-span-2 h-20'
+            'classes' => 'col-span-2 '
         ], [
             'question' => 'Revenue',
             'description' => 'There is revenue OR a clear definition of how the solution can be monetized.',
             'color' => 'green-500',
             'section' => 'Viability_(Regulatory)',
             'order' => 9,
-            'classes' => 'row-span-3 h-32'
+            'classes' => 'row-span-3'
         ], [
             'question' => 'Costs',
             'description' => 'There is clear evidence of the costs necessary to launch and maintain this business model.',
             'color' => 'green-500',
             'section' => 'Viability_(Regulatory)',
             'order' => 10,
-            'classes' => 'row-span-3 h-32'
+            'classes' => 'row-span-3'
         ],
     ],
     'qualitative-intuitive-scoring' => [

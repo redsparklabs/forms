@@ -12,13 +12,6 @@
 
             @livewire('organizations.organization-member-manager', ['organization' => $organization])
 
-            @if (Gate::check('delete', $organization) && ! $organization->personal_organization)
-                <x-jet-section-border />
-
-                <div class="mt-10 sm:mt-0">
-                    @livewire('organizations.delete-organization-form', ['organization' => $organization])
-                </div>
-            @endif
         </div>
     </div>
 </x-app-layout>

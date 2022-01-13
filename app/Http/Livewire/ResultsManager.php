@@ -34,26 +34,37 @@ class ResultsManager extends Component
      * @var array
      */
     public $questions;
+
+    /**
+     * @var array
+     */
+    public $feedback_questions;
+
     /**
      * @var array
      */
     public $sections;
+
     /**
      * @var array
      */
     public $team;
+
     /**
      * @var array
      */
     public $responses;
+
     /**
      * @var array
      */
     public $progressMetricTotal;
+
     /**
      * @var array
      */
     public $sectionTotals;
+
     /**
      * @var array
      */
@@ -82,6 +93,9 @@ class ResultsManager extends Component
     public $updateForm = [
         'net_projected_value' => '',
         'investment' => '',
+        'priority_level' => '',
+        'start_date' => '',
+
     ];
 
 
@@ -99,12 +113,13 @@ class ResultsManager extends Component
      * @param  array $totalSections
      * @return void
      */
-    public function mount(Event $event, Form $form, Team $team, $questions, $sections, $responses, $progressMetricTotal, $sectionTotals, $totalSections)
+    public function mount(Event $event, Form $form, $team, $questions, $sections, $responses, $progressMetricTotal, $sectionTotals, $totalSections, $feedback_questions)
     {
         $this->event = $event;
         $this->form = $form;
         $this->user = Auth::user();
         $this->questions = $questions;
+        $this->feedback_questions = $feedback_questions;
         $this->sections = $sections;
         $this->team = $team;
         $this->responses = $responses;
@@ -125,6 +140,8 @@ class ResultsManager extends Component
         $this->updateForm = [
             'net_projected_value' => $pivot?->net_projected_value,
             'investment' => $pivot?->investment,
+            'priority_level' => $this->team->priority_level,
+            'start_date' => $this->team->start_date->format('Y-m-d'),
         ];
     }
 
@@ -133,6 +150,11 @@ class ResultsManager extends Component
         $this->event->teams()->updateExistingPivot($this->team, [
             'net_projected_value' => $this->updateForm['net_projected_value'],
             'investment' => $this->updateForm['investment'],
+
+        ]);
+        $this->team->update([
+            'priority_level' => $this->updateForm['priority_level'],
+            'start_date' => $this->updateForm['start_date'],
         ]);
         $this->notification()->success(
             'Data Updated',
