@@ -1,53 +1,54 @@
 <div>
 
-    @if ($organization->events->isNotEmpty())
-        <div class="mt-10 sm:mt-0">
-            <x-jet-action-section>
-                <x-slot name="title">
-                    {{ __('Growth Boards') }}
-                </x-slot>
+    <div class="mt-10 sm:mt-0">
+        <x-jet-action-section>
+            <x-slot name="title">
+                {{ __('Growth Boards') }}
+            </x-slot>
 
-                <x-slot name="description">
-                    {{ __('All of the Growth Boards that are part of this organization.') }}
-                </x-slot>
+            <x-slot name="description">
+                {{ __('All of the Growth Boards that are part of this organization.') }}
+            </x-slot>
 
-                <!-- Organization Organization List -->
-                <x-slot name="content">
-                    <div class="space-y-6">
-                        @foreach ($organization->events->sortBy('name') as $event)
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <div class="ml-4">{{ $event->name }}</div>
-                                </div>
-
-                                <div class="flex items-center">
-
-                                    @if (Gate::check('viewEvent', $organization))
-                                        <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.show', $event->id) }}">
-                                            {{ __('View') }}
-                                        </a>
-                                    @endif
-
-                                    @if (Gate::check('updateEvent', $organization))
-                                        <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmUpdate('{{ $event->id }}')">
-                                            {{ __('Update') }}
-                                        </button>
-                                    @endif
-
-                                    @if (Gate::check('removeEvent', $organization))
-                                        <button class="ml-6 text-sm text-red-500 cursor-pointer focus:outline-none" wire:click="confirmDestroy('{{ $event->id }}')">
-                                            {{ __('Archive') }}
-                                        </button>
-                                    @endif
-                                </div>
+            <!-- Organization Organization List -->
+            <x-slot name="content">
+                <div class="space-y-6">
+                    @forelse ($organization->events->sortBy('name') as $event)
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="ml-4">{{ $event->name }}</div>
                             </div>
-                        @endforeach
-                    </div>
-                </x-slot>
-            </x-jet-action-section>
-        </div>
 
-    @endif
+                            <div class="flex items-center">
+
+                                @if (Gate::check('viewEvent', $organization))
+                                    <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.show', $event->id) }}">
+                                        {{ __('View') }}
+                                    </a>
+                                @endif
+
+                                @if (Gate::check('updateEvent', $organization))
+                                    <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmUpdate('{{ $event->id }}')">
+                                        {{ __('Update') }}
+                                    </button>
+                                @endif
+
+                                @if (Gate::check('removeEvent', $organization))
+                                    <button class="ml-6 text-sm text-red-500 cursor-pointer focus:outline-none" wire:click="confirmDestroy('{{ $event->id }}')">
+                                        {{ __('Archive') }}
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-sm text-center text-gray-600">
+                            No Growth Boards created. Go ahead and <a class="underline " href="{{ route('events.create') }}">create one</a>!
+                        </div>
+                    @endforelse
+                </div>
+            </x-slot>
+        </x-jet-action-section>
+    </div>
 
     <!-- Uodate Event Confirmation Modal -->
     <x-jet-dialog-modal wire:model="confirmingUpdating">

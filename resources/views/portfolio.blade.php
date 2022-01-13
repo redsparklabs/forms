@@ -19,7 +19,7 @@
 
                     <x-slot name="content">
                         <div class="space-y-6">
-                            @foreach (Auth::user()->currentOrganization->teams->sortBy('name') as $team)
+                            @forelse (Auth::user()->currentOrganization->teams->sortBy('name') as $team)
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center w-full">
                                         <div class="w-1/2 ml-4">{{ $team->name }}</div>
@@ -36,7 +36,11 @@
                                         </a>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="text-center">
+                                    No projects created. Go ahead and <a class="text-blue-900 underline" href="{{ route('teams.create') }}">create one</a>!
+                                </div>
+                            @endforelse
                         </div>
                     </x-slot>
                 </x-jet-action-section>

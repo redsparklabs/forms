@@ -2,10 +2,18 @@
     @if (Gate::check('addEvent', $organization))
         <div class="mt-10 sm:mt-0">
              @if($organization->forms->isEmpty())
-                <div class="p-6 text-center bg-white rounded-md">Please <a href="{{ route('form-manager', Auth::user()->currentOrganization->id) }}" class="text-blue-900 underline">add</a> at least one Form before creating a Growth Board.</div>
+                <div class="p-6 text-center bg-white rounded-md">
+                    <div class="text-sm text-center text-gray-600">
+                        Please <a href="{{ route('form-manager', Auth::user()->currentOrganization->id) }}" class="text-blue-900 underline">add</a> at least one Form before creating a Growth Board.
+                    </div>
+                </div>
 
             @elseif($organization->teams->isEmpty())
-                <div class="p-6 text-center bg-white rounded-md">Please <a href="{{ route('teams.create', Auth::user()->currentOrganization->id) }}" class="text-blue-900 underline">add</a> at least one Project before creating a Growth Board.</div>
+                <div class="p-6 text-center bg-white rounded-md">
+                    <div class="text-sm text-center text-gray-600">
+                        Please <a href="{{ route('teams.create', Auth::user()->currentOrganization->id) }}" class="text-blue-900 underline">add</a> at least one Project before creating a Growth Board.
+                    </div>
+                </div>
             @else
                 <x-jet-form-section submit="create">
                     <x-slot name="title">
