@@ -25,7 +25,7 @@ class Question extends Model
      * @var string[]
      */
     protected $fillable = [
-        'question', 'description',
+        'question', 'description', 'color', 'section', 'hidden'
     ];
 
     /**

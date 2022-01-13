@@ -27,6 +27,7 @@ class CreateQuestion
         $this->fill($attributes)->validateAttributes();
 
         $question = Arr::get($attributes, 'question');
+
         $description = Arr::get($attributes, 'description');
 
         $organization->questions()->create(['question' => $question, 'description' => $description]);

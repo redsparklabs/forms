@@ -32,6 +32,17 @@ class EventController extends Controller
         ]);
     }
 
+        /**
+     * @param  Request $request
+     * @return \Illuminate\View\View
+     */
+    public function create(Request $request)
+    {
+        return view('events.create', [
+            'organization' => $request->user()->currentOrganization,
+            'user' => $request->user(),
+        ]);
+    }
     /**
      * Show the organization creation screen.
      *

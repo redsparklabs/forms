@@ -27,12 +27,13 @@ class CreateForm
         $this->fill($attributes)->validateAttributes();
 
         $name = Arr::get($attributes, 'name');
+
         $description = Arr::get($attributes, 'description');
+
         $form = $organization->forms()->create([
             'name' => $name,
             'description' => $description
         ]);
-
 
         return $form;
     }

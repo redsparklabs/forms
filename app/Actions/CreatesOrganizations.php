@@ -31,6 +31,7 @@ class CreatesOrganizations
             'personal_organization' => false,
         ]));
 
+
         return $organization;
     }
 }

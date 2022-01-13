@@ -14,7 +14,7 @@
             <div class="mt-10 sm:mt-0">
                 <x-jet-action-section>
                     <x-slot name="title">
-                        {{ __('Events') }}
+                        {{ __('Growth Boards') }}
                     </x-slot>
 
                     <x-slot name="description"></x-slot>
@@ -24,9 +24,9 @@
                             @foreach (Auth::user()->currentOrganization->events->sortBy('name') as $event)
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center w-full">
-                                        <div class="ml-4 w-1/2">{{ $event->name }}</div>
+                                        <div class="w-1/2 ml-4">{{ $event->name }}</div>
 
-                                        <div class="ml-4 w-1/2">{{ $event->created_at->format('m-d-Y') }}</div>
+                                        <div class="w-1/2 ml-4">{{ $event->created_at->format('m-d-Y') }}</div>
                                     </div>
 
                                     <div class="flex items-center">

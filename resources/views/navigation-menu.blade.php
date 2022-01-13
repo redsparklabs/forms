@@ -56,12 +56,6 @@
                                     </x-jet-dropdown-link>
                                 @endif
 
-                                @can('create', App\Models\Organization::class)
-                                    <x-jet-dropdown-link href="{{ route('organizations.create') }}">
-                                        {{ __('Create New Organization') }}
-                                    </x-jet-dropdown-link>
-                                @endcan
-
                                 @if(Auth::user()->currentOrganization)
                                     <div class="border-t border-gray-100"></div>
 
@@ -103,20 +97,21 @@
                                     </x-jet-dropdown-link>
                                 @endcan
 
-                                <div class="border-t border-gray-100"></div>
 
-                                <div class="block px-4 py-2 text-xs text-gray-400">
-                                    {{ __('Manage Projectss') }}
-                                </div>
+                                @if(!Auth::user()->allOrganizations()->pluck('teams')->empty())
+                                    <div class="border-t border-gray-100"></div>
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        {{ __('Manage Projects') }}
+                                    </div>
 
-                                @foreach (Auth::user()->allOrganizations()->pluck('teams')->all() as $teams)
-                                    @foreach($teams as $team)
-                                        <x-jet-dropdown-link href="{{ route('teams.show', $team->id) }}">
-                                            {{ $team->name }}
-                                        </x-jet-dropdown-link>
+                                    @foreach (Auth::user()->allOrganizations()->pluck('teams')->all() as $teams)
+                                        @foreach($teams as $team)
+                                            <x-jet-dropdown-link href="{{ route('teams.show', $team->id) }}">
+                                                {{ $team->name }}
+                                            </x-jet-dropdown-link>
+                                        @endforeach
                                     @endforeach
-                                @endforeach
-
+                                @endif
                             </div>
                         </x-slot>
                     </x-jet-dropdown>
@@ -139,12 +134,18 @@
                                 <x-jet-dropdown-link href="{{ route('events.index') }}">
                                     {{ __('All Growth Boards') }}
                                 </x-jet-dropdown-link>
+                                @can('create', App\Models\Organization::class)
+                                    <x-jet-dropdown-link href="{{ route('events.create') }}">
+                                        {{ __('Create Growth Board') }}
+                                    </x-jet-dropdown-link>
+                                @endcan
+
+
                                 @if(!Auth::user()->allOrganizations()->pluck('events')->empty())
                                     <div class="border-t border-gray-100"></div>
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         {{ __('Manage Growth Boards') }}
                                     </div>
-
                                     @foreach (Auth::user()->allOrganizations()->pluck('events')->all() as $events)
                                         @foreach($events as $event)
                                             <x-jet-dropdown-link href="{{ route('events.show', $event->id) }}">
