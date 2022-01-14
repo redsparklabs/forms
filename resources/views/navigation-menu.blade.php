@@ -96,9 +96,6 @@
                                         {{ __('Create New Project') }}
                                     </x-jet-dropdown-link>
                                 @endcan
-
-
-                                @if(!Auth::user()->allOrganizations()->pluck('teams')->empty())
                                     <div class="border-t border-gray-100"></div>
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         {{ __('Manage Projects') }}
@@ -111,7 +108,6 @@
                                             </x-jet-dropdown-link>
                                         @endforeach
                                     @endforeach
-                                @endif
                             </div>
                         </x-slot>
                     </x-jet-dropdown>
@@ -140,20 +136,17 @@
                                     </x-jet-dropdown-link>
                                 @endcan
 
-
-                                @if(!Auth::user()->allOrganizations()->pluck('events')->empty())
-                                    <div class="border-t border-gray-100"></div>
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Manage Growth Boards') }}
-                                    </div>
-                                    @foreach (Auth::user()->allOrganizations()->pluck('events')->all() as $events)
-                                        @foreach($events as $event)
-                                            <x-jet-dropdown-link href="{{ route('events.show', $event->id) }}">
-                                                {{ $event->name }}
-                                            </x-jet-dropdown-link>
-                                        @endforeach
+                                <div class="border-t border-gray-100"></div>
+                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                    {{ __('Manage Growth Boards') }}
+                                </div>
+                                @foreach (Auth::user()->allOrganizations()->pluck('events')->all() as $events)
+                                    @foreach($events as $event)
+                                        <x-jet-dropdown-link href="{{ route('events.show', $event->id) }}">
+                                            {{ $event->name }}
+                                        </x-jet-dropdown-link>
                                     @endforeach
-                                @endif
+                                @endforeach
                             </div>
                         </x-slot>
                     </x-jet-dropdown>
