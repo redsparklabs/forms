@@ -21,13 +21,6 @@ class Team extends Model
     protected $dates = ['deleted_at', 'start_date'];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var string[]

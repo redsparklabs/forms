@@ -20,16 +20,38 @@
                     <x-slot name="content">
                         <div class="space-y-6">
                             @forelse ($team->events->sortBy('name') as $event)
+                            <div>
+                                    <div>
+                                        <span class="font-semibold leading-tight text-gray-800 text-md">Growth Investment:</span>
+                                        <span class="text-gray-600 text-md">{{ $event->teams->find($team)->pivot->investment }}</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-semibold leading-tight text-gray-800 text-md">Net projected Value:</span>
+                                        <span class="text-gray-600 text-md">{{ $event->teams->find($team)->pivot->net_projected_value }}</span>
+                                    </div>
+                                    @if($team->progress_metric)
+                                        <div>
+                                            <span class="font-semibold leading-tight text-gray-800 text-md">Progress Metric:</span>
+                                            <span class="font-bold text-right text-blue-500">{{ $team->progress_metric }}</span>
+                                        </div>
+                                    @endif
+                            </div>
+
+
+                            <div>graph here</div>
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center">
                                         <div class="ml-4">{{ $event->name }}</div>
                                     </div>
 
-                                    <div class="flex items-center">
-                                        <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.show', $event->id) }}">
-                                            {{ __('View') }}
-                                        </a>
+                                    <div>
+                                        @if($team->latestEvent() && $team->latestform())
+                                            <a class="ml-2 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.results', [$team->latestEvent()->id, $team->latestform()->id, $team->id]) }}">
+                                                {{ __('View Results') }}
+                                            </a>
+                                        @endif
                                     </div>
+
                                 </div>
                             @empty
                                 <div class="w-full text-center">

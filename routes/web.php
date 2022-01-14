@@ -50,8 +50,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/growth-boards', [EventController::class, 'index'])->name('events.index');
     Route::get('/growth-boards/create', [EventController::class, 'create'])->name('events.create');
     Route::get('/growth-boards/{event}', [EventController::class, 'show'])->name('events.show');
-    Route::get('/growth-boards/{event}/form/{form}/projects/{team}/results', [EventController::class, 'results'])->name('events.team.results');
-    Route::get('/growth-boards/{event}/form/{form}/results', [EventController::class, 'results'])->name('events.results');
+    Route::get('/growth-boards/{event}/form/{form}/projects/{team}/results', [EventController::class, 'results'])->name('events.results');
 
 
     Route::get('/projects', [TeamController::class, 'index'])->name('teams.index');

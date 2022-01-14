@@ -50,9 +50,13 @@ class TeamManager extends BaseComponent
         'start_date' => ''
     ];
 
+    /**
+     * @return void
+     */
     public function createAction()
     {
     }
+
     /**
      * Mount the component
      *
@@ -65,6 +69,7 @@ class TeamManager extends BaseComponent
         $this->user = Auth::user();
         $this->organization = $organization;
     }
+
     /**
      * Confirm the update of a team
      */
@@ -72,10 +77,11 @@ class TeamManager extends BaseComponent
     {
         $team = $this->organization->teams()->find($this->idBeingUpdated);
 
+
         $this->updateForm = [
             'name' => $team?->name,
             'priority_level' => $team?->priority_level,
-            'start_date' => $team?->priority_level,
+            'start_date' => $team->start_date->format('Y-m-d'),
         ];
     }
 

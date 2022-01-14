@@ -19,13 +19,11 @@
                                 @if($team->progress_metric)
                                     <div class="p-2 ml-2 font-bold text-right text-white bg-blue-500 ">{{ $team->progress_metric }}</div>
                                 @endif
-
                             </div>
-
                             <div class="flex items-center">
-                                @if (Gate::check('viewTeam', $organization))
-                                    <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.results', [$team->latestEvent()->id, $team->latestform()->id]) }}">
-                                        {{ __('View Results') }}
+                                @if (Gate::check('viewTeam', $organization) )
+                                    <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('teams.show', [$team->id]) }}">
+                                        {{ __('View') }}
                                     </a>
                                 @endif
 

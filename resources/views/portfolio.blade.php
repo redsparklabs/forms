@@ -24,7 +24,7 @@
                                     <div class="flex items-center w-full">
                                         <div class="w-1/2 ml-4">{{ $team->name }}</div>
 
-                                        <div class="w-1/2 ml-4">{{ $team->created_at->format('m-d-Y') }}</div>
+                                        <div class="w-1/2 ml-4">{{ $team->created_at->format('m-d-Y'), }}</div>
                                     </div>
 
                                     @if($team->progress_metric)
@@ -65,7 +65,7 @@
                                     <div class="flex items-center w-full">
                                         <div class="w-1/2 ml-4">{{ $event->name }}</div>
 
-                                        <div class="w-1/2 ml-4">{{ $event->created_at->format('m-d-Y') }}</div>
+                                        <div class="w-1/2 ml-4">{{ $event->created_at }}</div>
                                     </div>
 
                                     <div class="flex items-center">

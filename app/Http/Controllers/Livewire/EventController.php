@@ -69,7 +69,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function results(Request $request, Event $event, Form $form, $team = null)
+    public function results(Request $request, Event $event, Form $form, Team $team)
     {
         $progressMetricTotal = 0;
         $questions = $form->allQuestions();
@@ -77,12 +77,7 @@ class EventController extends Controller
         $sections = collect($questions)->groupBy('section')->reject(fn ($item, $key) => $key == 'custom');
         $sectionTotals = $sections->keys()->mapWithkeys(fn ($item) => [$item . '_count' => 0])->all();
         $totalSections = $sections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
-
-        if ($team) {
-            $responses = $form->responses()->where('team_id', $team->id)->get();
-        } else {
-            $responses = $form->responses()->get();
-        }
+        $responses = $form->responses()->where('team_id', $team->id)->get();
 
         return view('events.results', compact(
             'event',

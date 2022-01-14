@@ -32,7 +32,7 @@
                                             {{ number_format($data['progressMetricTotal'] / $data['responses']->count(), 1) }}
                                         </div>
                                     @endif
-                                    <div class="ml-10">{{ $team->created_at->format('m-d-y') }}</div>
+                                    <div class="ml-10">{{ $team->created_at->format('m-d-Y'), }}</div>
                                 </div>
                                 @if($data['progressMetricTotal'] > 0)
                                     <div class="flex items-center">
