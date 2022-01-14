@@ -36,7 +36,7 @@
                                 </div>
                                 @if($data['progressMetricTotal'] > 0)
                                     <div class="flex items-center">
-                                        <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.team.results', [$event->id, $form->id, $team->id]) }}">
+                                        <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.results', [$event->id, $form->id, $team->id]) }}">
                                             {{ __('View Results') }}
                                         </a>
                                     </div>
