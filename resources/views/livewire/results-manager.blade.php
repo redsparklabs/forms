@@ -15,10 +15,6 @@
                             <span class="text-gray-400 text-md">{{ $team->name }}</span>
                         </div>
                     @endif
-                    <div>
-                        <span class="font-semibold leading-tight text-gray-800 text-md">Form:</span>
-                        <span class="text-gray-400 text-md">{{ $form->name }}</span>
-                    </div>
 
                     <div>
                         <span class="font-semibold leading-tight text-gray-800 text-md">Current Progress Metric:</span>

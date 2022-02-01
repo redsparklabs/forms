@@ -24,7 +24,7 @@
                             <span class="inline-flex rounded-md">
                                 @if(Auth::user()->currentOrganization)
                                     <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition bg-white border border-transparent rounded-md hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50">
-                                        {{ Auth::user()->currentOrganization->name }}
+                                    {{ __('Manage Organization') }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -37,16 +37,7 @@
                         <x-slot name="content">
                             <div class="w-60">
                                 @if(Auth::user()->currentOrganization)
-                                    <!-- Organization Management -->
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Manage Organization') }}
-                                    </div>
-
                                     <!-- Organization Settings -->
-                                    <x-jet-dropdown-link href="{{ route('organizations.show', Auth::user()->currentOrganization->id) }}">
-                                        {{ __('Organization Settings') }}
-                                    </x-jet-dropdown-link>
-
                                     <x-jet-dropdown-link href="{{ route('form-manager', Auth::user()->currentOrganization->id) }}">
                                         {{ __('Forms') }}
                                     </x-jet-dropdown-link>
@@ -54,19 +45,10 @@
                                     <x-jet-dropdown-link href="{{ route('question-manager', Auth::user()->currentOrganization->id) }}">
                                         {{ __('Questions') }}
                                     </x-jet-dropdown-link>
-                                @endif
 
-                                @if(Auth::user()->currentOrganization)
-                                    <div class="border-t border-gray-100"></div>
-
-                                    <!-- Organization Switcher -->
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Switch Organizations') }}
-                                    </div>
-
-                                    @foreach (Auth::user()->allOrganizations() as $organization)
-                                        <x-jet-switchable-organization :organization="$organization" />
-                                    @endforeach
+                                    <x-jet-dropdown-link href="{{ route('organizations.show', Auth::user()->currentOrganization->id) }}">
+                                        {{ __('Settings') }}
+                                    </x-jet-dropdown-link>
                                 @endif
                             </div>
                         </x-slot>
@@ -96,18 +78,18 @@
                                         {{ __('Create New Project') }}
                                     </x-jet-dropdown-link>
                                 @endcan
-                                    <div class="border-t border-gray-100"></div>
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Manage Projects') }}
-                                    </div>
+                                <div class="border-t border-gray-100"></div>
+                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                    {{ __('Manage Projects') }}
+                                </div>
 
-                                    @foreach (Auth::user()->allOrganizations()->pluck('teams')->all() as $teams)
-                                        @foreach($teams as $team)
-                                            <x-jet-dropdown-link href="{{ route('teams.show', $team->id) }}">
-                                                {{ $team->name }}
-                                            </x-jet-dropdown-link>
-                                        @endforeach
+                                @foreach (Auth::user()->allOrganizations()->pluck('teams')->all() as $teams)
+                                    @foreach($teams as $team)
+                                        <x-jet-dropdown-link href="{{ route('teams.show', $team->id) }}">
+                                            {{ $team->name }}
+                                        </x-jet-dropdown-link>
                                     @endforeach
+                                @endforeach
                             </div>
                         </x-slot>
                     </x-jet-dropdown>

@@ -62,6 +62,15 @@ class Team extends Model
     }
 
     /**
+     * Get the pivot table name for the team and event relationship.
+     *
+     * @return string
+     */
+    public function pivot()
+    {
+        return $this->latestEvent()?->pivot;
+    }
+    /**
      * Get the latest event
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
