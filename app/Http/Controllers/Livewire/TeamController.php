@@ -19,10 +19,6 @@ class TeamController extends Controller
     public function show(Request $request, $team)
     {
 
-        // if (Gate::denies('view', $team)) {
-        //     abort(403);
-        // }
-
         return view('teams.show', [
             'user' => $request->user(),
             'team' => $team,
@@ -48,8 +44,6 @@ class TeamController extends Controller
      */
     public function index(Request $request)
     {
-        // Gate::authorize('create', Team::class);
-
         return view('teams.index', [
             'organization' => $request->user()->currentOrganization,
             'user' => $request->user(),

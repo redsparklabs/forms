@@ -21,6 +21,7 @@
                                     </a>
                                 @endif
 
+(move update - to growth boards show page)
                                 @if (Gate::check('updateTeam', $organization))
                                     <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmUpdate('{{ $team->id }}')">
                                         {{ __('Update') }}
@@ -49,7 +50,7 @@
                             @endif
                             @if($team->start_date)
                                 <div class="flex items-center w-full">
-                                    <span class="text-sm text-gray-500">{{ _('State Date') }}:</span>
+                                    <span class="text-sm text-gray-500">{{ _('Start Date') }}:</span>
                                     <span class="ml-2 text-sm">{{ $team->start_date->format('m/d/y') }}</span>
                                 </div>
                             @endif
@@ -80,41 +81,6 @@
         </x-jet-action-section>
     </div>
 
-    <x-jet-dialog-modal wire:model="confirmingUpdating">
-        <x-slot name="title">
-            {{ __('Update Project') }}
-        </x-slot>
-
-        <x-slot name="content">
-            <div>
-                <x-jet-label for="name" value="{{ __('Project Name') }}" />
-                <x-jet-input id="name" type="text" class="block w-full mt-1" model="updateForm.name" wire:model.defer="updateForm.name" />
-                <x-jet-input-error for="name" class="mt-2" />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label for="priority_level" value="{{ __('Priority Level') }}" />
-                <x-jet-input id="priority_level" type="text" class="block w-full mt-1" wire:model.defer="updateForm.priority_level" />
-                <x-jet-input-error for="priority_level" class="mt-2" />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label for="start_date" value="{{ __('Start Date') }}" />
-                <x-jet-input type="date" id="start_date"  class="block w-full mt-1" wire:model.defer="updateForm.start_date" />
-                <x-jet-input-error for="start_date" class="mt-2" />
-            </div>
-        </x-slot>
-
-        <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingUpdating')" wire:loading.attr="disabled">
-                {{ __('Cancel') }}
-            </x-jet-secondary-button>
-
-            <x-jet-button class="ml-2" wire:click="update" spinner="update">
-                {{ __('Update') }}
-            </x-jet-button>
-        </x-slot>
-    </x-jet-dialog-modal>
 
     <x-jet-confirmation-modal wire:model="confirmingDestroying">
         <x-slot name="title">

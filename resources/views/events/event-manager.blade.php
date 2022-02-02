@@ -41,8 +41,8 @@
                             </div>
                         </div>
                     @empty
-                        <div class="text-sm text-center text-gray-600">
-                            No Growth Boards created. Go ahead and <a class="underline " href="{{ route('events.create') }}">create one</a>!
+                        <div class="text-md text-center text-gray-600">
+                            {{ __('No Growth Boards created. Go ahead and') }} <a class="underline " href="{{ route('events.create') }}">{{ __('create one') }}</a>!
                         </div>
                     @endforelse
                 </div>

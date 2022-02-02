@@ -20,19 +20,19 @@
                     <div class="col-span-6 sm:col-span-4">
                         <x-jet-label for="name" value="{{ __('Project Name') }}" />
                         <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="createForm.name" />
-                        <x-jet-input-error for="name" class="mt-2" />
+                        <x-jet-input-error for="createForm.name" class="mt-2" />
                     </div>
 
                     <div class="col-span-6 sm:col-span-4">
                         <x-jet-label for="priority_level" value="{{ __('Priority Level') }}" />
                         <x-jet-input id="priority_level" type="text" class="block w-full mt-1" wire:model.defer="createForm.priority_level" />
-                        <x-jet-input-error for="priority_level" class="mt-2" />
+                        <x-jet-input-error for="createForm.priority_level" class="mt-2" />
                     </div>
 
                     <div class="col-span-6 sm:col-span-4">
                         <x-jet-label for="start_date" value="{{ __('Start Date') }}" />
-                        <x-jet-input id="start_date" type="date" class="block w-full mt-1" wire:model.defer="createForm.start_date" />
-                        <x-jet-input-error for="start_date" class="mt-2" />
+                        <x-jet-input id="start_date" onkeydown="return false" type="date" class="block w-full mt-1" required pattern="\d{4}-\d{2}-\d{2}" wire:model.defer="createForm.start_date" />
+                        <x-jet-input-error for="createForm.start_date" class="mt-2" />
                     </div>
                 </x-slot>
 

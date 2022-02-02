@@ -29,7 +29,7 @@
                         <div class="col-span-6 sm:col-span-4">
                             <x-jet-label for="name" value="{{ __('Growth Board Name') }}" />
                             <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="createForm.name" />
-                            <x-jet-input-error for="name" class="mt-2" />
+                            <x-jet-input-error for="createForm.name" class="mt-2" />
                         </div>
 
                         <div class="col-span-6 sm:col-span-4">

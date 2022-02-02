@@ -47,6 +47,22 @@ class TeamCreate extends BaseComponent
         'start_date' => ''
     ];
 
+    /**
+     * @return array
+     */
+    protected $messages = [
+        'createForm.name.required' => 'Please add a name for this project.',
+        'createForm.start_date.required' => 'Please enter a start date for this project.',
+        'createForm.start_date.date' => 'Please enter a proper start date.',
+    ];
+
+    /**
+     * @return array
+     */
+    protected $rules = [
+        'createForm.name' => ['required'],
+        'createForm.start_date' => ['required', 'date'],
+    ];
 
     /**
      * Mount the component
@@ -68,6 +84,8 @@ class TeamCreate extends BaseComponent
      */
     public function createAction()
     {
+        $this->validate();
+
         CreateTeam::run(
             $this->user,
             $this->organization,

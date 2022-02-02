@@ -68,7 +68,7 @@
                             </div>
                             @empty
                                 <div class="text-center">
-                                    No projects created. Go ahead and <a class="text-blue-900 underline" href="{{ route('teams.create') }}">create one</a>!
+                                    <span class="text-md text-center text-gray-600">No Projects created. Go ahead and <a class="text-blue-900 underline" href="{{ route('teams.create') }}">create one</a>!</span>
                                 </div>
                             @endforelse
                         </div>
@@ -90,7 +90,7 @@
 
                     <x-slot name="content">
                         <div class="space-y-6">
-                            @foreach (Auth::user()->currentOrganization->events->sortBy('name') as $event)
+                            @forelse (Auth::user()->currentOrganization->events->sortBy('name') as $event)
                                 <div class="flex items-center justify-between">
                                     <div>{{ $event->name }}</div>
 
@@ -102,7 +102,11 @@
                                         </div>
                                     @endif
                                 </div>
-                            @endforeach
+                             @empty
+                                <div class="text-center">
+                                    <span class="text-md text-center text-gray-600">No Growth Boards created. Go ahead and <a class="text-blue-900 underline" href="{{ route('events.create') }}">create one</a>!</span>
+                                </div>
+                            @endforelse
                         </div>
                     </x-slot>
                 </x-jet-action-section>
