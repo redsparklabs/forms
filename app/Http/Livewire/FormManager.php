@@ -96,13 +96,15 @@ class FormManager extends BaseComponent
      */
     public function createAction()
     {
-        // $this->validate();
+        $this->validate();
 
         $form = CreateForm::run(
             $this->user,
             $this->organization,
             $this->createForm
         );
+
+        $this->confirmingCreating = false;
 
         $this->confirmUpdate($form->id);
     }

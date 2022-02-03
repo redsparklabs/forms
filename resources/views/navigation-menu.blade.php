@@ -7,16 +7,14 @@
                 <div class="flex items-center flex-shrink-0">
                     <x-jet-application-mark class="block w-auto h-9" />
                 </div>
+            </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+            <div class="hidden sm:flex sm:items-center sm:ml-6">
+                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('portfolio') }}" :active="request()->routeIs('portfolio')">
                         {{ __('Portfolio') }}
                     </x-jet-nav-link>
                 </div>
-            </div>
-
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <!-- Organizations Dropdown -->
                 <div class="relative ml-3">
                     <x-jet-dropdown align="right" width="60">

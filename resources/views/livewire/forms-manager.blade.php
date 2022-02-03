@@ -1,57 +1,25 @@
-
-<x-slot name="header">
-    <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        {{ __('Organization Forms') }}
-    </h2>
-</x-slot>
-
 <div>
+    <header class="bg-white shadow">
+        <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="flex justify-between">
+                <div>
+                    <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                        {{ __('Organization Forms')}}
+                    </h2>
+                </div>
+                <div>
+                    @if (Gate::check('addForm', $organization))
+                        <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmCreate()">
+                            {{ __('Create') }}
+                        </button>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </header>
+
     <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
          <div class="mt-10 sm:mt-0">
-            <x-jet-form-section submit="create">
-                <x-slot name="title">
-                    {{ __('Add Form') }}
-                </x-slot>
-
-                <x-slot name="description">
-                    {{ __('Add a new form to your organization.') }}
-                </x-slot>
-
-                <x-slot name="form">
-                    <div class="col-span-6">
-                        <div class="max-w-xl text-sm text-gray-600">
-                            {{ __('Please provide the name of the form you would like to add to this organization.') }}
-                        </div>
-                    </div>
-
-                    <div class="col-span-6 mb-2 sm:col-span-4">
-                        <x-jet-label for="name" value="{{ __('Name') }}" />
-                        <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="createForm.name" />
-                        <x-jet-input-error for="createForm.name" class="mt-2" />
-                    </div>
-
-
-                    <div class="col-span-6 mb-2 sm:col-span-4">
-                        <x-jet-label for="description" value="{{ __('Description') }}" />
-                        <x-jet-textarea id="description" type="text" class="block w-full mt-1" wire:model.defer="createForm.description" />
-                        <x-jet-input-error for="createForm.description" class="mt-2" />
-                    </div>
-
-                </x-slot>
-
-                <x-slot name="actions">
-                    <x-jet-action-message class="mr-3" on="created">
-                        {{ __('Added') }}
-                    </x-jet-action-message>
-
-                    <x-jet-button spinner="create">
-                        {{ __('Add') }}
-                    </x-jet-button>
-                </x-slot>
-            </x-jet-form-section>
-
-            @if ($organization->forms->isNotEmpty())
-                <x-jet-section-border />
                 <!-- Manage Forms -->
                 <div class="mt-10 sm:mt-0">
                     <x-jet-action-section>
@@ -65,14 +33,14 @@
 
                         <x-slot name="content">
                             <div class="space-y-6">
-                                @foreach ($organization->forms->sortBy('name') as $form)
+                                @forelse ($organization->forms->sortBy('name') as $form)
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center">
                                             <div class="ml-4">{{ $form->name }}</div>
+                                            <div class="ml-4 text-sm text-gray-400">{{ $form->description }}</div>
                                         </div>
 
                                         <div class="flex items-center">
-
                                              @if (Gate::check('updateForm', $organization))
                                                 <button class="ml-6 text-sm text-blue-500 cursor-pointer hover:text-blue-700 focus:outline-none" wire:click="confirmUpdate('{{ $form->id }}')">
                                                     {{ __('Update') }}
@@ -86,12 +54,51 @@
                                             @endif
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                <div class="text-md text-center text-gray-600">
+                                    {{ __('No Forms created. Go ahead and') }} <a class="underline " wire:click="confirmCreate()">{{ __('create one') }}</a>!
+                                </div>
+                            @endforelse
                             </div>
                         </x-slot>
                     </x-jet-action-section>
                 </div>
-            @endif
+
+            <x-jet-dialog-modal wire:model="confirmingCreating">
+               <x-slot name="title">
+                    {{ __('Add Form') }}
+                </x-slot>
+
+                <x-slot name="description">
+                    {{ __('Add a new form to your organization.') }}
+                </x-slot>
+
+                <x-slot name="content">
+
+                    <div class="col-span-6 mb-2 sm:col-span-4">
+                        <x-jet-label for="name" value="{{ __('Name') }}" />
+                        <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="createForm.name" />
+                        <x-jet-input-error for="createForm.name" class="mt-2" />
+                    </div>
+
+
+                    <div class="col-span-6 mb-2 sm:col-span-4">
+                        <x-jet-label for="description" value="{{ __('Description') }}" />
+                        <x-jet-textarea id="description" type="text" class="block w-full mt-1" wire:model.defer="createForm.description" />
+                        <x-jet-input-error for="createForm.description" class="mt-2" />
+                    </div>
+                </x-slot>
+
+                <x-slot name="footer">
+                    <x-jet-secondary-button wire:click="$toggle('confirmingCreating')" wire:loading.attr="disabled">
+                        {{ __('Cancel') }}
+                    </x-jet-secondary-button>
+
+                    <x-jet-button class="ml-2" wire:click="create" spinner="create">
+                        {{ __('Create') }}
+                    </x-jet-button>
+                </x-slot>
+            </x-jet-dialog-modal>
 
             <!-- Uodate Form Confirmation Modal -->
             <x-jet-dialog-modal wire:model="confirmingUpdating">
@@ -180,7 +187,7 @@
                     </x-jet-secondary-button>
 
                     <x-jet-button class="ml-2" wire:click="update" spinner="update">
-                        {{ __('Update') }}
+                        {{ __('Submit') }}
                     </x-jet-button>
                 </x-slot>
             </x-jet-dialog-modal>

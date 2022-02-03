@@ -38,6 +38,14 @@ abstract class BaseComponent extends Component
      */
     public $idBeingDestroyed = null;
 
+
+    /**
+     * Indicates if the a resource should be updated.
+     *
+     * @var bool
+     */
+    public $confirmingCreating = false;
+
     /**
      * Indicates if the a resource should be updated.
      *
@@ -87,6 +95,17 @@ abstract class BaseComponent extends Component
         $this->emit('created');
 
         // $this->reloadOrganization();
+    }
+
+    /**
+     * Confirm that the given resource should be updated.
+     *
+     * @param  int  $id
+     * @return void
+     */
+    public function confirmCreate()
+    {
+        $this->confirmingCreating = true;
     }
 
     /**
