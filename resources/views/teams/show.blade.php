@@ -1,7 +1,6 @@
 <div>
     <header class="bg-white shadow">
         <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-
             <div class="flex justify-between">
                 <div>
                     <h2 class="text-xl font-semibold leading-tight text-gray-800">
@@ -30,7 +29,6 @@
                         {{ __('All of the Growth Boards that are part of this project.') }}
                     </x-slot>
 
-                    <!-- Organization Organization List -->
                     <x-slot name="content">
                         <div class="space-y-6">
                             @forelse ($team->events->sortBy('name') as $event)

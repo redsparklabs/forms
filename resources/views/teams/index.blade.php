@@ -1,8 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Projects') }}
-        </h2>
+        <div class="flex justify-between">
+            <div>
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    {{ __('Projects') }}
+                </h2>
+            </div>
+             <div>
+                <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('teams.create') }}">
+                    {{ __('Create') }}
+                </a>
+            </div>
+        </div>
     </x-slot>
 
     <div>
