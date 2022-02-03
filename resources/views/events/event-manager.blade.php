@@ -50,7 +50,7 @@
         </x-jet-action-section>
     </div>
 
-    <!-- Uodate Event Confirmation Modal -->
+    <!-- Update Event Confirmation Modal -->
     <x-jet-dialog-modal wire:model="confirmingUpdating">
         <x-slot name="title">
             {{ __('Update Growth Board') }}
