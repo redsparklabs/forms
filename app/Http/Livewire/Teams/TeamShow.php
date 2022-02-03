@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire\Teams;
 
+use App\Models\Team;
 use App\Actions\Teams\CreateTeam;
 use App\Models\Organization;
 use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
+use App\Actions\Teams\UpdateTeam;
 
-class TeamCreate extends BaseComponent
+class TeamShow extends BaseComponent
 {
 
     /**
@@ -41,7 +43,7 @@ class TeamCreate extends BaseComponent
     /**
      * @var array
      */
-    public $createForm = [
+    public $updateForm = [
         'name' => '',
         'priority_level' => '',
         'start_date' => ''
@@ -51,17 +53,17 @@ class TeamCreate extends BaseComponent
      * @return array
      */
     protected $messages = [
-        'createForm.name.required' => 'Please add a name for this project.',
-        'createForm.start_date.required' => 'Please enter a start date for this project.',
-        'createForm.start_date.date' => 'Please enter a proper start date.',
+        'updateForm.name.required' => 'Please add a name for this project.',
+        'updateForm.start_date.required' => 'Please enter a start date for this project.',
+        'updateForm.start_date.date' => 'Please enter a proper start date.',
     ];
 
     /**
      * @return array
      */
     protected $rules = [
-        'createForm.name' => ['required'],
-        'createForm.start_date' => ['required', 'date'],
+        'updateForm.name' => ['required'],
+        'updateForm.start_date' => ['required', 'date'],
     ];
 
     /**
@@ -71,10 +73,11 @@ class TeamCreate extends BaseComponent
      *
      * @return void
      */
-    public function mount(Organization $organization)
+    public function mount(Team $team)
     {
+        $this->team = $team;
         $this->user = Auth::user();
-        $this->organization = $organization;
+        $this->organization = $this->user->currentOrganization;
     }
 
     /**
@@ -84,31 +87,41 @@ class TeamCreate extends BaseComponent
      */
     public function createAction()
     {
-        $this->validate();
 
-        CreateTeam::run(
-            $this->user,
-            $this->organization,
-            $this->createForm
-        );
-
-        $this->emit('refresh-navigation-menu');
-
-        return redirect()->to(route('teams.index'));
     }
 
     /**
-     * @return void
+     * Confirm the update of a team
      */
     public function confirmUpdateAction()
     {
+
+        $team = $this->organization->teams->find($this->idBeingUpdated);
+
+        $this->updateForm = [
+            'name' => $team?->name,
+            'priority_level' => $team?->priority_level,
+            'start_date' => $team->start_date->format('Y-m-d'),
+        ];
     }
 
     /**
+     * Update a team
+     *
      * @return void
      */
     public function updateAction()
     {
+        $team  = $this->organization->teams()->find($this->idBeingUpdated);
+
+        UpdateTeam::run(
+            $this->user,
+            $this->organization,
+            $team,
+            $this->updateForm
+        );
+
+        $this->emit('refresh-navigation-menu');
     }
 
     /**
@@ -124,6 +137,6 @@ class TeamCreate extends BaseComponent
      */
     public function render()
     {
-        return view('teams.team-create');
+        return view('teams.show');
     }
 }

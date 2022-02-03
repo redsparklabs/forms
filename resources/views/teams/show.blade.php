@@ -1,9 +1,23 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Project - ') . $team->name }}
-        </h2>
-    </x-slot>
+<div>
+    <header class="bg-white shadow">
+        <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+
+            <div class="flex justify-between">
+                <div>
+                    <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                        {{ __('Project - ') . $team->name }}
+                    </h2>
+                </div>
+                <div>
+                    @if (Gate::check('updateTeam', $organization))
+                        <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmUpdate('{{ $team->id }}')">
+                            {{ __('Update') }}
+                        </button>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </header>
     <div>
         <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="mt-10 sm:mt-0">
@@ -23,11 +37,11 @@
                             <div>
                                     <div>
                                         <span class="font-semibold leading-tight text-gray-800 text-md">Growth Investment:</span>
-                                        <span class="text-gray-600 text-md">{{ $event->teams->find($team)->pivot->investment }}</span>
+                                        <span class="text-gray-600 text-md">{{ $event->pivot->investment }}</span>
                                     </div>
                                     <div>
                                         <span class="font-semibold leading-tight text-gray-800 text-md">Net projected Value:</span>
-                                        <span class="text-gray-600 text-md">{{ $event->teams->find($team)->pivot->net_projected_value }}</span>
+                                        <span class="text-gray-600 text-md">{{ $event->pivot->net_projected_value }}</span>
                                     </div>
                                     @if($team->progress_metric)
                                         <div>
@@ -100,4 +114,5 @@
             </x-jet-button>
         </x-slot>
     </x-jet-dialog-modal>
-</x-app-layout>
+
+</div>

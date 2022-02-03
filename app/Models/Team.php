@@ -48,7 +48,7 @@ class Team extends Model
      */
     public function events()
     {
-        return $this->belongsToMany(Event::class);
+        return $this->belongsToMany(Event::class)->using(EventTeam::class)->withPivot('net_projected_value', 'investment');
     }
 
     /**
@@ -96,12 +96,12 @@ class Team extends Model
      */
     public function getProgressMetricAttribute()
     {
-        // if ($this->events?->isNotEmpty()) {
-        //     $form = $this->events()->latest()->first()->forms()->latest()->first();
-        //     $data = $this->calculateSections($form);
+        if ($this->events?->isNotEmpty()) {
+            $form = $this->events()->latest()->first()->forms()->latest()->first();
+            $data = $this->calculateSections($form);
 
-        //     return $data['progressMetricTotal'];
-        // }
+            return $data['progressMetricTotal'];
+        }
     }
     /**
      * Undocumented function

@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Teams;
 
 use App\Actions\Teams\CreateTeam;
-use App\Actions\Teams\UpdateTeam;
 use App\Actions\Teams\DestroyTeam;
 use App\Models\Organization;
 use App\Http\Livewire\BaseComponent;
@@ -39,16 +38,7 @@ class TeamManager extends BaseComponent
     /**
      * @var string
      */
-    public $componentName = 'Team';
-
-    /**
-     * @var array
-     */
-    public $updateForm = [
-        'name' => '',
-        'priority_level' => '',
-        'start_date' => ''
-    ];
+    public $componentName = 'Project';
 
     /**
      * @return void
@@ -75,16 +65,7 @@ class TeamManager extends BaseComponent
      */
     public function confirmUpdateAction()
     {
-        $team = $this->organization->teams()->find($this->idBeingUpdated);
-
-
-        $this->updateForm = [
-            'name' => $team?->name,
-            'priority_level' => $team?->priority_level,
-            'start_date' => $team->start_date->format('Y-m-d'),
-        ];
     }
-
 
     /**
      * Update a team
@@ -93,16 +74,6 @@ class TeamManager extends BaseComponent
      */
     public function updateAction()
     {
-        $organization  = $this->organization->teams()->find($this->idBeingUpdated);
-
-        UpdateTeam::run(
-            $this->user,
-            $this->organization,
-            $organization,
-            $this->updateForm
-        );
-
-        $this->emit('refresh-navigation-menu');
     }
 
     /**

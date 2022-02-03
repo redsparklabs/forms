@@ -10,22 +10,6 @@ use App\Models\Team;
 class TeamController extends Controller
 {
     /**
-     * Show the organization management screen.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $team
-     * @return \Illuminate\View\View
-     */
-    public function show(Request $request, $team)
-    {
-
-        return view('teams.show', [
-            'user' => $request->user(),
-            'team' => $team,
-        ]);
-    }
-
-    /**
      * @param  Request $request
      * @return \Illuminate\View\View
      */

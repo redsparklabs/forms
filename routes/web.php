@@ -5,6 +5,7 @@ use Laravel\Jetstream\Jetstream;
 use App\Http\Livewire\FormManager;
 use App\Http\Livewire\FormBuilder;
 use App\Http\Livewire\QuestionManager;
+use App\Http\Livewire\Teams\TeamShow;
 
 
 use App\Http\Controllers\Livewire\TeamController;
@@ -55,7 +56,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('/projects', [TeamController::class, 'index'])->name('teams.index');
     Route::get('/projects/create', [TeamController::class, 'create'])->name('teams.create');
-    Route::get('/projects/{team}', [TeamController::class, 'show'])->name('teams.show');
+    Route::get('/projects/{team}', TeamShow::class)->name('teams.show');
 
     Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
     Route::get('/organizations/{organization}', [OrganizationController::class, 'show'])->name('organizations.show');
