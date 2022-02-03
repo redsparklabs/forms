@@ -81,6 +81,7 @@ abstract class BaseComponent extends Component
      */
     public function create()
     {
+        ray('SDS');
         $this->resetErrorBag();
 
         $this->createAction();

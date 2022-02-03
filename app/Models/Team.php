@@ -100,7 +100,9 @@ class Team extends Model
             $form = $this->events()->latest()->first()->forms()->latest()->first();
             $data = $this->calculateSections($form);
 
-            return $data['progressMetricTotal'];
+            if($data) {
+                return $data['progressMetricTotal'];
+            }
         }
     }
     /**
@@ -111,43 +113,45 @@ class Team extends Model
      */
     public function calculateSections($form)
     {
-        $responses = $form->responses()->where('team_id', $this->id)->get();
-        $progressMetricTotal = 0;
-        $questions = $form->allQuestions();
-        $allSections = collect($questions)->groupBy('section')->reject(fn ($item, $key) => $key == 'custom');
-        $sectionCount = $allSections->keys()->mapWithkeys(fn ($item) => [$item . '_count' => 0])->all();
-        $totalSections = $allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
+        if($form) {
+            $responses = $form->responses()->where('team_id', $this->id)->get();
+            $progressMetricTotal = 0;
+            $questions = $form->allQuestions();
+            $allSections = collect($questions)->groupBy('section')->reject(fn ($item, $key) => $key == 'custom');
+            $sectionCount = $allSections->keys()->mapWithkeys(fn ($item) => [$item . '_count' => 0])->all();
+            $totalSections = $allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
 
 
-        foreach ($responses as $response) {
-            $total = 0;
-            foreach ($allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->all() as $section => $sectionData) {
+            foreach ($responses as $response) {
+                $total = 0;
+                foreach ($allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->all() as $section => $sectionData) {
 
-                $sectionQuestions = $sectionData->pluck('question')->map(fn ($item) => Str::slug($item))->toArray();
+                    $sectionQuestions = $sectionData->pluck('question')->map(fn ($item) => Str::slug($item))->toArray();
 
-                $total += collect($response->questions)->filter(function ($item, $key) use ($sectionQuestions) {
-                    return in_array($key, $sectionQuestions);
-                })->sum();
+                    $total += collect($response->questions)->filter(function ($item, $key) use ($sectionQuestions) {
+                        return in_array($key, $sectionQuestions);
+                    })->sum();
+                }
+
+                $progressMetricTotal += number_format($total / $totalSections, 1);
+
+                foreach ($allSections->all() as $section => $sectionData) {
+                    $sectionQuestions = $sectionData->pluck('question')->map(fn ($item) => Str::slug($item))->toArray();
+                    $total = collect($response->questions)->filter(function ($item, $key) use ($sectionQuestions) {
+                        return in_array($key, $sectionQuestions);
+                    })->sum();
+
+                    $sectionCount[$section . '_count'] += number_format($total / $allSections->count(), 1);
+                }
             }
 
-            $progressMetricTotal += number_format($total / $totalSections, 1);
-
-            foreach ($allSections->all() as $section => $sectionData) {
-                $sectionQuestions = $sectionData->pluck('question')->map(fn ($item) => Str::slug($item))->toArray();
-                $total = collect($response->questions)->filter(function ($item, $key) use ($sectionQuestions) {
-                    return in_array($key, $sectionQuestions);
-                })->sum();
-
-                $sectionCount[$section . '_count'] += number_format($total / $allSections->count(), 1);
-            }
+            return [
+                'responses' => $responses,
+                'questions' => $questions,
+                'allSections' => $allSections,
+                'sectionCount' => $sectionCount,
+                'progressMetricTotal' => $progressMetricTotal,
+            ];
         }
-
-        return [
-            'responses' => $responses,
-            'questions' => $questions,
-            'allSections' => $allSections,
-            'sectionCount' => $sectionCount,
-            'progressMetricTotal' => $progressMetricTotal,
-        ];
     }
 }

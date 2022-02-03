@@ -52,6 +52,22 @@ class QuestionManager extends BaseComponent
         'description' => ''
     ];
 
+      /**
+     * @var array
+     */
+    public $rules = [
+        'createForm.question' => 'required',
+        'createForm.description' => 'required',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $messages = [
+        'createForm.question.required' => 'Please enter a question.',
+        'createForm.description.required' => 'Please enter a description.',
+    ];
+
     /**
      * @param  Organization $organization
      * @return void
@@ -67,11 +83,15 @@ class QuestionManager extends BaseComponent
      */
     public function createAction()
     {
+        $this->validate();
+
         CreateQuestion::run(
             $this->user,
             $this->organization,
             $this->createForm,
         );
+
+        $this->confirmingCreating = false;
     }
 
     /**
@@ -79,7 +99,6 @@ class QuestionManager extends BaseComponent
      */
     public function confirmUpdateAction()
     {
-
         $question = $this->organization->questions()->findOrFail($this->idBeingUpdated);
 
         $this->updateForm = [

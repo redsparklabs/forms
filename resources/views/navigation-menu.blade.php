@@ -37,15 +37,15 @@
                                 @if(Auth::user()->currentOrganization)
                                     <!-- Organization Settings -->
                                     <x-jet-dropdown-link href="{{ route('form-manager', Auth::user()->currentOrganization->id) }}">
-                                        {{ __('Forms') }}
+                                        {{ __('Organization Assessments') }}
                                     </x-jet-dropdown-link>
 
                                     <x-jet-dropdown-link href="{{ route('question-manager', Auth::user()->currentOrganization->id) }}">
-                                        {{ __('Questions') }}
+                                        {{ __('Organization Questions') }}
                                     </x-jet-dropdown-link>
 
                                     <x-jet-dropdown-link href="{{ route('organizations.show', Auth::user()->currentOrganization->id) }}">
-                                        {{ __('Settings') }}
+                                        {{ __('Organization Settings') }}
                                     </x-jet-dropdown-link>
                                 @endif
                             </div>

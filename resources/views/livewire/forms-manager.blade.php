@@ -4,7 +4,7 @@
             <div class="flex justify-between">
                 <div>
                     <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                        {{ __('Organization Forms')}}
+                        {{ __('Organization Assessments')}}
                     </h2>
                 </div>
                 <div>
@@ -24,7 +24,7 @@
                 <div class="mt-10 sm:mt-0">
                     <x-jet-action-section>
                         <x-slot name="title">
-                            {{ __('Forms') }}
+                            {{ __('Assessments') }}
                         </x-slot>
 
                         <x-slot name="description">
@@ -41,24 +41,24 @@
                                         </div>
 
                                         <div class="flex items-center">
-                                             @if (Gate::check('updateForm', $organization))
+                                         {{--     @if (Gate::check('updateForm', $organization))
                                                 <button class="ml-6 text-sm text-blue-500 cursor-pointer hover:text-blue-700 focus:outline-none" wire:click="confirmUpdate('{{ $form->id }}')">
                                                     {{ __('Update') }}
                                                 </button>
-                                            @endif
+                                            @endif --}}
 
-                                            @if (Gate::check('removeForm', $organization))
+                                           {{--  @if (Gate::check('removeForm', $organization))
                                                 <button class="ml-6 text-sm text-red-500 cursor-pointer hover:text-red-700 focus:outline-none" wire:click="confirmDestroy('{{ $form->id }}')">
                                                     {{ __('Archive') }}
                                                 </button>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                     </div>
                                 @empty
                                 <div class="text-md text-center text-gray-600">
                                     {{ __('No Forms created. Go ahead and') }} <a class="underline " wire:click="confirmCreate()">{{ __('create one') }}</a>!
                                 </div>
-                            @endforelse
+                                @endforelse
                             </div>
                         </x-slot>
                     </x-jet-action-section>
