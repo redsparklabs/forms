@@ -16,7 +16,7 @@
                     </x-slot>
 
                     <x-slot name="description">
-                        <a class="text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('teams.create') }}">{{ __('Create a new Project') }}</a>
+                        {{-- <a class="text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('teams.create') }}">{{ __('Create a new Project') }}</a> --}}
                     </x-slot>
 
                     <x-slot name="content">
