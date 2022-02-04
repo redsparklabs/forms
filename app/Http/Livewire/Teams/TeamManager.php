@@ -2,14 +2,25 @@
 
 namespace App\Http\Livewire\Teams;
 
+use App\Models\Organization;
 use App\Actions\Teams\CreateTeam;
 use App\Actions\Teams\DestroyTeam;
-use App\Models\Organization;
 use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
 
 class TeamManager extends BaseComponent
 {
+
+    /**
+     * The component's listeners.
+     *
+     * @var array
+     */
+    protected $listeners = [
+        'created' => '$refresh',
+        'updated' => '$refresh',
+        'destroyed' => '$refresh',
+    ];
 
     /**
      * The organization instance.
@@ -26,13 +37,29 @@ class TeamManager extends BaseComponent
     public $user;
 
     /**
-     * The component's listeners.
-     *
      * @var array
      */
-    protected $listeners = [
-        'updated' => '$refresh',
-        'destroyed' => '$refresh',
+    public $createForm = [
+        'name' => '',
+        'priority_level' => '',
+        'start_date' => ''
+    ];
+
+    /**
+     * @return array
+     */
+    protected $messages = [
+        'createForm.name.required' => 'Please add a name for this project.',
+        'createForm.start_date.required' => 'Please enter a start date for this project.',
+        'createForm.start_date.date' => 'Please enter a proper start date.',
+    ];
+
+    /**
+     * @return array
+     */
+    protected $rules = [
+        'createForm.name' => ['required'],
+        'createForm.start_date' => ['required', 'date'],
     ];
 
     /**
@@ -40,12 +67,6 @@ class TeamManager extends BaseComponent
      */
     public $componentName = 'Project';
 
-    /**
-     * @return void
-     */
-    public function createAction()
-    {
-    }
 
     /**
      * Mount the component
@@ -54,10 +75,28 @@ class TeamManager extends BaseComponent
      *
      * @return void
      */
-    public function mount(Organization $organization)
+    public function mount()
     {
         $this->user = Auth::user();
-        $this->organization = $organization;
+        $this->organization = $this->user->currentOrganization;
+    }
+
+    /**
+     * Create a new team
+     *
+     * @return void
+     */
+    public function createAction()
+    {
+        $this->validate();
+
+        CreateTeam::run(
+            $this->user,
+            $this->organization,
+            $this->createForm
+        );
+
+        $this->confirmingCreating = false;
     }
 
     /**
@@ -90,8 +129,6 @@ class TeamManager extends BaseComponent
             $this->organization,
             $organization
         );
-
-        $this->emit('refresh-navigation-menu');
     }
 
     /**
@@ -101,6 +138,6 @@ class TeamManager extends BaseComponent
      */
     public function render()
     {
-        return view('teams.team-manager');
+        return view('teams.index');
     }
 }

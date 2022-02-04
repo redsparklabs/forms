@@ -1,5 +1,4 @@
 <div>
-
     <div class="mt-10 sm:mt-0">
         <x-jet-action-section>
             <x-slot name="title">
@@ -10,7 +9,6 @@
                 {{ __('All of the Growth Boards that are part of this organization.') }}
             </x-slot>
 
-            <!-- Organization Organization List -->
             <x-slot name="content">
                 <div class="space-y-6">
                     @forelse ($organization->events->sortBy('name') as $event)

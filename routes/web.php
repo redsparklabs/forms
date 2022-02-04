@@ -8,7 +8,7 @@ use App\Http\Livewire\QuestionManager;
 use App\Http\Livewire\Teams\TeamShow;
 
 
-use App\Http\Controllers\Livewire\TeamController;
+use App\Http\Livewire\Teams\TeamManager;
 use App\Http\Controllers\Livewire\EventController;
 use App\Http\Controllers\Livewire\CurrentOrganizationController;
 use App\Http\Controllers\Livewire\OrganizationController;
@@ -54,8 +54,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/growth-boards/{event}/form/{form}/projects/{team}/results', [EventController::class, 'results'])->name('events.results');
 
 
-    Route::get('/projects', [TeamController::class, 'index'])->name('teams.index');
-    Route::get('/projects/create', [TeamController::class, 'create'])->name('teams.create');
+    Route::get('/projects', TeamManager::class)->name('teams.index');
     Route::get('/projects/{team}', TeamShow::class)->name('teams.show');
 
     Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');

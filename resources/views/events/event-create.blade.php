@@ -11,7 +11,7 @@
             @elseif($organization->teams->isEmpty())
                 <div class="p-6 text-center bg-white rounded-md">
                     <div class="text-sm text-center text-gray-600">
-                        Please <a href="{{ route('teams.create', Auth::user()->currentOrganization->id) }}" class="text-blue-900 underline">add</a> at least one Project before creating a Growth Board.
+                        Please <a href="{{ route('teams.create'}}" class="text-blue-900 underline">add</a> at least one Project before creating a Growth Board.
                     </div>
                 </div>
             @else
