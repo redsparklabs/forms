@@ -20,26 +20,41 @@ class PortfolioController extends Component
         'refresh' => 'render',
     ];
 
+    public $projectsSortByField = 'name';
 
-    public $sortByField = 'name';
+    public $projectsSortDirection = 'asc';
 
-    public $sortDirection = 'asc';
+    public $projectsKeyword = null;
 
-    public $keyword = null;
+    public $eventsSortByField = 'name';
+
+    public $eventsSortDirection = 'asc';
+
+    public $eventsKeyword = null;
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function sortBy($field)
+    public function sortByProject($field)
     {
-        $this->sortByField = $field;
+        $this->projectsSortByField = $field;
 
-        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
+        $this->projectsSortDirection = ($this->projectsSortDirection == 'desc') ? 'asc': 'desc';
 
         $this->emit('refresh');
     }
+
+    public function sortByEvent($field)
+    {
+        $this->eventsSortByField = $field;
+
+        $this->eventsSortDirection = ($this->eventsSortDirection == 'desc') ? 'asc': 'desc';
+
+        $this->emit('refresh');
+    }
+
     /**
      * Get the current user of the application.
      *
@@ -58,9 +73,17 @@ class PortfolioController extends Component
         $teams = $this->user
             ->currentOrganization
             ->teams()
-            ->search($this->keyword)
-            ->orderBy($this->sortByField, $this->sortDirection)
+            ->search($this->projectsKeyword)
+            ->orderBy($this->projectsSortByField, $this->projectsSortDirection)
             ->paginate(25);
-        return view('portfolio', compact('teams'));
+
+        $events = $this->user
+            ->currentOrganization
+            ->events()
+            ->search($this->eventsKeyword)
+            ->orderBy($this->eventsSortByField, $this->eventsSortDirection)
+            ->paginate(25, ['*'], 'eventsPage');
+
+        return view('portfolio', compact('teams', 'events'));
     }
 }

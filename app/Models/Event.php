@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Team;
 use App\Models\EventTeam;
 use Illuminate\Support\Str;
+use App\Traits\Searchable;
 use App\Models\Organization;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,7 @@ class Event extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Searchable;
 
     /**
      * The attributes that are dates.
@@ -82,7 +84,7 @@ class Event extends Model
      */
     public function latestForm()
     {
-        return $this->forms()->latest();
+        return $this->forms()->first();
     }
     /**
      * Get the owner of the team.

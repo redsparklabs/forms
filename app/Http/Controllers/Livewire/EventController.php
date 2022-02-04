@@ -12,27 +12,8 @@ use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
+
     /**
-     * Show the organization management screen.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $event
-     * @return \Illuminate\View\View
-     */
-    public function show(Request $request, $event)
-    {
-
-        // if (Gate::denies('view', $team)) {
-        //     abort(403);
-        // }
-
-        return view('events.show', [
-            'user' => $request->user(),
-            'event' => $event,
-        ]);
-    }
-
-        /**
      * @param  Request $request
      * @return \Illuminate\View\View
      */

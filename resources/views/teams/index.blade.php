@@ -9,7 +9,7 @@
                     </h2>
                 </div>
                 <div>
-                    <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none"  wire:click="confirmCreate()">
+                    <a class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" wire:click="confirmCreate()">
                         {{ __('Create') }}
                     </a>
                 </div>
@@ -19,7 +19,7 @@
 
     <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="mt-10 sm:mt-0">
-            <x-jet-action-section>
+            <x-jet-action-section :background="false">
                 <x-slot name="title">
                     {{ __('Projects') }}
                 </x-slot>
@@ -29,69 +29,122 @@
                 </x-slot>
 
                 <x-slot name="content">
-                    <div class="space-y-3">
-                        @forelse ($organization->teams->sortBy('name') as $team)
+                    <div class="flex flex-col">
+                            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
 
-                            <div class="flex justify-between">
-                                <div>{{ $team->name }}</div>
-                                <div class="flex items-start">
-                                    @if (Gate::check('viewTeam', $organization) )
-                                        <a class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('teams.show', [$team->id]) }}">
-                                            {{ __('View') }}
-                                        </a>
-                                    @endif
+                                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="pl-6 pr-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('name')">
+                                                        {{ __('Name') }}
+                                                        @if($teams->count() > 1)
+                                                            <x-sort :dir="$sortDirection" :active="$sortByField == 'name'"/>
+                                                        @endif
+                                                    </th>
 
-                                    @if (Gate::check('removeTeam', $organization))
-                                        <button class="ml-6 text-sm text-red-500 cursor-pointer focus:outline-none" wire:click="confirmDestroy('{{ $team->id }}')">
-                                            {{ __('Archive') }}
-                                        </button>
-                                    @endif
+                                                    <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('name')">
+                                                        {{ __('Progress Metric') }}
+                                                       {{--  @if($teams->count() > 1)
+                                                            <x-sort :dir="$sortDirection" :active="$sortByField == 'name'"/>
+                                                        @endif --}}
+                                                    </th>
+
+                                                    <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('priority_level')">
+                                                        {{ __('Priority Level') }}
+                                                        @if($teams->count() > 1)
+                                                            <x-sort :dir="$sortDirection" :active="$sortByField == 'priority_level'"/>
+                                                        @endif
+                                                    </th>
+
+                                                    <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('start_date')">
+                                                        {{ __('Start Date') }}
+                                                        @if($teams->count() > 1)
+                                                            <x-sort :dir="$sortDirection" :active="$sortByField == 'start_date'"/>
+                                                        @endif
+                                                    </th>
+
+                                                    <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('start_date')">
+                                                        {{ __('Net Project Value') }}
+                                                        {{-- @if($teams->count() > 1)
+                                                            <x-sort :dir="$sortDirection" :active="$sortByField == 'priority_level'"/>
+                                                        @endif --}}
+                                                    </th>
+                                                    <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('start_date')">
+                                                        {{ __('Investment') }}
+                                                      {{--   @if($teams->count() > 1)
+                                                            <x-sort :dir="$sortDirection" :active="$sortByField == 'priority_level'"/>
+                                                        @endif --}}
+                                                    </th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($teams as $team)
+                                                    <tr @class([
+                                                        'bg-white' => $loop->odd,
+                                                        'bg-gray-50' => $loop->even
+                                                    ])>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                            {{ $team->name }}
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                            @if($team->progress_metric )
+                                                                <div class="p-2 ml-2 font-bold text-right text-white bg-blue-500 ">
+                                                                    {{ $team->progress_metric }}
+                                                                </div>
+                                                            @else
+                                                                {{ __('N/A') }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                            {{ $team->priority_level }}
+                                                        </td>
+
+                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                            {{ $team->start_date->format('m/d/y') }}
+                                                        </td>
+
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                            {{ $team->pivot()?->net_projected_value }}
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                            {{ $team->pivot()?->investment }}
+                                                        </td>
+
+                                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                            <a class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" href="{{ route('teams.show', $team->id) }}">
+                                                                {{ __('View') }}
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                 @if(!$keyword)
+                                                    <tr class="bg-white">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="6">
+                                                            {{ __('No Projects created.')}} {{ __('Go ahead and') }} <a class="text-blue-500 underline" wire:click="confirmCreate()">{{ __('create one') }}</a>!
+                                                        </td>
+                                                    </tr>
+                                                    @else
+                                                        <tr class="bg-white">
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="4">
+                                                                {{ __('No Projects found.') }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                        @if($teams->hasPages())
+                                            <div class="p-4">
+                                                {{ $teams->links() }}
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-2">
-                                @if($team->progress_metric)
-                                    <div class="flex items-center w-full">
-                                        <span class="text-sm text-gray-500">{{ _('Progress Metric') }}</span>
-                                        <div class="p-2 ml-2 font-bold text-right text-white bg-blue-500 ">{{ $team->progress_metric }}</div>
-                                    </div>
-                                @endif
-                                @if($team->priority_level)
-                                    <div class="flex items-center w-full">
-                                        <span class="text-sm text-gray-500">{{ _('Priority Level') }}:</span>
-                                        <span class="ml-2 text-sm">{{ $team->priority_level }}</span>
-                                    </div>
-                                @endif
-                                @if($team->start_date)
-                                    <div class="flex items-center w-full">
-                                        <span class="text-sm text-gray-500">{{ _('Start Date') }}:</span>
-                                        <span class="ml-2 text-sm">{{ $team->start_date->format('m/d/y') }}</span>
-                                    </div>
-                                @endif
-                            </div>
-                            @if($team->pivot())
-                                <div class="grid grid-cols-3 gap-2">
-                                    @if($team->pivot()->net_projected_value)
-                                        <div class="flex items-center w-full">
-                                            <span class="text-sm text-gray-500">{{ _('Net Project Value') }}:</span>
-                                            <span class="ml-2 text-sm">{{ $team->pivot()->net_projected_value }}</span>
-                                        </div>
-                                    @endif
-                                    @if($team->pivot()->investment)
-                                        <div class="flex items-center w-full">
-                                            <span class="text-sm text-gray-500">{{ _('Investment') }}:</span>
-                                            <span class="ml-2 text-sm">{{ $team->pivot()->investment }}</span>
-                                        </div>
-                                    @endif
-                                </div>
-                            @endif
-                            @if(!$loop->last)
-                                <hr />
-                            @endif
-                        @empty
-                            <div class="text-sm text-center text-gray-600 ">
-                                {{ __('No Projects created. Go ahead and') }} <a class="underline" href="{{ route('teams.create') }}">create one</a>!
-                            </div>
-                        @endforelse
+                        </div>
                     </div>
                 </x-slot>
             </x-jet-action-section>

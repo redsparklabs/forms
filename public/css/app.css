@@ -1336,6 +1336,9 @@ select {
 .col-span-6 {
 	grid-column: span 6 / span 6;
 }
+.col-span-2 {
+	grid-column: span 2 / span 2;
+}
 .row-span-2 {
 	grid-row: span 2 / span 2;
 }
@@ -1344,6 +1347,9 @@ select {
 }
 .row-span-3 {
 	grid-row: span 3 / span 3;
+}
+.float-right {
+	float: right;
 }
 .m-auto {
 	margin: auto;
@@ -2852,6 +2858,9 @@ select {
 }
 .pr-10 {
 	padding-right: 2.5rem;
+}
+.pl-6 {
+	padding-left: 1.5rem;
 }
 .text-left {
 	text-align: left;

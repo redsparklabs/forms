@@ -7,20 +7,35 @@ use App\Actions\Teams\CreateTeam;
 use App\Actions\Teams\DestroyTeam;
 use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class TeamManager extends BaseComponent
 {
 
+    use WithPagination;
     /**
      * The component's listeners.
      *
      * @var array
      */
     protected $listeners = [
+        'refresh' => 'render',
         'created' => '$refresh',
         'updated' => '$refresh',
         'destroyed' => '$refresh',
     ];
+
+    public $sortByField = 'name';
+
+    public $keyword = null;
+
+    public $sortDirection = 'asc';
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
 
     /**
      * The organization instance.
@@ -45,6 +60,15 @@ class TeamManager extends BaseComponent
         'start_date' => ''
     ];
 
+    public function sortBy($field)
+    {
+        $this->sortByField = $field;
+
+        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
+
+        $this->emit('refresh');
+    }
+
     /**
      * @return array
      */
@@ -67,7 +91,6 @@ class TeamManager extends BaseComponent
      */
     public $componentName = 'Project';
 
-
     /**
      * Mount the component
      *
@@ -79,6 +102,10 @@ class TeamManager extends BaseComponent
     {
         $this->user = Auth::user();
         $this->organization = $this->user->currentOrganization;
+
+        if(request()->has('create')) {
+            $this->confirmingCreating = true;
+        }
     }
 
     /**
@@ -138,6 +165,12 @@ class TeamManager extends BaseComponent
      */
     public function render()
     {
-        return view('teams.index');
+        $teams = $this->organization
+            ->teams()
+            ->search($this->keyword)
+            ->orderBy($this->sortByField, $this->sortDirection)
+            ->paginate(25);
+
+        return view('teams.index', compact('teams'));
     }
 }

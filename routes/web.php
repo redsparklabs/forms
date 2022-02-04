@@ -8,6 +8,8 @@ use App\Http\Livewire\QuestionManager;
 use App\Http\Livewire\Teams\TeamShow;
 use App\Http\Livewire\Teams\TeamManager;
 use App\Http\Livewire\PortfolioController;
+use App\Http\Livewire\Events\EventManager;
+
 
 use App\Http\Controllers\Livewire\EventController;
 use App\Http\Controllers\Livewire\CurrentOrganizationController;
@@ -41,16 +43,15 @@ Route::get('form/{eventid}', FormBuilder::class)->name('form-builder');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/portfolio', PortfolioController::class, )->name('portfolio');
+    Route::get('/projects', TeamManager::class)->name('teams.index');
+    Route::get('/projects/{team}', TeamShow::class)->name('teams.show');
+
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
 
     Route::get('/growth-boards', [EventController::class, 'index'])->name('events.index');
     Route::get('/growth-boards/create', [EventController::class, 'create'])->name('events.create');
     Route::get('/growth-boards/{event}', [EventController::class, 'show'])->name('events.show');
     Route::get('/growth-boards/{event}/form/{form}/projects/{team}/results', [EventController::class, 'results'])->name('events.results');
-
-
-    Route::get('/projects', TeamManager::class)->name('teams.index');
-    Route::get('/projects/{team}', TeamShow::class)->name('teams.show');
 
     Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
     Route::get('/organizations/{organization}', [OrganizationController::class, 'show'])->name('organizations.show');
