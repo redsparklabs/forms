@@ -6,9 +6,9 @@ use App\Http\Livewire\FormManager;
 use App\Http\Livewire\FormBuilder;
 use App\Http\Livewire\QuestionManager;
 use App\Http\Livewire\Teams\TeamShow;
-
-
 use App\Http\Livewire\Teams\TeamManager;
+use App\Http\Livewire\PortfolioController;
+
 use App\Http\Controllers\Livewire\EventController;
 use App\Http\Controllers\Livewire\CurrentOrganizationController;
 use App\Http\Controllers\Livewire\OrganizationController;
@@ -37,15 +37,10 @@ if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
     Route::get('/privacy-policy', [PrivacyPolicyController::class, 'show'])->name('policy.show');
 }
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/portfolio', function () {
-    return view('portfolio');
-})->name('portfolio');
-
 Route::get('form/{eventid}', FormBuilder::class)->name('form-builder');
 
-
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    // User & Profile...
+    Route::get('/portfolio', PortfolioController::class, )->name('portfolio');
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
 
     Route::get('/growth-boards', [EventController::class, 'index'])->name('events.index');

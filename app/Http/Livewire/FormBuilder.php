@@ -48,7 +48,7 @@ class FormBuilder extends BaseComponent
      * @param  string $eventid
      * @return void
      */
-    public function mount($eventid)
+    public function mount($eventid, $formId = null)
     {
         $this->event = Event::whereSlug($eventid)->firstOrFail();
         $this->form = $this->event->forms()->first();

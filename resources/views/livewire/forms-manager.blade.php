@@ -39,7 +39,7 @@
                                 </div>
 
                                 <div class="flex items-center">
-                                    {{-- @if (Gate::check('updateForm', $organization))
+                                    @if (Gate::check('updateForm', $organization))
                                         <button class="ml-6 text-sm text-blue-500 cursor-pointer hover:text-blue-700 focus:outline-none" wire:click="confirmUpdate('{{ $form->id }}')">
                                             {{ __('Update') }}
                                         </button>
@@ -49,7 +49,7 @@
                                         <button class="ml-6 text-sm text-red-500 cursor-pointer hover:text-red-700 focus:outline-none" wire:click="confirmDestroy('{{ $form->id }}')">
                                             {{ __('Archive') }}
                                         </button>
-                                    @endif --}}
+                                    @endif
                                 </div>
                             </div>
                             @if(!$loop->last)

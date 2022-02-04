@@ -7,12 +7,10 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link href="https://css.gg/css?=|browse|loadbar-alt|sort-az|sort-za" rel="stylesheet">
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <link href="https://pagecdn.io/lib/selectize/0.13.3/css/selectize.default.min.css" rel="stylesheet" crossorigin="anonymous"  >
 
         @livewireStyles
         @wireUiScripts
