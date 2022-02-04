@@ -17,6 +17,7 @@ class FormManager extends BaseComponent
      * @var array
      */
     protected $listeners = [
+        'refresh' => 'render',
         'updated' => 'render',
         'created' => 'render',
         'destroyed' => 'render',
@@ -36,6 +37,13 @@ class FormManager extends BaseComponent
      * @var \App\Models\User|null
      */
     public $user;
+
+    public $sortByField = 'name';
+
+    public $keyword = null;
+
+    public $sortDirection = 'asc';
+
 
     /**
      * @var array
@@ -79,6 +87,20 @@ class FormManager extends BaseComponent
      */
     public $allQuestions = null;
 
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function sortBy($field)
+    {
+        $this->sortByField = $field;
+
+        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
+
+        $this->emit('refresh');
+    }
+
     /**
      * @param  Organization $organization
      * @return void
@@ -109,7 +131,6 @@ class FormManager extends BaseComponent
         $this->confirmUpdate($form->id);
     }
 
-
     /**
      * @return void
      */
@@ -126,7 +147,6 @@ class FormManager extends BaseComponent
             'description' => $form->description,
         ];
     }
-
 
     /**
      * @return void
@@ -232,6 +252,12 @@ class FormManager extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.forms-manager');
+      $forms = $this->organization
+        ->forms()
+        ->search($this->keyword)
+        ->orderBy($this->sortByField, $this->sortDirection)
+        ->paginate(25);
+
+        return view('livewire.forms-manager', compact('forms'));
     }
 }

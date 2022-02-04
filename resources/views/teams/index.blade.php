@@ -32,7 +32,11 @@
                     <div class="flex flex-col">
                             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-
+                                    <div class="flex justify-end">
+                                        <div class="w-1/4 mb-2">
+                                            <x-jet-input id="keywords" type="text" class="block w-full mt-1" wire:model="keyword" :placeholder="__('Search')"/>
+                                        </div>
+                                    </div>
                                     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                                         <table class="min-w-full divide-y divide-gray-200">
                                             <thead class="bg-gray-50">
@@ -86,10 +90,10 @@
                                                         'bg-white' => $loop->odd,
                                                         'bg-gray-50' => $loop->even
                                                     ])>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                                                             {{ $team->name }}
                                                         </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                                                             @if($team->progress_metric )
                                                                 <div class="p-2 ml-2 font-bold text-right text-white bg-blue-500 ">
                                                                     {{ $team->progress_metric }}
@@ -98,18 +102,18 @@
                                                                 {{ __('N/A') }}
                                                             @endif
                                                         </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                                                             {{ $team->priority_level }}
                                                         </td>
 
-                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                                                             {{ $team->start_date->format('m/d/y') }}
                                                         </td>
 
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                                                             {{ $team->pivot()?->net_projected_value }}
                                                         </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                                                             {{ $team->pivot()?->investment }}
                                                         </td>
 
@@ -128,7 +132,7 @@
                                                     </tr>
                                                     @else
                                                         <tr class="bg-white">
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="4">
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="6">
                                                                 {{ __('No Projects found.') }}
                                                             </td>
                                                         </tr>

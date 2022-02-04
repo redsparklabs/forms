@@ -20,6 +20,7 @@ class QuestionManager extends BaseComponent
         'destroyed' => 'render',
     ];
 
+
     /**
      * @var string
      */
@@ -35,6 +36,17 @@ class QuestionManager extends BaseComponent
      * @var \App\Models\User|null
      */
     public $user;
+
+    public $sortByField = 'question';
+
+    public $keyword = null;
+
+    public $sortDirection = 'asc';
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
     /**
      * @var array
@@ -76,6 +88,15 @@ class QuestionManager extends BaseComponent
     {
         $this->user = Auth::user();
         $this->organization = $organization;
+    }
+
+    public function sortBy($field)
+    {
+        $this->sortByField = $field;
+
+        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
+
+        $this->emit('refresh');
     }
 
     /**
@@ -137,6 +158,11 @@ class QuestionManager extends BaseComponent
      */
     public function render()
     {
-        return view('livewire.questions-manager');
+        $questions = $this->organization
+            ->questions()
+            ->search($this->keyword)
+            ->orderBy($this->sortByField, $this->sortDirection)
+            ->paginate(25);
+        return view('livewire.questions-manager', compact('questions'));
     }
 }

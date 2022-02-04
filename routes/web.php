@@ -39,7 +39,7 @@ if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
     Route::get('/privacy-policy', [PrivacyPolicyController::class, 'show'])->name('policy.show');
 }
 
-Route::get('form/{eventid}', FormBuilder::class)->name('form-builder');
+Route::get('form/{id}', FormBuilder::class)->name('form-builder');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/portfolio', PortfolioController::class, )->name('portfolio');

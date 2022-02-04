@@ -9,7 +9,7 @@
                 </div>
                 <div>
                     @if (Gate::check('addForm', $organization))
-                        <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmCreate()">
+                        <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" wire:click="confirmCreate()">
                             {{ __('Create') }}
                         </button>
                     @endif
@@ -20,46 +20,102 @@
 
     <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="mt-10 sm:mt-0">
-            <x-jet-action-section>
+            <x-jet-action-section :background="false">
                 <x-slot name="title">
                     {{ __('Assessments') }}
                 </x-slot>
 
                 <x-slot name="description">
-                    {{ __('All of the forms that are part of this organization.') }}
+                    {{ __('All of the assessments that are part of this organization.') }}
                 </x-slot>
 
                 <x-slot name="content">
-                    <div class="space-y-6">
-                        @forelse ($organization->forms->sortBy('name') as $form)
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <div class="ml-4">{{ $form->name }}</div>
-                                    <div class="ml-4 text-sm text-gray-400">{{ $form->description }}</div>
+                    <div class="flex flex-col">
+                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                 <div class="flex justify-end">
+                                    <div class="w-1/4 mb-2">
+                                        <x-jet-input id="keywords" type="text" class="block w-full mt-1" wire:model="keyword" :placeholder="__('Search')"/>
+                                    </div>
                                 </div>
+                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                             <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('name')">
+                                                    {{ __('Name') }}
+                                                    @if($forms->count() > 1)
+                                                        <x-sort :dir="$sortDirection" :active="$sortByField == 'name'"/>
+                                                    @endif
+                                                </th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('description')">
+                                                    {{ __('Description') }}
+                                                    @if($forms->count() > 1)
+                                                        <x-sort :dir="$sortDirection" :active="$sortByField == 'description'"/>
+                                                    @endif
+                                                </th>
+                                                <th scope="col" class="relative px-6 py-3">
 
-                                <div class="flex items-center">
-                                    @if (Gate::check('updateForm', $organization))
-                                        <button class="ml-6 text-sm text-blue-500 cursor-pointer hover:text-blue-700 focus:outline-none" wire:click="confirmUpdate('{{ $form->id }}')">
-                                            {{ __('Update') }}
-                                        </button>
-                                    @endif
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($forms as $form)
+                                                <tr @class([
+                                                    'bg-white' => $loop->odd,
+                                                    'bg-gray-50' => $loop->even
+                                                ])>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+                                                        {{ $form->name}}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+                                                        {{ Str::of($form->description)->limit(60) }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        @if (Gate::check('updateForm', $organization))
+                                                            <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" wire:click="confirmUpdate('{{ $form->id }}')">
+                                                                {{ __('Update') }}
+                                                            </button>
+                                                        @endif
 
-                                   @if (Gate::check('removeForm', $organization))
-                                        <button class="ml-6 text-sm text-red-500 cursor-pointer hover:text-red-700 focus:outline-none" wire:click="confirmDestroy('{{ $form->id }}')">
-                                            {{ __('Archive') }}
-                                        </button>
+                                                        @if (Gate::check('updateForm', $organization))
+                                                            <a class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" href="{{ route('form-builder', $form->id) }}" target="_blank">
+                                                                {{ __('View') }}
+                                                            </a>
+                                                        @endif
+
+                                                        {{-- @if (Gate::check('removeForm', $organization))
+                                                            <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" wire:click="confirmDestroy('{{ $form->id }}')">
+                                                                {{ __('Archive') }}
+                                                            </button>
+                                                        @endif --}}
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                 @if(!$keyword)
+                                                    <tr class="bg-white">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="6">
+                                                            {{ __('No Questions created.')}} {{ __('Go ahead and') }} <a class="text-blue-500 underline" wire:click="confirmCreate()">{{ __('create one') }}</a>!
+                                                        </td>
+                                                    </tr>
+                                                @else
+                                                    <tr class="bg-white">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="4">
+                                                            {{ __('No Questions found.') }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                    @if($forms->hasPages())
+                                        <div class="p-4">
+                                            {{ $forms->links() }}
+                                        </div>
                                     @endif
                                 </div>
                             </div>
-                            @if(!$loop->last)
-                                <hr />
-                            @endif
-                        @empty
-                        <div class="text-md text-center text-gray-600">
-                            {{ __('No Forms created. Go ahead and') }} <a class="underline " wire:click="confirmCreate()">{{ __('create one') }}</a>!
                         </div>
-                        @endforelse
                     </div>
                 </x-slot>
             </x-jet-action-section>
@@ -103,7 +159,7 @@
         <!-- Uodate Form Confirmation Modal -->
         <x-jet-dialog-modal wire:model="confirmingUpdating">
             <x-slot name="title">
-                {{ __('Update Form') }}
+                {{ __('Update Assessment') }}
             </x-slot>
 
             <x-slot name="content">
@@ -195,15 +251,15 @@
         <!-- Remove Form Confirmation Modal -->
         <x-jet-confirmation-modal wire:model="confirmingDestroying">
             <x-slot name="title">
-                {{ __('Archive Form') }}
+                {{ __('Archive Assessment') }}
             </x-slot>
 
             <x-slot name="content">
-                {{ __('Are you sure you would like to archive this form?') }}
+                {{ __('Are you sure you would like to archive this assessment?') }}
             </x-slot>
 
             <x-slot name="footer">
-                <x-jet-secondary-button wire:click="$toggle('confirmingRemoval')" wire:loading.attr="disabled">
+                <x-jet-secondary-button wire:click="$toggle('confirmingDestroying')" wire:loading.attr="disabled">
                     {{ __('Cancel') }}
                 </x-jet-secondary-button>
 

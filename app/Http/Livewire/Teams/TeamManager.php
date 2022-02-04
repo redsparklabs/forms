@@ -30,13 +30,6 @@ class TeamManager extends BaseComponent
     public $keyword = null;
 
     public $sortDirection = 'asc';
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-
     /**
      * The organization instance.
      *
@@ -59,6 +52,12 @@ class TeamManager extends BaseComponent
         'priority_level' => '',
         'start_date' => ''
     ];
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
 
     public function sortBy($field)
     {

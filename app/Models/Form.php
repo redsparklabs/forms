@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Question;
 use Illuminate\Support\Str;
 use App\Models\Organization;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,6 +16,7 @@ class Form extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Searchable;
 
     /**
      * The attributes that are dates.

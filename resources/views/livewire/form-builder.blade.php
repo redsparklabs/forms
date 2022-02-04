@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            @if($event->teams->count() > 1)
+            @if($event && $event->teams->count() > 1)
                 <div class="mb-4 bg-white border-b border-gray-200 rounded-md">
                     <h3 class="p-3 text-lg font-medium leading-6 text-blue-900 bg-blue-100 rounded-t-md">Team</h3>
                     <div class="p-4">
@@ -191,13 +191,15 @@
                 </div>
             @endforeach
 
-            <div class="pt-5">
-                <div class="flex justify-end">
-                    <button type="submit" class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        {{ __('Save') }}
-                    </button>
+            @if($event)
+                <div class="pt-5">
+                    <div class="flex justify-end">
+                        <button type="submit" class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            {{ __('Save') }}
+                        </button>
+                    </div>
                 </div>
-            </div>
+            @endif
         </form>
     </div>
 </div>

@@ -9,7 +9,7 @@
                 </div>
                 <div>
                     @if (Gate::check('addQuestion', $organization))
-                        <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmCreate()">
+                        <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" wire:click="confirmCreate()">
                             {{ __('Create') }}
                         </button>
                     @endif
@@ -22,7 +22,7 @@
          <div class="mt-10 sm:mt-0">
                 <!-- Manage Questions -->
             <div class="mt-10 sm:mt-0">
-                <x-jet-action-section>
+                <x-jet-action-section :background="false">
                     <x-slot name="title">
                         {{ __('Questions') }}
                     </x-slot>
@@ -32,34 +32,86 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <div class="space-y-6">
-                            @forelse ($organization->questions->sortBy('name') as $question)
-                                <div class="flex items-center justify-between">
-                                    <div class="">
-                                        <div class="ml-4">{{ $question->question }}</div>
-                                        <div class="ml-4">{{ $question->description }}</div>
+                        <div class="flex flex-col">
+                            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                     <div class="flex justify-end">
+                                        <div class="w-1/4 mb-2">
+                                            <x-jet-input id="keywords" type="text" class="block w-full mt-1" wire:model="keyword" :placeholder="__('Search')"/>
+                                        </div>
                                     </div>
+                                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead class="bg-gray-50">
+                                                 <tr>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('question')">
+                                                        {{ __('Question') }}
+                                                        @if($questions->count() > 1)
+                                                            <x-sort :dir="$sortDirection" :active="$sortByField == 'question'"/>
+                                                        @endif
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('description')">
+                                                        {{ __('Description') }}
+                                                        @if($questions->count() > 1)
+                                                            <x-sort :dir="$sortDirection" :active="$sortByField == 'description'"/>
+                                                        @endif
+                                                    </th>
+                                                    <th scope="col" class="relative px-6 py-3">
 
-                                    <div class="flex items-center">
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($questions as $question)
+                                                    <tr @class([
+                                                        'bg-white' => $loop->odd,
+                                                        'bg-gray-50' => $loop->even
+                                                    ])>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+                                                            {{ $question->question}}
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+                                                            {{ Str::of($question->description)->limit(60) }}
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                            @if (Gate::check('updateQuestion', $organization))
+                                                                <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" wire:click="confirmUpdate('{{ $question->id }}')">
+                                                                    {{ __('Update') }}
+                                                                </button>
+                                                            @endif
 
-                                         @if (Gate::check('updateQuestion', $organization))
-                                            <button class="ml-6 text-sm text-blue-500 cursor-pointer" wire:click="confirmUpdate('{{ $question->id }}')">
-                                                {{ __('Update') }}
-                                            </button>
-                                        @endif
-
-                                        @if (Gate::check('removeQuestion', $organization))
-                                            <button class="ml-6 text-sm text-red-500 cursor-pointer" wire:click="confirmDestroy('{{ $question->id }}')">
-                                                {{ __('Archive') }}
-                                            </button>
+                                                            @if (Gate::check('removeQuestion', $organization))
+                                                                <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" wire:click="confirmDestroy('{{ $question->id }}')">
+                                                                    {{ __('Archive') }}
+                                                                </button>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                     @if(!$keyword)
+                                                        <tr class="bg-white">
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="6">
+                                                                {{ __('No Questions created.')}} {{ __('Go ahead and') }} <a class="text-blue-500 underline" wire:click="confirmCreate()">{{ __('create one') }}</a>!
+                                                            </td>
+                                                        </tr>
+                                                    @else
+                                                        <tr class="bg-white">
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="4">
+                                                                {{ __('No Questions found.') }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                        @if($questions->hasPages())
+                                            <div class="p-4">
+                                                {{ $questions->links() }}
+                                            </div>
                                         @endif
                                     </div>
                                 </div>
-                            @empty
-                                <div class="text-md text-center text-gray-600">
-                                    {{ __('No Questions created. Go ahead and') }} <a class="underline " wire:click="confirmCreate()">{{ __('create one') }}</a>!
-                                </div>
-                            @endforelse
+                            </div>
                         </div>
                     </x-slot>
                 </x-jet-action-section>
