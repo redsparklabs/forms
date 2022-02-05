@@ -20,7 +20,7 @@ class Team extends Model
      *
      * @var array
      */
-    protected $dates = ['deleted_at', 'start_date'];
+    protected $dates = ['start_date'];
 
     /**
      * The attributes that are mass assignable.

@@ -97,7 +97,7 @@
 
             <div class="mt-4">
                 <x-jet-label for="start_date" value="{{ __('Start Date') }}" />
-                <x-jet-input type="date" id="start_date"  class="block w-full mt-1" wire:model.defer="updateForm.start_date" />
+                <x-jet-input type="date" id="start_date"  onkeydown="return false" required pattern="\d{4}-\d{2}-\d{2}" class="block w-full mt-1" wire:model.defer="updateForm.start_date" />
                 <x-jet-input-error for="start_date" class="mt-2" />
             </div>
         </x-slot>

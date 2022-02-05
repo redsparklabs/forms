@@ -24,7 +24,7 @@ class Event extends Model
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = ['date'];
     /**
      * The attributes that should be cast.
      *
@@ -39,7 +39,8 @@ class Event extends Model
      */
     protected $fillable = [
         'name',
-        'slug'
+        'slug',
+        'date'
     ];
 
     /**

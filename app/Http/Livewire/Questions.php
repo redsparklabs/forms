@@ -9,12 +9,13 @@ use App\Actions\UpdateQuestion;
 use App\Models\Organization;
 use Illuminate\Support\Facades\Auth;
 
-class QuestionManager extends BaseComponent
+class Questions extends BaseComponent
 {
     /**
      * @var array
      */
     protected $listeners = [
+        'refresh' => 'render',
         'updated' => 'render',
         'created' => 'render',
         'destroyed' => 'render',
@@ -163,6 +164,7 @@ class QuestionManager extends BaseComponent
             ->search($this->keyword)
             ->orderBy($this->sortByField, $this->sortDirection)
             ->paginate(25);
-        return view('livewire.questions-manager', compact('questions'));
+
+        return view('questions.index', compact('questions'));
     }
 }

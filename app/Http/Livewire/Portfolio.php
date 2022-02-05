@@ -10,7 +10,7 @@ use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
-class PortfolioController extends Component
+class Portfolio extends Component
 {
     use WithPagination;
     /**

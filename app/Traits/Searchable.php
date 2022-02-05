@@ -23,7 +23,6 @@ trait Searchable
         }
 
         $query->when($keyword, function ($query) use ($keyword, $columns, $relativeTables) {
-            
             $query->where(function ($query) use ($keyword, $columns, $relativeTables) {
                 foreach ($columns as $key => $column) {
                     $clause = $key == 0 ? 'where' : 'orWhere';
@@ -50,6 +49,7 @@ trait Searchable
     private function filterByRelationship($query, $keyword, $relativeTables)
     {
         foreach ($relativeTables as $relationship => $relativeColumns) {
+
             $query->orWhereHas($relationship, function ($relationQuery) use (
                 $keyword,
                 $relativeColumns

@@ -11,7 +11,7 @@ use App\Models\FormQuestion;
 use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
 
-class FormManager extends BaseComponent
+class Forms extends BaseComponent
 {
     /**
      * @var array

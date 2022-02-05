@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Teams;
+namespace App\Http\Livewire;
 
 use App\Models\Organization;
 use App\Actions\Teams\CreateTeam;
@@ -9,7 +9,7 @@ use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
-class TeamManager extends BaseComponent
+class Teams extends BaseComponent
 {
 
     use WithPagination;

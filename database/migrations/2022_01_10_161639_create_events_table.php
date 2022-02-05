@@ -17,6 +17,7 @@ class CreateEventsTable extends Migration
             $table->id();
             $table->string('slug')->nullable();
             $table->string('name');
+            $table->string('date');
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedBigInteger('organization_id');

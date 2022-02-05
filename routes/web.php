@@ -1,21 +1,23 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Laravel\Jetstream\Jetstream;
-use App\Http\Livewire\FormManager;
+use App\Http\Livewire\Forms;
+use App\Http\Livewire\Teams;
+use App\Http\Livewire\Events;
+use App\Http\Livewire\EventsShow;
+use App\Http\Livewire\Portfolio;
+use App\Http\Livewire\TeamsShow;
+use App\Http\Livewire\Questions;
 use App\Http\Livewire\FormBuilder;
-use App\Http\Livewire\QuestionManager;
-use App\Http\Livewire\Teams\TeamShow;
-use App\Http\Livewire\Teams\TeamManager;
-use App\Http\Livewire\PortfolioController;
-use App\Http\Livewire\Events\EventManager;
+use App\Http\Livewire\Results;
 
 
 use App\Http\Controllers\Livewire\EventController;
-use App\Http\Controllers\Livewire\CurrentOrganizationController;
 use App\Http\Controllers\Livewire\OrganizationController;
+use App\Http\Controllers\Livewire\CurrentOrganizationController;
 use App\Http\Controllers\Livewire\OrganizationInvitationController;
 
+use Laravel\Jetstream\Jetstream;
+use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
 use Laravel\Jetstream\Http\Controllers\Livewire\PrivacyPolicyController;
 use Laravel\Jetstream\Http\Controllers\Livewire\TermsOfServiceController;
@@ -42,17 +44,16 @@ if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
 Route::get('form/{id}', FormBuilder::class)->name('form-builder');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/portfolio', PortfolioController::class, )->name('portfolio');
-    Route::get('/projects', TeamManager::class)->name('teams.index');
-    Route::get('/projects/{team}', TeamShow::class)->name('teams.show');
+    Route::get('/portfolio', Portfolio::class, )->name('portfolio');
+    Route::get('/projects', Teams::class)->name('teams.index');
+    Route::get('/projects/{team}', TeamsShow::class)->name('teams.show');
+    Route::get('organizations/{organization}/forms', Forms::class)->name('form-manager');
+    Route::get('organizations/{organization}/questions', Questions::class)->name('question-manager');
+    Route::get('/growth-boards', Events::class, 'index')->name('events.index');
+    Route::get('/growth-boards/{event}', EventsShow::class)->name('events.show');
+    Route::get('/growth-boards/{event}/form/{form}/projects/{team}/results', Results::class)->name('events.results');
 
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
-
-    Route::get('/growth-boards', [EventController::class, 'index'])->name('events.index');
-    Route::get('/growth-boards/create', [EventController::class, 'create'])->name('events.create');
-    Route::get('/growth-boards/{event}', [EventController::class, 'show'])->name('events.show');
-    Route::get('/growth-boards/{event}/form/{form}/projects/{team}/results', [EventController::class, 'results'])->name('events.results');
-
     Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
     Route::get('/organizations/{organization}', [OrganizationController::class, 'show'])->name('organizations.show');
     Route::put('/current-organization', [CurrentOrganizationController::class, 'update'])->name('current-organization.update');
@@ -61,6 +62,5 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         ->middleware(['signed'])
         ->name('organization-invitations.accept');
 
-    Route::get('organizations/{organization}/forms', FormManager::class)->name('form-manager');
-    Route::get('organizations/{organization}/questions', QuestionManager::class)->name('question-manager');
+
 });

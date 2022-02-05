@@ -61,7 +61,7 @@
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                                                             @if($team->progress_metric)
-                                                                <div class="inline-block p-1 font-bold text-center text-white bg-blue-500 ">
+                                                                <div class="p-2 font-bold text-white bg-blue-500 w-10 text-center">
                                                                     {{ $team->progress_metric }}
                                                                 </div>
                                                             @else

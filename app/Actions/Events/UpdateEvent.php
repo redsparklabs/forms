@@ -28,11 +28,13 @@ class UpdateEvent
 
         $this->fill($attributes)->validateAttributes();
 
-        $name = Arr::get($attributes, 'name');
+        tap($event)->update([
+            'name' => Arr::get($attributes, 'name'),
+            'date' => Arr::get($attributes, 'date'),
+        ]);
 
-        $event->name = $name;
-
-        $event->save();
+        $event->teams()->sync(Arr::get($attributes, 'teams'));
+        $event->forms()->sync(Arr::get($attributes, 'forms'));
     }
 
     /**
@@ -42,6 +44,9 @@ class UpdateEvent
     {
         return [
             'name' => ['required', 'string'],
+            'teams' => ['required'],
+            'date' => ['required', 'date'],
+            'forms' => ['required'],
         ];
     }
 

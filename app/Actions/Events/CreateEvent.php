@@ -25,13 +25,13 @@ class CreateEvent
 
         $this->fill($attributes)->validateAttributes();
 
-        $name = Arr::get($attributes, 'name');
-        $teams = Arr::get($attributes, 'teams');
-        $forms = Arr::get($attributes, 'forms');
+        $event = $organization->events()->create([
+            'name' => Arr::get($attributes, 'name'),
+            'date' => Arr::get($attributes, 'date')
+        ]);
 
-        $event = $organization->events()->create(['name' => $name]);
-        $event->teams()->sync($teams);
-        $event->forms()->sync($forms);
+        $event->teams()->sync(Arr::get($attributes, 'teams'));
+        $event->forms()->sync(Arr::get($attributes, 'forms'));
     }
 
     /**
@@ -41,6 +41,9 @@ class CreateEvent
     {
         return [
             'name' => ['required', 'string'],
+            'teams' => ['required'],
+            'date' => ['required', 'date'],
+            'forms' => ['required'],
         ];
     }
 

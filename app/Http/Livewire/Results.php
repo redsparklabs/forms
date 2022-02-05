@@ -10,7 +10,7 @@ use App\Models\Team;
 use App\Models\User;
 use WireUi\Traits\Actions;
 
-class ResultsManager extends Component
+class Results extends Component
 {
 
     use Actions;
@@ -24,11 +24,6 @@ class ResultsManager extends Component
      * @var Form
      */
     public $form;
-
-    /**
-     * @var User
-     */
-    public $user;
 
     /**
      * @var array
@@ -58,7 +53,7 @@ class ResultsManager extends Component
     /**
      * @var array
      */
-    public $progressMetricTotal;
+    public $progressMetricTotal = 0;
 
     /**
      * @var array
@@ -69,7 +64,6 @@ class ResultsManager extends Component
      * @var array
      */
     public $totalSections;
-
 
     /**
      * Indicates if the a resource should be updated.
@@ -84,7 +78,7 @@ class ResultsManager extends Component
      * @var array
      */
     protected $listeners = [
-        'updated' => '$refresh',
+        'updated' => 'render',
     ];
 
     /**
@@ -98,34 +92,26 @@ class ResultsManager extends Component
 
     ];
 
-
     /**
      * Undocumented function
      *
      * @param  Event  $event
      * @param  Form   $form
      * @param  Team   $team
-     * @param  array $questions
-     * @param  array $sections
-     * @param  array $responses
-     * @param  array $progressMetricTotal
-     * @param  array $sectionTotals
-     * @param  array $totalSections
      * @return void
      */
-    public function mount(Event $event, Form $form, $team, $questions, $sections, $responses, $progressMetricTotal, $sectionTotals, $totalSections, $feedback_questions)
+    public function mount(Event $event, Form $form, Team $team)
     {
         $this->event = $event;
         $this->form = $form;
-        $this->user = Auth::user();
-        $this->questions = $questions;
-        $this->feedback_questions = $feedback_questions;
-        $this->sections = $sections;
         $this->team = $team;
-        $this->responses = $responses;
-        $this->progressMetricTotal = $progressMetricTotal;
-        $this->sectionTotals = $sectionTotals;
-        $this->totalSections = $totalSections;
+
+        $this->questions = $form->allQuestions();
+        $this->feedback_questions = $form->feedbackQuestions();
+        $this->sections = collect($this->questions)->groupBy('section')->reject(fn ($item, $key) => $key == 'custom');
+        $this->sectionTotals = $this->sections->keys()->mapWithkeys(fn ($item) => [$item . '_count' => 0])->all();
+        $this->totalSections = $this->sections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
+        $this->responses = $this->form->responses()->where('team_id', $team->id)->get();
     }
 
     /**
@@ -135,7 +121,7 @@ class ResultsManager extends Component
     {
         $this->confirmingUpdating = true;
 
-        $pivot = $this->event->teams->find($this->team)->pivot;
+        $pivot = $this->team->pivot();
 
         $this->updateForm = [
             'net_projected_value' => $pivot?->net_projected_value,
@@ -152,7 +138,7 @@ class ResultsManager extends Component
             'investment' => $this->updateForm['investment'],
 
         ]);
-        $this->team->update([
+        tap($this->team)->update([
             'priority_level' => $this->updateForm['priority_level'],
             'start_date' => $this->updateForm['start_date'],
         ]);
@@ -175,6 +161,6 @@ class ResultsManager extends Component
      */
     public function render()
     {
-        return view('livewire.results-manager');
+        return view('events.results');
     }
 }

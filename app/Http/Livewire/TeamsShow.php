@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Teams;
+namespace App\Http\Livewire;
 
 use App\Models\Team;
 use App\Actions\Teams\CreateTeam;
@@ -9,7 +9,7 @@ use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
 use App\Actions\Teams\UpdateTeam;
 
-class TeamShow extends BaseComponent
+class TeamsShow extends BaseComponent
 {
 
     /**
