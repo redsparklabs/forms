@@ -47,8 +47,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/portfolio', Portfolio::class, )->name('portfolio');
     Route::get('/projects', Teams::class)->name('teams.index');
     Route::get('/projects/{team}', TeamsShow::class)->name('teams.show');
-    Route::get('organizations/{organization}/forms', Forms::class)->name('form-manager');
-    Route::get('organizations/{organization}/questions', Questions::class)->name('question-manager');
+    Route::get('organizations/{organization}/forms', Forms::class)->name('forms');
+    Route::get('organizations/{organization}/questions', Questions::class)->name('questions');
     Route::get('/growth-boards', Events::class, 'index')->name('events.index');
     Route::get('/growth-boards/{event}', EventsShow::class)->name('events.show');
     Route::get('/growth-boards/{event}/form/{form}/projects/{team}/results', Results::class)->name('events.results');

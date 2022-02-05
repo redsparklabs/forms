@@ -36,11 +36,11 @@
                             <div class="w-60">
                                 @if(Auth::user()->currentOrganization)
                                     <!-- Organization Settings -->
-                                    <x-jet-dropdown-link href="{{ route('form-manager', Auth::user()->currentOrganization->id) }}">
+                                    <x-jet-dropdown-link href="{{ route('forms', Auth::user()->currentOrganization->id) }}">
                                         {{ __('Organization Assessments') }}
                                     </x-jet-dropdown-link>
 
-                                    <x-jet-dropdown-link href="{{ route('question-manager', Auth::user()->currentOrganization->id) }}">
+                                    <x-jet-dropdown-link href="{{ route('questions', Auth::user()->currentOrganization->id) }}">
                                         {{ __('Organization Questions') }}
                                     </x-jet-dropdown-link>
 

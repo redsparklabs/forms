@@ -258,6 +258,6 @@ class Forms extends BaseComponent
         ->orderBy($this->sortByField, $this->sortDirection)
         ->paginate(25);
 
-        return view('livewire.forms-manager', compact('forms'));
+        return view('forms.index', compact('forms'));
     }
 }
