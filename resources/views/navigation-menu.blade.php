@@ -11,7 +11,7 @@
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                  <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('portfolio') }}" :active="request()->routeIs('portfolio')">
+                    <x-jet-nav-link href="{{ route('portfolio') }}" :active="request()->is('portfolio')">
                         {{ __('Portfolio') }}
                     </x-jet-nav-link>
                 </div>
@@ -53,13 +53,13 @@
                     </x-jet-dropdown>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-4 sm:flex">
-                    <x-jet-nav-link href="{{ route('teams.index') }}" :active="request()->routeIs('projects')">
+                    <x-jet-nav-link href="{{ route('teams.index') }}" :active="request()->is('projects*')">
                         {{ __('Projects') }}
                     </x-jet-nav-link>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-4 sm:flex">
-                    <x-jet-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events')">
+                    <x-jet-nav-link href="{{ route('events.index') }}" :active="request()->is('growth-boards*')">
                         {{ __('Growth Boards') }}
                     </x-jet-nav-link>
                 </div>

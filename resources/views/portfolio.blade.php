@@ -118,7 +118,9 @@
                     </x-slot>
 
                     <x-slot name="description">
-                        <a class="text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.create') }}">{{ __('Create a new Growth Board') }}</a>
+                        <a class="text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.index', 'create') }}">
+                            {{ __('Create a new Growth Board') }}
+                        </a>
                     </x-slot>
 
                     <x-slot name="content">

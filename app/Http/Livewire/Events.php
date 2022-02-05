@@ -88,6 +88,10 @@ class Events extends BaseComponent
     {
         $this->user = Auth::user();
         $this->organization = $this->user->currentOrganization;
+
+        if(request()->has('create')) {
+            $this->confirmingCreating = true;
+        }
     }
 
     public function updatingSearch()
@@ -153,6 +157,7 @@ class Events extends BaseComponent
     public function updateAction()
     {
         $this->updateForm['teams'] = array_filter($this->updateForm['teams']);
+
         $this->validate([
             'updateForm.name' => 'required',
             'updateForm.teams' => 'required',
