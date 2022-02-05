@@ -5,18 +5,14 @@
                 <div class="w-full">
                     <div>
                         <div class="flex">
-                            <h3 class="flex-1 text-lg leading-6 font-medium text-gray-900">Growth Board</h3>
+                            <h3 class="flex-1 text-lg leading-6 font-medium text-gray-900">Growth Board - {{ $event->name }} </h3>
                             <div>
                                <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"  wire:click="confirmUpdate('{{ $event->id }}', '{{ $form->id }}', '{{ $questions }}')">
                                     {{ __('Update') }}
                                 </button>
                             </div>
                         </div>
-                        <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-4">
-                            <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                                <dt class="xl:text-sm font-medium text-gray-500 truncate">Growth Board:</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $event->name }}</dd>
-                            </div>
+                        <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Project</dt>
                                 <dd class="mt-1 text-lg font-semibold text-gray-900">{{ $team->name }}</dd>
@@ -35,11 +31,11 @@
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date:</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->pivot()->investment}}</dd>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->pivot()->investment ?? 'N/A'}}</dd>
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">NPV:</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->pivot()->net_projected_value }}</dd>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->pivot()->net_projected_value ?? 'N/A'}}</dd>
                             </div>
                         </dl>
                     </div>
