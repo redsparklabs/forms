@@ -136,7 +136,7 @@
                                         <table class="min-w-full divide-y divide-gray-200">
                                             <thead class="bg-gray-50">
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortByEvent('name')">
-                                                        {{ __('Growth Boards') }}
+                                                        {{ __('Name') }}
                                                         @if($events->count() > 1)
                                                             <x-sort :dir="$eventsSortDirection" :active="$eventsSortByField == 'name'"/>
                                                         @endif
@@ -177,9 +177,9 @@
                                                 @endforelse
                                             </tbody>
                                         </table>
-                                        @if($teams->hasPages())
+                                        @if($events->hasPages())
                                             <div class="p-4">
-                                                {{ $teams->links() }}
+                                                {{ $events->links() }}
                                             </div>
                                         @endif
                                     </div>

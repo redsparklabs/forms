@@ -1,83 +1,165 @@
 <div>
     <header class="bg-white shadow">
         <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="flex justify-between">
-                <div>
-                    <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                        {{ __('Project - ') . $team->name }}
-                    </h2>
-                </div>
-                <div>
-                    @if (Gate::check('updateTeam', $organization))
-                        <button class="ml-6 text-sm text-blue-500 cursor-pointer focus:outline-none" wire:click="confirmUpdate('{{ $team->id }}')">
-                            {{ __('Update') }}
-                        </button>
-                    @endif
+             <div class="flex">
+                <div class="w-full">
+                    <div>
+                        <div class="flex">
+                            <h2 class="flex-1 text-xl leading-6 font-medium text-gray-900">Project - {{ $team->name }} </h2>
+                            <div>
+                                @if (Gate::check('updateTeam', $organization))
+                                    <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" wire:click="confirmUpdate('{{ $team->id }}')">
+                                        {{ __('Update') }}
+                                    </button>
+                                @endif
+
+                                 @if (Gate::check('removeTeam', $organization))
+                                    <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" wire:click="confirmDestroy('{{ $team->id }}')">
+                                        {{ __('Archive') }}
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                        <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+                            <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                                <dt class="text-sm font-medium text-gray-500 truncate">Project</dt>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->name }}</dd>
+                            </div>
+                            <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                                <dt class="text-sm font-medium text-gray-500 truncate">Progress Metric:</dt>
+                                @if($team->progress_metric)
+                                    <dd class="mt-1 text-sm font-semibold text-blue-500">
+                                        <div class="p-2 font-bold text-white bg-blue-500 w-10 text-center">
+                                            {{ $team->progress_metric }}
+                                        </div>
+                                    </dd>
+                                @else
+                                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ __('N/A') }}</dd>
+                                @endif
+                            </div>
+                            <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                                <dt class="text-sm font-medium text-gray-500 truncate">Project Start Date:</dt>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->start_date->format('m/d/y') }}</dd>
+                            </div>
+                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                                <dt class="text-sm font-medium text-gray-500 truncate">Priority Level:</dt>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->priority_level ?? 'N/A' }}</dd>
+                            </div>
+
+                            <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                                <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date:</dt>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->pivot()->investment ?? 'N/A'}}</dd>
+                            </div>
+                            <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                                <dt class="text-sm font-medium text-gray-500 truncate">NPV:</dt>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->pivot()->net_projected_value ?? 'N/A'}}</dd>
+                            </div>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
     <div>
         <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="mt-10 sm:mt-0">
-                <x-jet-action-section>
-                    <x-slot name="title">
-                        {{ __('Growth Boards') }}
-                    </x-slot>
+            <x-jet-action-section :background="false">
+                <x-slot name="title">
+                    {{ __('Growth Boards') }}
+                </x-slot>
 
-                    <x-slot name="description">
-                        {{ __('All of the Growth Boards that are part of this project.') }}
-                    </x-slot>
+                <x-slot name="description">
+                    {{ __('All of the Growth Boards that are part of this project.') }}
+                </x-slot>
 
-                    <x-slot name="content">
-                        <div class="space-y-6">
-                            @forelse ($team->events->sortBy('name') as $event)
-                            <div>
-                                    <div>
-                                        <span class="font-semibold leading-tight text-gray-800 text-md">Growth Investment:</span>
-                                        <span class="text-gray-600 text-md">{{ $event->pivot->investment }}</span>
+                <x-slot name="content">
+                   <div class="flex flex-col">
+                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                <div class="flex justify-end">
+                                    <div class="w-1/4 mb-2">
+                                        <x-jet-input id="keywords" type="text" class="block w-full mt-1" wire:model="keyword" :placeholder="__('Search')"/>
                                     </div>
-                                    <div>
-                                        <span class="font-semibold leading-tight text-gray-800 text-md">Net projected Value:</span>
-                                        <span class="text-gray-600 text-md">{{ $event->pivot->net_projected_value }}</span>
-                                    </div>
-                                    @if($team->progress_metric)
-                                        <div>
-                                            <span class="font-semibold leading-tight text-gray-800 text-md">Progress Metric:</span>
-                                            <span class="font-bold text-right text-blue-500">{{ $team->progress_metric }}</span>
+                                </div>
+                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortByEvent('name')">
+                                                {{ __('Name') }}
+                                                @if($events->count() > 1)
+                                                    <x-sort :dir="$sortDirection" :active="$sortByField == 'name'"/>
+                                                @endif
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortByEvent('name')">
+                                                {{ __('Date') }}
+                                                @if($events->count() > 1)
+                                                    <x-sort :dir="$sortDirection" :active="$sortByField == 'date'"/>
+                                                @endif
+                                            </th>
+                                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                {{ __('Progress Metric') }}
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                {{ __('Net Project Value') }}
+                                            </th>
+
+                                            <th scope="col" class="relative px-6 py-3 text-right"></th>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($events as $event)
+                                                <tr @class([
+                                                    'bg-white' => $loop->odd,
+                                                    'bg-gray-50' => $loop->even
+                                                ])>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        {{ $event->name }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        {{ $event->date->format('m/d/y') }}
+                                                    </td>
+                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        {{-- {{ $event->teams()->first()->progress_metric }} --}}
+                                                    </td>
+                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        {{-- {{ $event->pivot()->net_projected_value }} --}}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" href="{{ route('events.results',[$event->id, $event->latestForm()->id, $team->id]) }}">
+                                                            {{ __('View Results') }}
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                @if(!$eventsKeyword)
+                                                     <tr class="bg-white">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="2">
+                                                            No Growth Boards created. Go ahead and <a class="text-blue-500 underline" href="{{ route('events.create') }}">{{ __('create one') }}</a>!
+                                                        </td>
+                                                    </tr>
+                                                @else
+                                                    <tr class="bg-white">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="2">
+                                                            {{ __('No Growth Boards found.') }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                    @if($events->hasPages())
+                                        <div class="p-4">
+                                            {{ $events->links() }}
                                         </div>
                                     @endif
+                                </div>
                             </div>
-
-
-                            <div>graph here</div>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <div class="ml-4">{{ $event->name }}</div>
-                                    </div>
-
-                                    <div>
-                                        @if($team->latestEvent() && $team->latestform())
-                                            <a class="ml-2 text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.results', [$team->latestEvent()->id, $team->latestform()->id, $team->id]) }}">
-                                                {{ __('View Results') }}
-                                            </a>
-                                        @endif
-                                    </div>
-
-                                </div>
-                            @empty
-                                <div class="w-full text-center">
-                                     {{ __('No') }} <a class="text-blue-900 cursor-pointer focus:outline-none" href="{{ route('events.index') }}">{{ __('Growth Boards') }}</a> {{ __('have been created.') }}
-                                </div>
-                            @endforelse
                         </div>
-                    </x-slot>
-                </x-jet-action-section>
-            </div>
+                    </div>
+                </x-slot>
+            </x-jet-action-section>
         </div>
     </div>
 
-     <x-jet-dialog-modal wire:model="confirmingUpdating">
+    <x-jet-dialog-modal wire:model="confirmingUpdating">
         <x-slot name="title">
             {{ __('Update Project') }}
         </x-slot>
@@ -112,5 +194,25 @@
             </x-jet-button>
         </x-slot>
     </x-jet-dialog-modal>
+
+    <x-jet-confirmation-modal wire:model="confirmingDestroying">
+            <x-slot name="title">
+                {{ __('Archive Project') }}
+            </x-slot>
+
+            <x-slot name="content">
+                {{ __('Are you sure you would like to archive this project?') }}
+            </x-slot>
+
+            <x-slot name="footer">
+                <x-jet-secondary-button wire:click="$toggle('confirmingDestroying')" wire:loading.attr="disabled">
+                    {{ __('Cancel') }}
+                </x-jet-secondary-button>
+
+                <x-jet-danger-button class="ml-2" wire:click="destroy" spinner="destroy">
+                    {{ __('Archive') }}
+                </x-jet-danger-button>
+            </x-slot>
+        </x-jet-confirmation-modal>
 
 </div>

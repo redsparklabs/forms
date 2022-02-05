@@ -3,15 +3,15 @@
 namespace App\Http\Livewire;
 
 use App\Models\Team;
-use App\Actions\Teams\CreateTeam;
 use App\Models\Organization;
-use App\Http\Livewire\BaseComponent;
-use Illuminate\Support\Facades\Auth;
+use App\Actions\Teams\CreateTeam;
 use App\Actions\Teams\UpdateTeam;
+use App\Http\Livewire\BaseComponent;
+
+use Illuminate\Support\Facades\Auth;
 
 class TeamsShow extends BaseComponent
 {
-
     /**
      * The organization instance.
      *
@@ -32,13 +32,29 @@ class TeamsShow extends BaseComponent
      * @var array
      */
     protected $listeners = [
-        'created' => '$refresh',
+        'refresh' => 'render',
+        'created' => 'render',
     ];
 
     /**
      * @var string
      */
     public $componentName = 'Project';
+
+    /**
+     * @var string
+     */
+    public $sortByField = 'name';
+
+    /**
+     * @var null
+     */
+    public $keyword = null;
+
+    /**
+     * @var string
+     */
+    public $sortDirection = 'asc';
 
     /**
      * @var array
@@ -78,6 +94,20 @@ class TeamsShow extends BaseComponent
         $this->team = $team;
         $this->user = Auth::user();
         $this->organization = $this->user->currentOrganization;
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function sortBy($field)
+    {
+        $this->sortByField = $field;
+
+        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
+
+        $this->emit('refresh');
     }
 
     /**
@@ -137,6 +167,12 @@ class TeamsShow extends BaseComponent
      */
     public function render()
     {
-        return view('teams.show');
+        $events = $this->user
+            ->currentOrganization
+            ->events()
+            ->search($this->keyword)
+            ->orderBy($this->sortByField, $this->sortDirection)
+            ->paginate(25);
+        return view('teams.show', compact('events'));
     }
 }
