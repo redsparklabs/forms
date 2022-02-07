@@ -72,6 +72,10 @@
                 </x-slot>
 
                 <x-slot name="content">
+                        <div class="w-full">
+                            <canvas id="myChart" width="1025" height="400" role="img" aria-label="" ></canvas>
+                        </div>
+
                    <div class="flex flex-col">
                         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -83,13 +87,13 @@
                                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortByEvent('name')">
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('name')">
                                                 {{ __('Name') }}
                                                 @if($events->count() > 1)
                                                     <x-sort :dir="$sortDirection" :active="$sortByField == 'name'"/>
                                                 @endif
                                             </th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortByEvent('name')">
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('date')">
                                                 {{ __('Date') }}
                                                 @if($events->count() > 1)
                                                     <x-sort :dir="$sortDirection" :active="$sortByField == 'date'"/>
@@ -131,7 +135,7 @@
                                                     </td>
                                                 </tr>
                                             @empty
-                                                @if(!$eventsKeyword)
+                                                @if(!$keyword)
                                                      <tr class="bg-white">
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="2">
                                                             No Growth Boards created. Go ahead and <a class="text-blue-500 underline" href="{{ route('events.index', 'create') }}">{{ __('create one') }}</a>!
@@ -218,3 +222,44 @@
         </x-jet-confirmation-modal>
 
 </div>
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+    const chart = new Chart(document.getElementById("myChart"), {
+        type: "line",
+        data: {
+            labels: [
+                "{!! $events->sortBy('date')->map(fn($item) => $item->date->format('m/d/y'))->implode('","') !!}"
+            ],
+            datasets: [{
+                borderColor: "#4A5568",
+                data: [
+                    {{ $events->sortBy('date')->map(fn($item) => $item->progressMetric($team))->implode(',') }}
+
+                ],
+                fill: false,
+                pointBackgroundColor: "#4A5568",
+                borderWidth: "3",
+                pointBorderWidth: "4",
+                pointHoverRadius: "6",
+                pointHoverBorderWidth: "8",
+                pointHoverBorderColor: "rgb(74,85,104,0.2)"
+            }]
+        },
+        options: {
+            legend: {
+                position: false
+            },
+            scales: {
+                yAxes: [{
+                    gridLines: {
+                        display: false
+                    },
+                    display: false
+                }]
+            }
+        }
+    });
+    </script>
+@endpush

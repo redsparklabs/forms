@@ -1569,6 +1569,9 @@ select {
 .h-3\.5 {
 	height: 0.875rem;
 }
+.h-full {
+	height: 100%;
+}
 .max-h-96 {
 	max-height: 24rem;
 }
@@ -1655,6 +1658,9 @@ select {
 }
 .w-28 {
 	width: 7rem;
+}
+.w-11\/12 {
+	width: 91.666667%;
 }
 .min-w-0 {
 	min-width: 0px;
@@ -2880,6 +2886,9 @@ select {
 .pl-6 {
 	padding-left: 1.5rem;
 }
+.pb-2 {
+	padding-bottom: 0.5rem;
+}
 .text-left {
 	text-align: left;
 }
@@ -3940,6 +3949,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(146, 64, 14, var(--tw-bg-opacity));
 }
+.hover\:bg-gray-200:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
+}
 .hover\:text-gray-500:hover {
 	--tw-text-opacity: 1;
 	color: rgba(107, 114, 128, var(--tw-text-opacity));
@@ -4202,6 +4215,14 @@ select {
 	--tw-ring-opacity: 1;
 	--tw-ring-color: rgba(245, 158, 11, var(--tw-ring-opacity));
 }
+.focus\:ring-indigo-700:focus {
+	--tw-ring-opacity: 1;
+	--tw-ring-color: rgba(67, 56, 202, var(--tw-ring-opacity));
+}
+.focus\:ring-gray-800:focus {
+	--tw-ring-opacity: 1;
+	--tw-ring-color: rgba(31, 41, 55, var(--tw-ring-opacity));
+}
 .focus\:ring-opacity-50:focus {
 	--tw-ring-opacity: 0.5;
 }
@@ -4367,6 +4388,10 @@ select {
 .dark .dark\:bg-secondary-200 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(228, 228, 231, var(--tw-bg-opacity));
+}
+.dark .dark\:bg-gray-700 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(55, 65, 81, var(--tw-bg-opacity));
 }
 .dark .dark\:bg-opacity-60 {
 	--tw-bg-opacity: 0.6;
@@ -4944,6 +4969,14 @@ select {
 		margin-top: 0px;
 	}
 
+	.md\:mt-4 {
+		margin-top: 1rem;
+	}
+
+	.md\:ml-4 {
+		margin-left: 1rem;
+	}
+
 	.md\:grid {
 		display: grid;
 	}
@@ -4980,6 +5013,21 @@ select {
 		padding-left: 1rem;
 		padding-right: 1rem;
 	}
+
+	.md\:text-xl {
+		font-size: 1.25rem;
+		line-height: 1.75rem;
+	}
+
+	.md\:text-2xl {
+		font-size: 1.5rem;
+		line-height: 2rem;
+	}
+
+	.md\:text-base {
+		font-size: 1rem;
+		line-height: 1.5rem;
+	}
 }
 @media (min-width: 1024px) {
 
@@ -4990,6 +5038,26 @@ select {
 	.lg\:-mx-8 {
 		margin-left: -2rem;
 		margin-right: -2rem;
+	}
+
+	.lg\:mt-0 {
+		margin-top: 0px;
+	}
+
+	.lg\:ml-14 {
+		margin-left: 3.5rem;
+	}
+
+	.lg\:flex {
+		display: flex;
+	}
+
+	.lg\:w-2\/3 {
+		width: 66.666667%;
+	}
+
+	.lg\:justify-start {
+		justify-content: flex-start;
 	}
 
 	.lg\:px-8 {

@@ -44,7 +44,7 @@ class TeamsShow extends BaseComponent
     /**
      * @var string
      */
-    public $sortByField = 'name';
+    public $sortByField = 'date';
 
     /**
      * @var null
@@ -169,7 +169,7 @@ class TeamsShow extends BaseComponent
     {
         $events = $this->team
             ->events()
-            ->search($this->keyword)
+            ->search($this->keyword, ['name', 'date'])
             ->orderBy($this->sortByField, $this->sortDirection)
             ->paginate(25);
         return view('teams.show', compact('events'));
