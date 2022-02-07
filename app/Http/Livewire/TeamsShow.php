@@ -107,6 +107,7 @@ class TeamsShow extends BaseComponent
 
         $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
 
+        $this->emit('reload_graph');
         $this->emit('refresh');
     }
 
@@ -167,11 +168,13 @@ class TeamsShow extends BaseComponent
      */
     public function render()
     {
+
         $events = $this->team
             ->events()
             ->search($this->keyword, ['name', 'date'])
             ->orderBy($this->sortByField, $this->sortDirection)
             ->paginate(25);
+
         return view('teams.show', compact('events'));
     }
 }

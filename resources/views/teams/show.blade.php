@@ -137,13 +137,13 @@
                                             @empty
                                                 @if(!$keyword)
                                                      <tr class="bg-white">
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="2">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="5">
                                                             No Growth Boards created. Go ahead and <a class="text-blue-500 underline" href="{{ route('events.index', 'create') }}">{{ __('create one') }}</a>!
                                                         </td>
                                                     </tr>
                                                 @else
                                                     <tr class="bg-white">
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="2">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="5">
                                                             {{ __('No Growth Boards found.') }}
                                                         </td>
                                                     </tr>
@@ -224,42 +224,50 @@
 </div>
 
 @push('scripts')
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script>
-    const chart = new Chart(document.getElementById("myChart"), {
-        type: "line",
-        data: {
-            labels: [
-                "{!! $events->sortBy('date')->map(fn($item) => $item->date->format('m/d/y'))->implode('","') !!}"
-            ],
-            datasets: [{
-                borderColor: "#4A5568",
-                data: [
-                    {{ $events->sortBy('date')->map(fn($item) => $item->progressMetric($team))->implode(',') }}
+    window.load = loadGraph()
 
+    window.livewire.on('reload_graph', () => {
+        loadGraph()
+    })
+    function loadGraph() {
+        const chart = new Chart(document.getElementById("myChart"), {
+            type: "line",
+            data: {
+                labels: [
+                    "{!! $events->sortBy('date')->map(fn($item) => $item->date->format('m/d/y'))->implode('","') !!}"
                 ],
-                fill: false,
-                pointBackgroundColor: "#4A5568",
-                borderWidth: "3",
-                pointBorderWidth: "4",
-                pointHoverRadius: "6",
-                pointHoverBorderWidth: "8",
-                pointHoverBorderColor: "rgb(74,85,104,0.2)"
-            }]
-        },
-        options: {
-            legend: {
-                position: false
-            },
-            scales: {
-                yAxes: [{
-                    gridLines: {
-                        display: false
-                    },
-                    display: false
+                datasets: [{
+                    borderColor: "#4A5568",
+                    data: [
+                        {{ $events->sortBy('date')->map(fn($item) => $item->progressMetric($team))->implode(',') }}
+
+                    ],
+                    fill: false,
+                    pointBackgroundColor: "#4A5568",
+                    borderWidth: "3",
+                    pointBorderWidth: "4",
+                    pointHoverRadius: "6",
+                    pointHoverBorderWidth: "8",
+                    pointHoverBorderColor: "rgb(74,85,104,0.2)"
                 }]
+            },
+            options: {
+                legend: {
+                    position: false
+                },
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            display: false
+                        },
+                        display: false
+                    }]
+                }
             }
-        }
-    });
+        });
+    };
     </script>
 @endpush
