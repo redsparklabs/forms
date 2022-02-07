@@ -121,7 +121,7 @@ class Results extends Component
     {
         $this->confirmingUpdating = true;
 
-        $pivot = $this->team->pivot();
+        $pivot = $this->event->teams()->find($this->team)->pivot;
 
         $this->updateForm = [
             'net_projected_value' => $pivot?->net_projected_value,

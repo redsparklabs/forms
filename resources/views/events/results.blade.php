@@ -15,7 +15,7 @@
                         <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Project</dt>
-                                <dd class="mt-1 text-lg font-semibold text-gray-900">{{ $team->name }}</dd>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->name }}</dd>
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Project Start Date:</dt>
@@ -27,15 +27,19 @@
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Current Progress Metric:</dt>
-                                <dd class="mt-1 text-sm font-semibold text-blue-500">{{ $team->progress_metric }}</dd>
+                                <dd class="mt-1 text-sm font-semibold text-blue-500">
+                                    <div class="p-2 font-bold text-white bg-blue-500 w-10 text-center">
+                                        {{ $event->progressMetric($team) }}
+                                    </div>
+                                </dd>
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date:</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->pivot()->investment ?? 'N/A'}}</dd>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $event->teams()->find($team->id)->pivot->investment ?? 'N/A'}}</dd>
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">NPV:</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->pivot()->net_projected_value ?? 'N/A'}}</dd>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $event->teams()->find($team->id)->pivot->net_projected_value ?? 'N/A'}}</dd>
                             </div>
                         </dl>
                     </div>

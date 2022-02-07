@@ -87,6 +87,22 @@ class Event extends Model
     {
         return $this->forms()->first();
     }
+
+        /**
+     * Get the progress metric total.
+     *
+     * @return void|string
+     */
+    public function progressMetric($team)
+    {
+        $form = $this->forms()->latest()->first();
+        $data = calculateSections($form, $team);
+
+        if($data) {
+            return number_format($data['progressMetricTotal'], 1);
+        }
+    }
+
     /**
      * Get the owner of the team.
      *

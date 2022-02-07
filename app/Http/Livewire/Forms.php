@@ -44,13 +44,14 @@ class Forms extends BaseComponent
 
     public $sortDirection = 'asc';
 
-
+    public $addedQuestions;
     /**
      * @var array
      */
     public $createForm = [
         'name' => '',
         'description' => '',
+        'questions' => []
     ];
 
     /**
@@ -109,10 +110,36 @@ class Forms extends BaseComponent
     {
         $this->user = Auth::user();
         $this->organization = $organization;
-        $this->assignedQuestions = collect();
-        $this->allQuestions = collect();
+        $this->addedQuestions = collect();
+        $this->allQuestions = $this->organization->questions()->get()->sortBy('pivot.order');
     }
 
+    public function toggleAddQuestion(int $id)
+    {
+        if($this->addedQuestions->contains($id)) {
+            $this->addedQuestions = $this->addedQuestions->reject(function($value) use($id) {
+               return (int) $value == (int) $id;
+            });
+        } else {
+            $this->addedQuestions->push($id);
+        }
+        ray($this->addedQuestions);
+    }
+
+    public function moveQuestion($id, $direction) {
+        ray($this->addedQuestions);
+        $position =  $this->addedQuestions->search($id);
+        ray($position);
+        switch($direction){
+            case 'down':
+$this->addedQuestions = $this->addedQuestions->replace([$position => $id]);
+                ray($this->addedQuestions);
+            break;
+            case 'up':
+
+            break;
+        }
+    }
     /**
      * @return void
      */

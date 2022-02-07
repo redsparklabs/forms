@@ -151,7 +151,7 @@ class TeamsShow extends BaseComponent
             $this->updateForm
         );
 
-        $this->emit('refresh-navigation-menu');
+        $this->emit('refresh');
     }
 
     /**
@@ -167,8 +167,7 @@ class TeamsShow extends BaseComponent
      */
     public function render()
     {
-        $events = $this->user
-            ->currentOrganization
+        $events = $this->team
             ->events()
             ->search($this->keyword)
             ->orderBy($this->sortByField, $this->sortDirection)

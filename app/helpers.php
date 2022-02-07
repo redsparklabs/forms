@@ -1,6 +1,6 @@
 <?php
-
-
+use App\Models\Form;
+use App\Models\Team;
 if (!function_exists('colorize')) {
     /**
      * Colorize
@@ -52,3 +52,45 @@ if (!function_exists('inbetween')) {
         return ($val >= $min && $val <= $max);
     }
 }
+
+function calculateSections(Form $form, Team $team)
+{
+        $responses = $form->responses()->where('team_id', $team->id)->get();
+        $progressMetricTotal = 0;
+        $questions = $form->allQuestions();
+        $allSections = collect($questions)->groupBy('section')->reject(fn ($item, $key) => $key == 'custom');
+        $sectionCount = $allSections->keys()->mapWithkeys(fn ($item) => [$item . '_count' => 0])->all();
+        $totalSections = $allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
+
+
+        foreach ($responses as $response) {
+            $total = 0;
+            foreach ($allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->all() as $section => $sectionData) {
+
+                $sectionQuestions = $sectionData->pluck('question')->map(fn ($item) => Str::slug($item))->toArray();
+
+                $total += collect($response->questions)->filter(function ($item, $key) use ($sectionQuestions) {
+                    return in_array($key, $sectionQuestions);
+                })->sum();
+            }
+
+            $progressMetricTotal = number_format(($total / $totalSections), 1);
+
+            foreach ($allSections->all() as $section => $sectionData) {
+                $sectionQuestions = $sectionData->pluck('question')->map(fn ($item) => Str::slug($item))->toArray();
+                $sectionTotal = collect($response->questions)->filter(function ($item, $key) use ($sectionQuestions) {
+                    return in_array($key, $sectionQuestions);
+                })->sum();
+
+                $sectionCount[$section . '_count'] += number_format($sectionTotal / $allSections->count(), 1);
+            }
+        }
+
+        return [
+            'responses' => $responses,
+            'questions' => $questions,
+            'allSections' => $allSections,
+            'sectionCount' => $sectionCount,
+            'progressMetricTotal' => $progressMetricTotal,
+        ];
+    }

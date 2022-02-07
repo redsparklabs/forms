@@ -94,9 +94,9 @@
                                                     {{ $team->name }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-                                                    @if($team->progress_metric )
+                                                    @if($team->latest_progress_metric )
                                                         <div class="p-2 font-bold text-white bg-blue-500 w-10 text-center">
-                                                            {{ $team->progress_metric }}
+                                                            {{ $team->latest_progress_metric }}
                                                         </div>
                                                     @else
                                                         {{ __('N/A') }}
@@ -111,10 +111,10 @@
                                                 </td>
 
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-                                                    {{ $team->pivot()?->net_projected_value }}
+                                                    {{ $team->latestPivot()?->net_projected_value }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-                                                    {{ $team->pivot()?->investment }}
+                                                    {{ $team->latestPivot()?->investment }}
                                                 </td>
 
                                                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

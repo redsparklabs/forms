@@ -7,7 +7,7 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <link href="https://css.gg/css?=|browse|loadbar-alt|sort-az|sort-za" rel="stylesheet">
+        <link href="https://css.gg/css?=|arrow-down-o|arrow-up-o|browse|check-o|loadbar-alt|sort-az|sort-za" rel="stylesheet">
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">

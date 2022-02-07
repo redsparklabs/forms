@@ -5,7 +5,7 @@
                 <div class="w-full">
                     <div>
                         <div class="flex">
-                            <h2 class="flex-1 text-xl leading-6 font-medium text-gray-900">Project - {{ $team->name }} </h2>
+                            <h2 class="flex-1 text-xl leading-6 font-medium text-gray-900">Project - {{ $team->name }} {{ $team->id }} </h2>
                             <div>
                                 @if (Gate::check('updateTeam', $organization))
                                     <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" wire:click="confirmUpdate('{{ $team->id }}')">
@@ -27,10 +27,10 @@
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Progress Metric:</dt>
-                                @if($team->progress_metric)
+                                @if($team->latest_progress_metric)
                                     <dd class="mt-1 text-sm font-semibold text-blue-500">
                                         <div class="p-2 font-bold text-white bg-blue-500 w-10 text-center">
-                                            {{ $team->progress_metric }}
+                                            {{ $team->latest_progress_metric }}
                                         </div>
                                     </dd>
                                 @else
@@ -48,11 +48,11 @@
 
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date:</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->pivot()->investment ?? 'N/A'}}</dd>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->latestPivot()?->investment ?? 'N/A'}}</dd>
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">NPV:</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->pivot()->net_projected_value ?? 'N/A'}}</dd>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->latestPivot()?->net_projected_value ?? 'N/A'}}</dd>
                             </div>
                         </dl>
                     </div>
@@ -117,10 +117,12 @@
                                                         {{ $event->date->format('m/d/y') }}
                                                     </td>
                                                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                        {{-- {{ $event->teams()->first()->progress_metric }} --}}
+                                                        <div class="p-2 font-bold text-white bg-blue-500 w-10 text-center">
+                                                            {{ $event->progressMetric($team) }}
+                                                        </div>
                                                     </td>
                                                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                        {{-- {{ $event->pivot()->net_projected_value }} --}}
+                                                        {{ $event->teams->find($team->id)->pivot->net_projected_value ?? 'N/A' }}
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                         <a class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" href="{{ route('events.results',[$event->id, $event->latestForm()->id, $team->id]) }}">
