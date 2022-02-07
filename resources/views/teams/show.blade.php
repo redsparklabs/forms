@@ -240,12 +240,13 @@
                     "{!! $events->sortBy('date')->map(fn($item) => $item->date->format('m/d/y'))->implode('","') !!}"
                 ],
                 datasets: [{
+                    label: 'Progress',
                     borderColor: "#4A5568",
                     data: [
                         {{ $events->sortBy('date')->map(fn($item) => $item->progressMetric($team))->implode(',') }}
-
+                        // {!! $events->sortBy('date')->map(fn($item) => ['x' => $item->progressMetric($team), 'y' => $item->date->format('m/d/y')]) !!}
                     ],
-                    fill: false,
+                    fill: true,
                     pointBackgroundColor: "#4A5568",
                     borderWidth: "3",
                     pointBorderWidth: "4",
@@ -261,9 +262,9 @@
                 scales: {
                     yAxes: [{
                         gridLines: {
-                            display: false
+                            display: true
                         },
-                        display: false
+                        display: true
                     }]
                 }
             }
