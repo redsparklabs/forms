@@ -80,8 +80,8 @@
                                                 @empty
                                                     @if(!$projectsKeyword)
                                                         <tr class="bg-white">
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                            {{ __('No Projects created.')}} {{ __('Go ahead and') }} <a class="text-blue-900 underline" href="{{ route('teams.create') }}">{{ __('create one') }}</a>!
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="4">
+                                                            {{ __('No Projects created.')}} {{ __('Go ahead and') }} <a class="text-blue-900 underline" href="{{route('teams.index', 'create') }}">{{ __('create one') }}</a>!
                                                         </td>
                                                     </tr>
                                                     @else
@@ -164,7 +164,7 @@
                                                     @if(!$eventsKeyword)
                                                          <tr class="bg-white">
                                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="2">
-                                                                No Growth Boards created. Go ahead and <a class="text-blue-500 underline" href="{{ route('events.create') }}">{{ __('create one') }}</a>!
+                                                                No Growth Boards created. Go ahead and <a class="text-blue-500 underline" href="{{ route('events.index', 'create') }}">{{ __('create one') }}</a>!
                                                             </td>
                                                         </tr>
                                                     @else

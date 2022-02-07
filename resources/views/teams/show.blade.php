@@ -134,7 +134,7 @@
                                                 @if(!$eventsKeyword)
                                                      <tr class="bg-white">
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center" colspan="2">
-                                                            No Growth Boards created. Go ahead and <a class="text-blue-500 underline" href="{{ route('events.create') }}">{{ __('create one') }}</a>!
+                                                            No Growth Boards created. Go ahead and <a class="text-blue-500 underline" href="{{ route('events.index', 'create') }}">{{ __('create one') }}</a>!
                                                         </td>
                                                     </tr>
                                                 @else
