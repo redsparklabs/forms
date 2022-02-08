@@ -6,6 +6,11 @@
                     <h2 class="text-xl font-semibold leading-tight text-gray-800">
                         {{ __('Growth Board - ' . $event->name) }} - {{ $event->date->format('m/d/y') }}
                     </h2>
+                    </div>
+                <div>
+                    <button type="button"class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 copy" data-clipboard-text="{{ route('form-builder', $event->slug) }}">
+                        {{ __('Get sharable link') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -79,11 +84,6 @@
                                                     <a class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" href="{{ route('events.results', [$event->id, $event->latestForm()->id, $team->id]) }}">
                                                         {{ __('View Results') }}
                                                     </a>
-
-                                                    <button type="button"class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 copy" data-clipboard-text="{{ route('form-builder', $event->slug) }}">
-                                                        {{ __('Get sharable link') }}
-                                                    </button>
-
                                                 </td>
                                             </tr>
                                         @empty
