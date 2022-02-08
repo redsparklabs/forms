@@ -72,7 +72,7 @@
                                                 'bg-gray-50' => $loop->even
                                             ])>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $team->name }}
+                                                    <a class="text-blue-500 underline" href="{{ route('teams.show', $team->id) }}">{{ $team->name }}</a>
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                                     @if($team->progress_metric)
@@ -95,8 +95,8 @@
                                         @empty
                                             @if(!$keyword)
                                                 <tr class="bg-white">
-                                                    <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap" colspan="4>
-                                                        {{ __('No Projects created.')}} {{ __('Go ahead and') }} <a class="text-blue-900 underline" href="{{ route('teams.index', 'create') }}">{{ __('add one') }}</a>!
+                                                    <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap" colspan="4">
+                                                        {{ __('No Projects created.')}} {{ __('Go ahead and') }} <a class="text-blue-500 underline" href="{{ route('teams.index', 'create') }}">{{ __('add one') }}</a>!
                                                     </td>
                                                 </tr>
                                             @else
