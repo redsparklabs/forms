@@ -93,11 +93,11 @@
                                                         @endif
 
 
-                                                    {{--  @if(Gate::check('updateEvent', $organization))
+                                                    @if(Gate::check('updateEvent', $organization))
                                                             <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-yellow-600 hover:bg-yellow-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500" wire:click="confirmUpdate('{{ $event->id }}')">
                                                                 {{ __('Update') }}
                                                             </button>
-                                                        @endif --}}
+                                                        @endif
 
                                                         {{-- @if (Gate::check('removeEvent', $organization))
                                                             <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" wire:click="confirmDestroy('{{ $event->id }}')">
