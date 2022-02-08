@@ -10,8 +10,7 @@ var clipboard = new ClipboardJS('.copy');
 
 clipboard.on('success', function (e) {
     window.$wireui.notify({
-        title: 'Form Link!',
-        description: 'Form Link Copied saved',
+        title: 'Form Link Copied!',
         icon: 'success'
     })
     e.clearSelection();

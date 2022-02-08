@@ -5486,8 +5486,7 @@ alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();
 var clipboard = new (clipboard__WEBPACK_IMPORTED_MODULE_1___default())('.copy');
 clipboard.on('success', function (e) {
   window.$wireui.notify({
-    title: 'Form Link!',
-    description: 'Form Link Copied saved',
+    title: 'Form Link Copied!',
     icon: 'success'
   });
   e.clearSelection();

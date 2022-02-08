@@ -8,8 +8,9 @@
                     </h2>
                     </div>
                 <div>
+                    <span class="mr-2 text-xs inline-blick">{{ route('form-builder', $event->slug) }}</span>
                     <button type="button"class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 copy" data-clipboard-text="{{ route('form-builder', $event->slug) }}">
-                        {{ __('Get sharable link') }}
+                        {{ __('Copy Link') }}
                     </button>
                 </div>
             </div>
