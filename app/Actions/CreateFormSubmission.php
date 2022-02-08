@@ -40,7 +40,6 @@ class CreateFormSubmission
 
         $this->customQuestions = $customQuestions;
 
-
         $this->fill($attributes)->validateAttributes();
 
         $response = $form->responses()->create([

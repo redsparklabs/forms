@@ -6,14 +6,10 @@ use App\Models\Form;
 use App\Models\Event;
 use Illuminate\Support\Str;
 use App\Actions\CreateFormSubmission;
-use App\Http\Livewire\BaseComponent;
+use Livewire\Component;
 
-class FormBuilder extends BaseComponent
+class FormBuilder extends Component
 {
-    /**
-     * @var string
-     */
-    public $componentName = 'FormBuilder';
 
     /**
      * @var string
@@ -40,7 +36,7 @@ class FormBuilder extends BaseComponent
      */
     public $create_form = [
         'email' => '',
-        'team' => '',
+        'team' => null,
     ];
 
     /**
@@ -72,6 +68,7 @@ class FormBuilder extends BaseComponent
         ));
     }
 
+
     /**
      * Create a new form submission
      *
@@ -79,6 +76,10 @@ class FormBuilder extends BaseComponent
      */
     public function create()
     {
+        if($this->event->teams->count() == 1) {
+            $this->create_form['team'] = $this->event->teams->first()->id;
+        }
+
         CreateFormSubmission::run(
             $this->event,
             $this->form,
@@ -90,33 +91,6 @@ class FormBuilder extends BaseComponent
         $this->emit('created');
     }
 
-    /**
-     * @return void
-     */
-    public function createAction()
-    {
-    }
-
-    /**
-     * @return void
-     */
-    public function confirmUpdateAction()
-    {
-    }
-
-    /**
-     * @return void
-     */
-    public function updateAction()
-    {
-    }
-
-    /**
-     * @return void
-     */
-    public function destroyAction()
-    {
-    }
 
     /**
      * Render the component
