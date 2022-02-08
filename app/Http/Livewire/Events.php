@@ -8,6 +8,7 @@ use App\Actions\Events\DestroyEvent;
 use App\Models\Organization;
 use App\Http\Livewire\BaseComponent;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 
 class Events extends BaseComponent
 {
@@ -88,7 +89,8 @@ class Events extends BaseComponent
      */
     public function mount(Organization $organization)
     {
-        $this->organization = $organization;
+        $this->user = Auth::user();
+        $this->organization = $this->user->currentOrganization;
 
         if (request()->has('create')) {
             $this->confirmingCreating = true;

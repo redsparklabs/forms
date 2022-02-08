@@ -41,41 +41,41 @@
                                 <table class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="pl-6 pr-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('name')">
+                                            <th scope="col" class="px-6 py-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('name')">
                                                 {{ __('Name') }}
                                                 @if($teams->count() > 1)
                                                     <x-sort :dir="$sortDirection" :active="$sortByField == 'name'"/>
                                                 @endif
                                             </th>
 
-                                            <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('name')">
+                                            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('name')">
                                                 {{ __('Progress Metric') }}
                                                {{--  @if($teams->count() > 1)
                                                     <x-sort :dir="$sortDirection" :active="$sortByField == 'name'"/>
                                                 @endif --}}
                                             </th>
 
-                                            <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('priority_level')">
+                                            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('priority_level')">
                                                 {{ __('Priority Level') }}
                                                 @if($teams->count() > 1)
                                                     <x-sort :dir="$sortDirection" :active="$sortByField == 'priority_level'"/>
                                                 @endif
                                             </th>
 
-                                            <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('start_date')">
+                                            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('start_date')">
                                                 {{ __('Start Date') }}
                                                 @if($teams->count() > 1)
                                                     <x-sort :dir="$sortDirection" :active="$sortByField == 'start_date'"/>
                                                 @endif
                                             </th>
 
-                                            <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('start_date')">
+                                            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer">
                                                 {{ __('Net Project Value') }}
                                                 {{-- @if($teams->count() > 1)
                                                     <x-sort :dir="$sortDirection" :active="$sortByField == 'priority_level'"/>
                                                 @endif --}}
                                             </th>
-                                            <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer" wire:click="sortBy('start_date')">
+                                            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hover:text-gray-900 cursor-pointer">
                                                 {{ __('Investment') }}
                                               {{--   @if($teams->count() > 1)
                                                     <x-sort :dir="$sortDirection" :active="$sortByField == 'priority_level'"/>
@@ -103,18 +103,18 @@
                                                     @endif
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-                                                    {{ $team->priority_level }}
+                                                    {{ $team->priority_level ?? 'N/A' }}
                                                 </td>
 
                                                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-                                                    {{ $team->start_date->format('m/d/y') }}
+                                                    {{ $team->start_date->format('m/d/y') ?? 'N/A' }}
                                                 </td>
 
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-                                                    {{ $team->latestPivot()?->net_projected_value }}
+                                                    {{ $team->latestPivot()?->net_projected_value ?? 'N/A' }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
-                                                    {{ $team->latestPivot()?->investment }}
+                                                    {{ $team->latestPivot()?->investment ?? 'N/A' }}
                                                 </td>
 
                                                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
