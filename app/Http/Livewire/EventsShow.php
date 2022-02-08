@@ -98,6 +98,7 @@ class EventsShow extends Component
     {
         $teams = $this->event
             ->teams()
+            ->withTrashed()
             ->search($this->keyword, ['name', 'priority_level'])
             ->orderBy($this->sortByField, $this->sortDirection)
             ->paginate(25);
