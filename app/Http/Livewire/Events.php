@@ -7,10 +7,12 @@ use App\Actions\Events\UpdateEvent;
 use App\Actions\Events\DestroyEvent;
 use App\Models\Organization;
 use App\Http\Livewire\BaseComponent;
-use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class Events extends BaseComponent
 {
+
+    use WithPagination;
 
     /**
      * The organization instance.
@@ -86,24 +88,35 @@ class Events extends BaseComponent
      */
     public function mount(Organization $organization)
     {
-        $this->user = Auth::user();
-        $this->organization = $this->user->currentOrganization;
+        $this->organization = $organization;
 
-        if(request()->has('create')) {
+        if (request()->has('create')) {
             $this->confirmingCreating = true;
         }
     }
 
+    /**
+     * Update the search keyword.
+     *
+     * @return void
+     */
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function sortBy($field)
+    /**
+     * Sort the collection by the given field.
+     *
+     * @param  string $field
+     *
+     * @return void
+     */
+    public function sortBy(string $field)
     {
         $this->sortByField = $field;
 
-        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
+        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc' : 'desc';
 
         $this->emit('refresh');
     }
@@ -119,7 +132,7 @@ class Events extends BaseComponent
             'createForm.teams' => 'required',
             'createForm.date' => ['required', 'date'],
             'createForm.forms' => 'required'
-        ],[
+        ], [
             'createForm.name.required' => 'Please enter a name.',
             'createForm.teams.required' => 'Please choose a team.',
             'createForm.forms.required' => 'Please choose a form.',
@@ -144,8 +157,8 @@ class Events extends BaseComponent
         $this->updateForm = [
             'name' => $event?->name,
             'date' => $event?->date->format('Y-m-d'),
-            'teams' => $event->teams->pluck('id')->mapWithkeys(fn($item) => [$item => $item]),
-            'forms' => $event->forms->first()->id
+            'teams' => $event?->teams->pluck('id')->mapWithkeys(fn ($item) => [$item => $item]),
+            'forms' => $event?->forms->first()->id
         ];
     }
 
@@ -163,7 +176,7 @@ class Events extends BaseComponent
             'updateForm.teams' => 'required',
             'updateForm.date' => ['required', 'date'],
             'updateForm.forms' => 'required'
-        ],[
+        ], [
             'updateForm.name.required' => 'Please enter a name.',
             'updateForm.teams.required' => 'Please choose a team.',
             'updateForm.forms.required' => 'Please choose a form.',

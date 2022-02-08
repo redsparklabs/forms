@@ -8,9 +8,11 @@ use App\Actions\DestroyQuestion;
 use App\Actions\UpdateQuestion;
 use App\Models\Organization;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class Questions extends BaseComponent
 {
+    use WithPagination;
     /**
      * @var array
      */
@@ -38,17 +40,20 @@ class Questions extends BaseComponent
      */
     public $user;
 
+    /**
+     * @var string
+     */
     public $sortByField = 'question';
 
+    /**
+     * @var string
+     */
     public $keyword = null;
 
+    /**
+     * @var string
+     */
     public $sortDirection = 'asc';
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
     /**
      * @var array
      */
@@ -65,7 +70,7 @@ class Questions extends BaseComponent
         'description' => ''
     ];
 
-      /**
+    /**
      * @var array
      */
     public $rules = [
@@ -91,11 +96,30 @@ class Questions extends BaseComponent
         $this->organization = $organization;
     }
 
+
+    /**
+     * Update the search keyword.
+     *
+     * @return void
+     */
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+
+    /**
+     * Sort the collection by the given field.
+     *
+     * @param  string $field
+     *
+     * @return void
+     */
     public function sortBy($field)
     {
         $this->sortByField = $field;
 
-        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
+        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc' : 'desc';
 
         $this->emit('refresh');
     }

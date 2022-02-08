@@ -82,18 +82,21 @@ class Event extends Model
 
     /**
      * Get the latest form
+     *
+     * @return \App\Models\Form|null
      */
     public function latestForm()
     {
         return $this->forms()->first();
     }
 
-        /**
+    /**
      * Get the progress metric total.
      *
+     * @param  Team $team
      * @return void|string
      */
-    public function progressMetric($team)
+    public function progressMetric(Team $team)
     {
         $form = $this->forms()->latest()->first();
         $data = calculateSections($form, $team);

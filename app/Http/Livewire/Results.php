@@ -16,17 +16,18 @@ class Results extends Component
     use Actions;
 
     /**
-     * @var Event
+     * @var \App\Models\Event
      */
     public $event;
 
     /**
-     * @var Form
+     * @var \App\Models\Form
      */
     public $form;
 
     /**
-     * @var array
+     *
+     * @var \Illuminate\Support\Collection.
      */
     public $questions;
 
@@ -36,22 +37,22 @@ class Results extends Component
     public $feedback_questions;
 
     /**
-     * @var array
+     * @var \Illuminate\Support\Collection
      */
     public $sections;
 
     /**
-     * @var array
+     * @var \App\Models\Team
      */
     public $team;
 
     /**
-     * @var array
+     * @var \Illuminate\Database\Eloquent\Collection
      */
     public $responses;
 
     /**
-     * @var array
+     * @var integer
      */
     public $progressMetricTotal = 0;
 
@@ -61,7 +62,7 @@ class Results extends Component
     public $sectionTotals;
 
     /**
-     * @var array
+     * @var integer
      */
     public $totalSections;
 
@@ -116,21 +117,28 @@ class Results extends Component
 
     /**
      * Confirm the update of a team
+     *
+     * @return void
      */
     public function confirmUpdate()
     {
         $this->confirmingUpdating = true;
 
-        $pivot = $this->event->teams()->find($this->team)->pivot;
+        $pivot = $this->event->teams()->find($this->team)?->pivot;
 
         $this->updateForm = [
             'net_projected_value' => $pivot?->net_projected_value,
             'investment' => $pivot?->investment,
             'priority_level' => $this->team->priority_level,
-            'start_date' => $this->team->start_date->format('Y-m-d'),
+            'start_date' => $this->team->start_date?->format('Y-m-d'),
         ];
     }
 
+    /**
+     * Update a team
+     *
+     * @return void
+     */
     public function update()
     {
         $this->event->teams()->updateExistingPivot($this->team, [

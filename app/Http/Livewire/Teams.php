@@ -13,6 +13,7 @@ class Teams extends BaseComponent
 {
 
     use WithPagination;
+
     /**
      * The component's listeners.
      *
@@ -25,10 +26,19 @@ class Teams extends BaseComponent
         'destroyed' => '$refresh',
     ];
 
+    /**
+     * @var string
+     */
     public $sortByField = 'name';
 
+    /**
+     * @var string
+     */
     public $keyword = null;
 
+    /**
+     * @var string
+     */
     public $sortDirection = 'asc';
     /**
      * The organization instance.
@@ -53,23 +63,8 @@ class Teams extends BaseComponent
         'start_date' => ''
     ];
 
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-
-    public function sortBy($field)
-    {
-        $this->sortByField = $field;
-
-        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
-
-        $this->emit('refresh');
-    }
-
     /**
-     * @return array
+     * @var array
      */
     protected $messages = [
         'createForm.name.required' => 'Please add a name for this project.',
@@ -78,7 +73,7 @@ class Teams extends BaseComponent
     ];
 
     /**
-     * @return array
+     * @var array
      */
     protected $rules = [
         'createForm.name' => ['required'],
@@ -93,8 +88,6 @@ class Teams extends BaseComponent
     /**
      * Mount the component
      *
-     * @param  Organization $organization
-     *
      * @return void
      */
     public function mount()
@@ -102,9 +95,35 @@ class Teams extends BaseComponent
         $this->user = Auth::user();
         $this->organization = $this->user->currentOrganization;
 
-        if(request()->has('create')) {
+        if (request()->has('create')) {
             $this->confirmingCreating = true;
         }
+    }
+
+    /**
+     * Update the search keyword.
+     *
+     * @return void
+     */
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Sort the collection by the given field.
+     *
+     * @param  string $field
+     *
+     * @return void
+     */
+    public function sortBy(string $field)
+    {
+        $this->sortByField = $field;
+
+        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc' : 'desc';
+
+        $this->emit('refresh');
     }
 
     /**

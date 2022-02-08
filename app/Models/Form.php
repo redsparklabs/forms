@@ -80,7 +80,7 @@ class Form extends Model
     /**
      * Feedback questions
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
 
     public function allQuestions()

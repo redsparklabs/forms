@@ -4,14 +4,15 @@ namespace App\Http\Livewire;
 
 use App\Models\Team;
 use App\Models\Organization;
-use App\Actions\Teams\CreateTeam;
+use Livewire\WithPagination;
 use App\Actions\Teams\UpdateTeam;
 use App\Http\Livewire\BaseComponent;
-
 use Illuminate\Support\Facades\Auth;
 
 class TeamsShow extends BaseComponent
 {
+    use WithPagination;
+
     /**
      * The organization instance.
      *
@@ -66,7 +67,7 @@ class TeamsShow extends BaseComponent
     ];
 
     /**
-     * @return array
+     * @var array
      */
     protected $messages = [
         'updateForm.name.required' => 'Please add a name for this project.',
@@ -75,7 +76,7 @@ class TeamsShow extends BaseComponent
     ];
 
     /**
-     * @return array
+     * @var array
      */
     protected $rules = [
         'updateForm.name' => ['required'],
@@ -85,7 +86,7 @@ class TeamsShow extends BaseComponent
     /**
      * Mount the component
      *
-     * @param  Organization $organization
+     * @param  Team $team
      *
      * @return void
      */
@@ -96,16 +97,28 @@ class TeamsShow extends BaseComponent
         $this->organization = $this->user->currentOrganization;
     }
 
+    /**
+     * Update the search keyword.
+     *
+     * @return void
+     */
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function sortBy($field)
+    /**
+     * Sort the collection by the given field.
+     *
+     * @param  string $field
+     *
+     * @return void
+     */
+    public function sortBy(string $field)
     {
         $this->sortByField = $field;
 
-        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
+        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc' : 'desc';
 
         $this->emit('reload_graph');
         $this->emit('refresh');
@@ -118,7 +131,6 @@ class TeamsShow extends BaseComponent
      */
     public function createAction()
     {
-
     }
 
     /**
@@ -130,9 +142,9 @@ class TeamsShow extends BaseComponent
         $team = $this->organization->teams->find($this->idBeingUpdated);
 
         $this->updateForm = [
-            'name' => $team?->name,
-            'priority_level' => $team?->priority_level,
-            'start_date' => $team->start_date->format('Y-m-d'),
+            'name' => $team->name,
+            'priority_level' => $team->priority_level,
+            'start_date' => $team->start_date?->format('Y-m-d'),
         ];
     }
 

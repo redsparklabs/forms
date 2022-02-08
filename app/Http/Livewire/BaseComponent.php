@@ -93,14 +93,11 @@ abstract class BaseComponent extends Component
         $this->reset('createForm');
 
         $this->emit('created');
-
-        // $this->reloadOrganization();
     }
 
     /**
      * Confirm that the given resource should be updated.
      *
-     * @param  int  $id
      * @return void
      */
     public function confirmCreate()

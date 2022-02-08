@@ -10,9 +10,11 @@ use App\Models\Form;
 use App\Models\FormQuestion;
 use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class Forms extends BaseComponent
 {
+    use WithPagination;
     /**
      * @var array
      */
@@ -38,12 +40,20 @@ class Forms extends BaseComponent
      */
     public $user;
 
+    /**
+     * @var string
+     */
     public $sortByField = 'name';
 
+    /**
+     * @var string
+     */
     public $keyword = null;
 
+    /**
+     * @var string
+     */
     public $sortDirection = 'asc';
-
 
     /**
      * @var array
@@ -87,16 +97,29 @@ class Forms extends BaseComponent
      */
     public $allQuestions = null;
 
+    /**
+     * Update the search keyword.
+     *
+     * @return void
+     */
+
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function sortBy($field)
+    /**
+     * Sort the collection by the given field.
+     *
+     * @param  string $field
+     *
+     * @return void
+     */
+    public function sortBy(string $field)
     {
         $this->sortByField = $field;
 
-        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
+        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc' : 'desc';
 
         $this->emit('refresh');
     }
@@ -204,8 +227,6 @@ class Forms extends BaseComponent
         $this->assignedQuestions = collect($form->questions()->pluck('question_id')->toArray());
 
         $this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
-
-        $this->organization = $this->organization->fresh();
     }
 
     /**
@@ -252,11 +273,11 @@ class Forms extends BaseComponent
      */
     public function render()
     {
-      $forms = $this->organization
-        ->forms()
-        ->search($this->keyword)
-        ->orderBy($this->sortByField, $this->sortDirection)
-        ->paginate(25);
+        $forms = $this->organization
+            ->forms()
+            ->search($this->keyword)
+            ->orderBy($this->sortByField, $this->sortDirection)
+            ->paginate(25);
 
         return view('forms.index', compact('forms'));
     }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Livewire;
 
-use App\Http\Livewire\BaseComponent;
-use App\Models\Event;
 use App\Models\Form;
-use App\Actions\CreateFormSubmission;
+use App\Models\Event;
 use Illuminate\Support\Str;
+use App\Actions\CreateFormSubmission;
+use App\Http\Livewire\BaseComponent;
 
 class FormBuilder extends BaseComponent
 {
@@ -21,7 +21,7 @@ class FormBuilder extends BaseComponent
     public $event;
 
     /**
-     * @var string
+     * @var \App\Models\Form
      */
     public $form;
 
@@ -46,13 +46,13 @@ class FormBuilder extends BaseComponent
     /**
      * Mount the component
      *
-     * @param  string $eventid
+     * @param  string $id
      * @return void
      */
     public function mount($id)
     {
         if(!is_numeric($id)) {
-            $this->event = Event::whereSlug($eventid)->firstOrFail();
+            $this->event = Event::whereSlug($id)->firstOrFail();
             $this->form = $this->event->forms()->first();
         } else {
             $this->form = Form::find($id);

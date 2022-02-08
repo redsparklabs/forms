@@ -63,21 +63,27 @@ class Team extends Model
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 
-    public function progressMetric($event)
+    /**
+     * Get the progress percentage.
+     *
+     * @param  Event $event
+     * @return string|void
+     */
+    public function progressMetric(Event $event)
     {
-            // Grab latest form
-            $form = $event->forms()->latest()->first();
-            $data = calculateSections($form, $this);
+        // Grab latest form
+        $form = $event->forms()->latest()->first();
+        $data = $form ? calculateSections($form, $this) : null;
 
-            if($data) {
-                return number_format($data['progressMetricTotal'], 1);
-            }
+        if ($data) {
+            return number_format($data['progressMetricTotal'], 1);
+        }
     }
 
-   /**
+    /**
      * Get the latest event
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \App\Models\Event|null
      */
     public function latestEvent()
     {
@@ -87,11 +93,11 @@ class Team extends Model
     /**
      * Get the latest form
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \App\Models\Form
      */
     public function latestform()
     {
-        return $this->latestEvent()->forms()->latest()->first();
+        return $this->latestEvent()?->forms()->latest()->first();
     }
 
     /**
@@ -102,12 +108,12 @@ class Team extends Model
     public function getLatestProgressMetricAttribute()
     {
 
-        if ($this->events?->isNotEmpty()) {
-            $latestform = $this->latestform();
+        if ($this->events->isNotEmpty()) {
+            $latestForm = $this->latestform();
 
-            $data = calculateSections($latestform, $this);
+            $data = calculateSections($latestForm, $this);
 
-            if($data) {
+            if ($data) {
                 return number_format($data['progressMetricTotal'], 1);
             }
         }
@@ -123,4 +129,3 @@ class Team extends Model
         return $this->latestEvent()?->pivot;
     }
 }
-

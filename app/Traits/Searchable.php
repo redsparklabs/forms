@@ -12,11 +12,12 @@ trait Searchable
      * Search the model.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $keyword
      * @param array $columns
      * @param array $relativeTables
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSearch(Builder $query, $keyword, $columns = [], $relativeTables = [])
+    public function scopeSearch(Builder $query, $keyword,  $columns = [], $relativeTables = [])
     {
         if (empty($columns)) {
             $columns = Arr::except(Schema::getColumnListing($this->getTable()), $this->guarded);
@@ -41,12 +42,12 @@ trait Searchable
     /**
      * Filter the query by a relationship.
      *
-     * @param object $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string $keyword
-     * @param object $relativeTables
-     * @return void
+     * @param array $relativeTables
+     * @return object
      */
-    private function filterByRelationship($query, $keyword, $relativeTables)
+    private function filterByRelationship(Builder $query, $keyword, $relativeTables)
     {
         foreach ($relativeTables as $relationship => $relativeColumns) {
 

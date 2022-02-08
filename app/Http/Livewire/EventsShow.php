@@ -4,17 +4,19 @@ namespace App\Http\Livewire;
 
 use App\Models\Event;
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
-use WireUi\Traits\Actions;
+use Livewire\WithPagination;
 
 class EventsShow extends Component
 {
+    use WithPagination;
+
     /**
      * The user instance.
      *
      * @var \App\Models\User|null
      */
     public $event;
+
     /**
      * @var string
      */
@@ -51,7 +53,7 @@ class EventsShow extends Component
     /**
      * Mount the component
      *
-     * @param  Organization $organization
+     * @param  Event $event
      *
      * @return void
      */
@@ -60,16 +62,28 @@ class EventsShow extends Component
         $this->event = $event;
     }
 
+    /**
+     * Update the search keyword.
+     *
+     * @return void
+     */
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function sortBy($field)
+    /**
+     * Sort the collection by the given field.
+     *
+     * @param  string $field
+     *
+     * @return void
+     */
+    public function sortBy(string $field)
     {
         $this->sortByField = $field;
 
-        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc': 'desc';
+        $this->sortDirection = ($this->sortDirection == 'desc') ? 'asc' : 'desc';
 
         $this->emit('refresh');
     }

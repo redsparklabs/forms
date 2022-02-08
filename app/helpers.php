@@ -1,6 +1,8 @@
 <?php
+
 use App\Models\Form;
 use App\Models\Team;
+
 if (!function_exists('colorize')) {
     /**
      * Colorize
@@ -36,7 +38,6 @@ if (!function_exists('colorize')) {
     }
 }
 
-
 if (!function_exists('inbetween')) {
     /**
      * Check if a number is between two other numbers
@@ -53,8 +54,17 @@ if (!function_exists('inbetween')) {
     }
 }
 
-function calculateSections(Form $form, Team $team)
-{
+if (!function_exists('calculateSections')) {
+    /**
+     * Calculate the sections for a form
+     *
+     * @param  Form $form
+     * @param  Team $team
+     *
+     * @return array
+     */
+    function calculateSections(Form $form, Team $team)
+    {
         $responses = $form->responses()->where('team_id', $team->id)->get();
         $progressMetricTotal = 0;
         $questions = $form->allQuestions();
@@ -94,3 +104,4 @@ function calculateSections(Form $form, Team $team)
             'progressMetricTotal' => $progressMetricTotal,
         ];
     }
+}

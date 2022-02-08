@@ -19,7 +19,7 @@ trait HasOrganizations
      */
     public function isCurrentOrganization($organization)
     {
-        return $organization->id === $this->currentOrganization->id;
+        return $organization?->id === $this->currentOrganization->id;
     }
 
     /**
