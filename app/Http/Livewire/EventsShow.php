@@ -5,8 +5,10 @@ namespace App\Http\Livewire;
 use App\Models\Event;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Http\Livewire\BaseComponent;
+use App\Actions\Events\UpdateEvent;
 
-class EventsShow extends Component
+class EventsShow extends BaseComponent
 {
     use WithPagination;
 
@@ -16,6 +18,14 @@ class EventsShow extends Component
      * @var \App\Models\User|null
      */
     public $event;
+
+
+    /**
+     * The organization instance.
+     *
+     * @var \App\Models\Organization
+     */
+    public $organization;
 
     /**
      * @var string
@@ -35,7 +45,7 @@ class EventsShow extends Component
     /**
      * @var string
      */
-    public $componentName = 'EventsShow';
+    public $componentName = 'Events';
 
     /**
      * The component's listeners.
@@ -49,6 +59,15 @@ class EventsShow extends Component
         'destroyed' => 'render',
     ];
 
+    /**
+     * @var array
+     */
+    public $updateForm = [
+        'name' => '',
+        'date' => '',
+        'teams' => [],
+        'forms' => '',
+    ];
 
     /**
      * Mount the component
@@ -60,6 +79,7 @@ class EventsShow extends Component
     public function mount(Event $event)
     {
         $this->event = $event;
+        $this->organization = $this->event->organization;
     }
 
     /**
@@ -88,6 +108,56 @@ class EventsShow extends Component
         $this->emit('refresh');
     }
 
+
+    public function createAction() {
+
+    }
+    public function destroyAction() {
+
+    }
+    /**
+     * Confirm the update of a team
+     */
+    public function confirmUpdateAction()
+    {
+
+        $this->updateForm = [
+            'name' => $this->event?->name,
+            'date' => $this->event?->date->format('Y-m-d'),
+            'teams' => $this->event?->teams->pluck('id')->mapWithkeys(fn ($item) => [$item => $item]),
+            'forms' => $this->event?->forms->first()->id
+        ];
+    }
+
+    /**
+     * Update a team
+     *
+     * @return void
+     */
+    public function updateAction()
+    {
+        $this->updateForm['teams'] = array_filter($this->updateForm['teams']);
+
+        $this->validate([
+            'updateForm.name' => 'required',
+            'updateForm.teams' => 'required',
+            'updateForm.date' => ['required', 'date'],
+            'updateForm.forms' => 'required'
+        ], [
+            'updateForm.name.required' => 'Please enter a name.',
+            'updateForm.teams.required' => 'Please choose a team.',
+            'updateForm.forms.required' => 'Please choose a form.',
+            'updateForm.date.required' => 'Please enter a proper date.',
+        ]);
+
+
+        UpdateEvent::run(
+            $this->user,
+            $this->organization,
+            $this->event,
+            $this->updateForm
+        );
+    }
 
     /**
      * Render the component
