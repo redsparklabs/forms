@@ -2,6 +2,7 @@
 
 use App\Models\Form;
 use App\Models\Team;
+use Illuminate\Support\Str;
 
 if (!function_exists('colorize')) {
     /**
@@ -63,11 +64,13 @@ if (!function_exists('calculateSections')) {
      *
      * @return array
      */
-    function calculateSections(Form $form, Team $team)
+    function calculateSections($event, Team $team)
     {
-        $responses = $form->responses()->where('team_id', $team->id)->get();
+        $responses = $event->responses()->where('team_id', $team->id)->get();
+
         $progressMetricTotal = 0;
-        $questions = $form->allQuestions();
+
+        $questions = $event->latestForm()->allQuestions();
         $allSections = collect($questions)->groupBy('section')->reject(fn ($item, $key) => $key == 'custom');
         $sectionCount = $allSections->keys()->mapWithkeys(fn ($item) => [$item . '_count' => 0])->all();
         $totalSections = $allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();

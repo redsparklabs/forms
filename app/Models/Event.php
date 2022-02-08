@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Team;
+use App\Models\Responses;
 use App\Models\EventTeam;
 use Illuminate\Support\Str;
 use App\Traits\Searchable;
@@ -90,6 +91,16 @@ class Event extends Model
         return $this->forms()->first();
     }
 
+            /**
+     * Responses
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function responses()
+    {
+        return $this->hasMany(Responses::class);
+    }
+
     /**
      * Get the progress metric total.
      *
@@ -98,8 +109,9 @@ class Event extends Model
      */
     public function progressMetric(Team $team)
     {
-        $form = $this->forms()->latest()->first();
-        $data = calculateSections($form, $team);
+        // $form = $this->forms()->latest()->first();
+
+        $data = calculateSections($this, $team);
 
         if($data) {
             return number_format($data['progressMetricTotal'], 1);

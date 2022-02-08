@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Event;
+use App\Models\Responses;
 use Illuminate\Support\Str;
 use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
@@ -72,8 +73,7 @@ class Team extends Model
     public function progressMetric(Event $event)
     {
         // Grab latest form
-        $form = $event->forms()->latest()->first();
-        $data = $form ? calculateSections($form, $this) : null;
+        $data = calculateSections($event, $this);
 
         if ($data) {
             return number_format($data['progressMetricTotal'], 1);
@@ -89,6 +89,17 @@ class Team extends Model
     {
         return $this->events()->latest('date')->first();
     }
+
+        /**
+     * Responses
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function responses()
+    {
+        return $this->hasMany(Responses::class);
+    }
+
 
     /**
      * Get the latest form
@@ -109,9 +120,8 @@ class Team extends Model
     {
 
         if ($this->events->isNotEmpty()) {
-            $latestForm = $this->latestform();
 
-            $data = calculateSections($latestForm, $this);
+            $data = calculateSections($this->latestEvent(), $this);
 
             if ($data) {
                 return number_format($data['progressMetricTotal'], 1);
