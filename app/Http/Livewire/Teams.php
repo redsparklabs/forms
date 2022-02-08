@@ -4,7 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Organization;
 use App\Actions\Teams\CreateTeam;
-use App\Actions\Teams\DestroyTeam;
+
 use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
@@ -167,13 +167,6 @@ class Teams extends BaseComponent
      */
     public function destroyAction()
     {
-        $organization  = $this->organization->teams()->find($this->idBeingDestroyed);
-
-        DestroyTeam::run(
-            $this->user,
-            $this->organization,
-            $organization
-        );
     }
 
     /**

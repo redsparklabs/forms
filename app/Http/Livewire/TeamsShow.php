@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Team;
+use App\Actions\Teams\DestroyTeam;
 use App\Models\Organization;
 use Livewire\WithPagination;
 use App\Actions\Teams\UpdateTeam;
@@ -172,7 +173,17 @@ class TeamsShow extends BaseComponent
      */
     public function destroyAction()
     {
+        $organization  = $this->organization->teams()->find($this->idBeingDestroyed);
+
+        DestroyTeam::run(
+            $this->user,
+            $this->organization,
+            $organization
+        );
+
+        redirect()->route('teams.index');
     }
+
     /**
      * Render the component
      *
