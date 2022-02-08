@@ -12,6 +12,7 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
         @livewireStyles
         @wireUiScripts
@@ -27,7 +28,7 @@
             <!-- Page Heading -->
             @if (isset($header))
                 <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center">
+                    <div class="px-4 py-6 mx-auto text-center max-w-7xl sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>

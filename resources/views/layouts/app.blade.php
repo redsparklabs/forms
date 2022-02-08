@@ -11,6 +11,7 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
         @livewireStyles
         @wireUiScripts
