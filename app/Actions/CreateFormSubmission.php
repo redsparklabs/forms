@@ -63,13 +63,13 @@ class CreateFormSubmission
 
         $data = array_merge(...$data);
 
-        $data1 = array_merge(array_map(function ($item) {
-            return ['questions.custom.' . $item => ['required']];
-        }, $this->customQuestions));
+        // $data1 = array_merge(array_map(function ($item) {
+        //     return ['questions.custom.' . $item => ['required']];
+        // }, $this->customQuestions));
 
-        $data1 = array_merge(...$data1);
+        // $data1 = array_merge(...$data1);
 
-        $data = array_merge($data, $data1, [
+        $data = array_merge($data, $data, [
             'email' => ['required', 'email'],
             'team' => ['required'],
         ]);
@@ -83,15 +83,15 @@ class CreateFormSubmission
     public function getValidationMessages(): array
     {
         $arr = [
-            'team.required' => 'Please choose a team.',
+            'team.required' => 'Please choose a project.',
         ];
 
         foreach ($this->slugQuestions as $item) {
             $arr['questions.' . $item . '.required'] = 'Please answer the question.';
         }
-        foreach ($this->customQuestions as $item) {
-            $arr['questions.custom.' . $item . '.required'] = 'Please answer the question.';
-        }
+        // foreach ($this->customQuestions as $item) {
+        //     $arr['questions.custom.' . $item . '.required'] = 'Please answer the question.';
+        // }
 
         return $arr;
     }
