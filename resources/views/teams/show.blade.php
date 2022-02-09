@@ -225,7 +225,7 @@
 
 @push('scripts')
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
     <script>
     window.load = loadGraph()
 
@@ -241,31 +241,66 @@
                 ],
                 datasets: [{
                     label: 'Progress',
-                    borderColor: "#4A5568",
+                    borderColor: "blue",
+                    yAxisID: 'y',
                     data: [
                         {{ $events->sortBy('date')->map(fn($item) => $item->progressMetric($team))->implode(',') }}
-                        // {!! $events->sortBy('date')->map(fn($item) => ['x' => $item->progressMetric($team), 'y' => $item->date->format('m/d/y')]) !!}
                     ],
-                    fill: true,
-                    pointBackgroundColor: "#4A5568",
-                    borderWidth: "3",
-                    pointBorderWidth: "4",
-                    pointHoverRadius: "6",
-                    pointHoverBorderWidth: "8",
-                    pointHoverBorderColor: "rgb(74,85,104,0.2)"
+                    // fill: true,
+                    // pointBackgroundColor: "#4A5568",
+                    // borderWidth: "3",
+                    // pointBorderWidth: "4",
+                    // pointHoverRadius: "6",
+                    // pointHoverBorderWidth: "8",
+                    // pointHoverBorderColor: "rgb(74,85,104,0.2)"
+                }, {
+                    label: 'Net Projected Value',
+                    borderColor: "red",
+                    yAxisID: 'y1',
+                    data: [
+                        {{ $events->sortBy('date')->map(fn($item) => (string) $item->pivot?->net_projected_value)->implode(',') }}
+                    ],
+                },{
+                    label: 'Investment',
+                    borderColor: "green",
+                    yAxisID: 'y2',
+                    data: [
+                        {{ $events->sortBy('date')->map(fn($item) => (string) $item->pivot?->investment)->implode(',') }}
+                    ],
                 }]
             },
             options: {
-                legend: {
-                    position: false
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                stacked: false,
+                plugins: {
+                    // title: {
+                    //     display: true,
+                    //     text: 'Chart.js Line Chart - Multi Axis'
+                    // }
                 },
                 scales: {
-                    yAxes: [{
-                        gridLines: {
-                            display: true
-                        },
-                        display: true
-                    }]
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+
+                    },
+                    y1: {
+                        position: 'left',
+                        display: true,
+                        type: 'logarithmic'
+                    },
+                    y2: {
+                        position: 'right',
+                        display: true,
+                        type: 'logarithmic'
+
+                    }
+
                 }
             }
         });

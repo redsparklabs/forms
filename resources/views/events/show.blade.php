@@ -2,9 +2,12 @@
     <header class="bg-white shadow">
         <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="flex justify-between">
-                <div>
+                <div class="flex justify-content">
                     <h2 class="text-xl font-semibold leading-tight text-gray-800">
                         {{ __('Growth Board - ' . $event->name) }} - {{ $event->date->format('m/d/y') }}
+                        <button class="w-32 ml-4 items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-yellow-600 hover:bg-yellow-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500" wire:click="confirmUpdate('{{ $event->id }}')">
+                        {{ __('Update') }}
+                    </button>
                     </h2>
                     </div>
                 <div>
@@ -12,10 +15,6 @@
                     <a class="mr-2 text-xs hover:text-blue-400" href="{{ route('form-builder', $event->slug) }}" target="_blank">{{ route('form-builder', $event->slug) }}</a>
                     <button type="button"class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 copy" data-clipboard-text="{{ route('form-builder', $event->slug) }}">
                         {{ __('Copy Link') }}
-                    </button>
-
-                    <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-yellow-600 hover:bg-yellow-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500" wire:click="confirmUpdate('{{ $event->id }}')">
-                        {{ __('Update') }}
                     </button>
                 </div>
             </div>
@@ -30,6 +29,7 @@
 
             <x-slot name="description">
                 {{ __('All of the projects that are part of this Growth Board.') }}
+
             </x-slot>
 
             <x-slot name="content">
