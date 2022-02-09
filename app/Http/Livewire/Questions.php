@@ -22,8 +22,6 @@ class Questions extends BaseComponent
         'created' => 'render',
         'destroyed' => 'render',
     ];
-
-
     /**
      * @var string
      */

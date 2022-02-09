@@ -29,7 +29,6 @@
 
             <x-slot name="description">
                 {{ __('All of the projects that are part of this Growth Board.') }}
-
             </x-slot>
 
             <x-slot name="content">
@@ -122,62 +121,62 @@
         </x-jet-action-section>
     </div>
 
-            <!-- Update Event Confirmation Modal -->
-            <x-jet-dialog-modal wire:model="confirmingUpdating">
-            <x-slot name="title">
-                {{ __('Update Growth Board') }}
-            </x-slot>
+        <!-- Update Event Confirmation Modal -->
+        <x-jet-dialog-modal wire:model="confirmingUpdating">
+        <x-slot name="title">
+            {{ __('Update Growth Board') }}
+        </x-slot>
 
-            <x-slot name="content">
-                <div class="col-span-6 mb-4 sm:col-span-4">
-                    <x-jet-label for="name" value="{{ __('Growth Board Name') }}" />
-                    <x-jet-input id="name" type="text" class="block w-full mt-1" model="updateForm.name" wire:model.defer="updateForm.name" />
-                    <x-jet-input-error for="updateForm.name" class="mt-2" />
+        <x-slot name="content">
+            <div class="col-span-6 mb-4 sm:col-span-4">
+                <x-jet-label for="name" value="{{ __('Growth Board Name') }}" />
+                <x-jet-input id="name" type="text" class="block w-full mt-1" model="updateForm.name" wire:model.defer="updateForm.name" />
+                <x-jet-input-error for="updateForm.name" class="mt-2" />
+            </div>
+
+            <div class="col-span-6 mb-4 sm:col-span-4">
+                <x-jet-label for="date" value="{{ __('Date') }}" />
+                <x-jet-input id="date" onkeydown="return false" type="date" class="block w-full mt-1" required pattern="\d{4}-\d{2}-\d{2}" wire:model.defer="updateForm.date" />
+                <x-jet-input-error for="updateForm.date" class="mt-2" />
+            </div>
+
+            <div class="col-span-6 mb-4 sm:col-span-4">
+                <x-jet-label for="team" value="{{ __('Teams') }}" />
+                <div class="grid grid-cols-4 gap-4">
+                    @foreach($organization->teams as $id => $team)
+                        <div class="py-2">
+                            <x-jet-label for="teams.{{ $team['id'] }}">
+                                <x-jet-checkbox name="team" id="teams.{{ $team['id'] }}" wire:model="updateForm.teams.{{ $team['id'] }}" :value="$team['id']" />
+                                {{ $team['name'] }}
+                            </x-jet-label>
+                        </div>
+                    @endforeach
                 </div>
+                <x-jet-input-error for="updateForm.teams" class="mt-2" />
+            </div>
 
-                <div class="col-span-6 mb-4 sm:col-span-4">
-                    <x-jet-label for="date" value="{{ __('Date') }}" />
-                    <x-jet-input id="date" onkeydown="return false" type="date" class="block w-full mt-1" required pattern="\d{4}-\d{2}-\d{2}" wire:model.defer="updateForm.date" />
-                    <x-jet-input-error for="updateForm.date" class="mt-2" />
+            <div class="col-span-6 sm:col-span-4">
+                <x-jet-label for="forms" value="{{ __('Attach Form') }}" />
+                <div class="grid grid-cols-4 gap-4">
+                    @foreach($organization->forms as $id => $form)
+                        <div class="py-2">
+                            <x-radio name="form" id="forms.{{ $form['id'] }}" wire:model="updateForm.forms" :value="$form['id']" :label="$form['name']" />
+                        </div>
+                    @endforeach
                 </div>
+                <x-jet-input-error for="updateForm.forms" class="mt-2" />
+            </div>
+        </x-slot>
 
-                <div class="col-span-6 mb-4 sm:col-span-4">
-                    <x-jet-label for="team" value="{{ __('Teams') }}" />
-                    <div class="grid grid-cols-4 gap-4">
-                        @foreach($organization->teams as $id => $team)
-                            <div class="py-2">
-                                <x-jet-label for="teams.{{ $team['id'] }}">
-                                    <x-jet-checkbox name="team" id="teams.{{ $team['id'] }}" wire:model="updateForm.teams.{{ $team['id'] }}" :value="$team['id']" />
-                                    {{ $team['name'] }}
-                                </x-jet-label>
-                            </div>
-                        @endforeach
-                    </div>
-                    <x-jet-input-error for="updateForm.teams" class="mt-2" />
-                </div>
+        <x-slot name="footer">
+            <x-jet-secondary-button wire:click="$toggle('confirmingUpdating')" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-jet-secondary-button>
 
-                <div class="col-span-6 sm:col-span-4">
-                    <x-jet-label for="forms" value="{{ __('Attach Form') }}" />
-                    <div class="grid grid-cols-4 gap-4">
-                        @foreach($organization->forms as $id => $form)
-                            <div class="py-2">
-                                <x-radio name="form" id="forms.{{ $form['id'] }}" wire:model="updateForm.forms" :value="$form['id']" :label="$form['name']" />
-                            </div>
-                        @endforeach
-                    </div>
-                    <x-jet-input-error for="updateForm.forms" class="mt-2" />
-                </div>
-            </x-slot>
-
-            <x-slot name="footer">
-                <x-jet-secondary-button wire:click="$toggle('confirmingUpdating')" wire:loading.attr="disabled">
-                    {{ __('Cancel') }}
-                </x-jet-secondary-button>
-
-                <x-jet-button class="ml-2" wire:click="update" spinner="update">
-                    {{ __('Update') }}
-                </x-jet-button>
-            </x-slot>
-        </x-jet-dialog-modal>
+            <x-jet-button class="ml-2" wire:click="update" spinner="update">
+                {{ __('Update') }}
+            </x-jet-button>
+        </x-slot>
+    </x-jet-dialog-modal>
 </div>
 

@@ -139,7 +139,6 @@ class TeamsShow extends BaseComponent
      */
     public function confirmUpdateAction()
     {
-
         $team = $this->organization->teams->find($this->idBeingUpdated);
 
         $this->updateForm = [
@@ -156,6 +155,8 @@ class TeamsShow extends BaseComponent
      */
     public function updateAction()
     {
+        $this->validate();
+
         $team  = $this->organization->teams()->find($this->idBeingUpdated);
 
         UpdateTeam::run(

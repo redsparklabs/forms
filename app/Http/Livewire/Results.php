@@ -93,6 +93,23 @@ class Results extends Component
 
     ];
 
+   /**
+     * @var array
+     */
+    protected $rules = [
+        'updateForm.net_projected_value' => ['numeric','regex:/^\d+(\.\d{1,2})?$/'],
+        'updateForm.investment' => ['numeric','regex:/^\d+(\.\d{1,2})?$/'],
+    ];
+        /**
+     * @var array
+     */
+    protected $messages = [
+        // 'updateForm.net_projected_value.numeric' => 'Please enter a valid number.',
+        // 'updateForm.investment.numeric' => 'Please enter a valid number.',
+        'updateForm.net_projected_value.regex' => 'Please enter a valid number.',
+        'updateForm.investment.regex' => 'Please enter a valid number.',
+    ];
+
     /**
      * Undocumented function
      *
@@ -141,6 +158,8 @@ class Results extends Component
      */
     public function update()
     {
+        $this->validate();
+
         $this->event->teams()->updateExistingPivot($this->team, [
             'net_projected_value' => $this->updateForm['net_projected_value'],
             'investment' => $this->updateForm['investment'],

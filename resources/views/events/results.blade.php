@@ -231,26 +231,32 @@
 
             <div class="mt-4">
                 <x-jet-label for="net_projected_value" value="{{ __('Net Projected Value') }}" />
-                <x-jet-input id="net_projected_value" type="text" class="block w-full mt-1" wire:model.defer="updateForm.net_projected_value" />
-                <x-jet-input-error for="net_projected_value" class="mt-2" />
+                <div class="mt-1 flex rounded-md shadow-sm">
+                    <span class="inline-flex shadow-sm items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">$</span>
+                    <x-jet-input id="net_projected_value" type="text" class="block w-full border-l-0 rounded-l-none" wire:model.defer="updateForm.net_projected_value" />
+                </div>
+                <x-jet-input-error for="updateForm.net_projected_value" class="mt-2" />
             </div>
 
             <div class="mt-4">
                 <x-jet-label for="investment" value="{{ __('Investment') }}" />
-                <x-jet-input type="text" id="investment" class="block w-full mt-1" wire:model.defer="updateForm.investment" />
-                <x-jet-input-error for="investment" class="mt-2" />
+                <div class="mt-1 flex rounded-md shadow-sm">
+                    <span class="inline-flex shadow-sm items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">$</span>
+                    <x-jet-input type="text" id="investment" class="block w-full border-l-0 rounded-l-none" wire:model.defer="updateForm.investment" />
+                </div>
+                <x-jet-input-error for="updateForm.investment" class="mt-2" />
             </div>
 
             <div class="mt-4">
                 <x-jet-label for="priority_level" value="{{ __('Priority Level') }}" />
                 <x-jet-input id="priority_level" type="text" class="block w-full mt-1" wire:model.defer="updateForm.priority_level" />
-                <x-jet-input-error for="priority_level" class="mt-2" />
+                <x-jet-input-error for="updateForm.priority_level" class="mt-2" />
             </div>
 
             <div class="mt-4">
                 <x-jet-label for="start_date" value="{{ __('Start Date') }}" />
                 <x-jet-input id="start_date" type="date" class="block w-full mt-1" wire:model.defer="updateForm.start_date" />
-                <x-jet-input-error for="start_date" class="mt-2" />
+                <x-jet-input-error for="updateForm.start_date" class="mt-2" />
             </div>
         </x-slot>
 
