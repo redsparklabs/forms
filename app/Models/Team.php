@@ -21,7 +21,7 @@ class Team extends Model
      *
      * @var array
      */
-    protected $dates = ['start_date'];
+    protected $dates = ['start_date', 'estimated_launch_date'];
 
     /**
      * The attributes that are mass assignable.
@@ -31,7 +31,11 @@ class Team extends Model
     protected $fillable = [
         'name',
         'start_date',
-        'priority_level'
+        'priority_level',
+        'description',
+        'minimum_success_criteria',
+        'estimated_launch_date',
+        'sponsor',
     ];
 
     /**

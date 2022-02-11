@@ -64,7 +64,11 @@ class TeamsShow extends BaseComponent
     public $updateForm = [
         'name' => '',
         'priority_level' => '',
-        'start_date' => ''
+        'start_date' => '',
+        'description' => '',
+        'minimum_success_criteria' => '',
+        'estimated_launch_date' => '',
+        'sponsor' => '',
     ];
 
     /**
@@ -72,6 +76,7 @@ class TeamsShow extends BaseComponent
      */
     protected $messages = [
         'updateForm.name.required' => 'Please add a name for this project.',
+        'updateForm.description.required' => 'Please enter a description for this project.',
         'updateForm.start_date.required' => 'Please enter a start date for this project.',
         'updateForm.start_date.date' => 'Please enter a proper start date.',
     ];
@@ -81,6 +86,7 @@ class TeamsShow extends BaseComponent
      */
     protected $rules = [
         'updateForm.name' => ['required'],
+        'updateForm.description' => ['required'],
         'updateForm.start_date' => ['required', 'date'],
     ];
 
@@ -145,6 +151,10 @@ class TeamsShow extends BaseComponent
             'name' => $team->name,
             'priority_level' => $team->priority_level,
             'start_date' => $team->start_date?->format('Y-m-d'),
+            'description' => $team->description,
+            'minimum_success_criteria' => $team->minimum_success_criteria,
+            'estimated_launch_date' => $team->estimated_launch_date?->format('Y-m-d'),
+            'sponsor' => $team->sponsor,
         ];
     }
 

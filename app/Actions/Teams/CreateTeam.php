@@ -27,23 +27,4 @@ class CreateTeam
 
         $organization->teams()->create($attributes);
     }
-
-    /**
-     * @return array
-     */
-    public function rules(): array
-    {
-        return [
-            'name' => ['required'],
-            'start_date' => ['required','date'],
-        ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getValidationErrorBag(): string
-    {
-        return 'addTeam';
-    }
 }

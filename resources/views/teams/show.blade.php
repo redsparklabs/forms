@@ -20,23 +20,22 @@
                                 @endif
                             </div>
                         </div>
-                        <dl class="grid grid-cols-1 gap-5 mt-5 sm:grid-cols-3">
-                            <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                                <dt class="text-sm font-medium text-gray-500 truncate">Project</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->name }}</dd>
+                        <dl class="grid grid-rows-3 grid-flow-col gap-4 mt-5">
+                            <div class="row-span-3 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
+                                <div class="flex items-center justify-center" x-data="{ circumference: 2 * 22 / 7 * 120 }">
+                                    <svg class="transform -rotate-90 w-72 h-72">
+                                        <circle cx="145" cy="145" r="120" stroke="currentColor" stroke-width="15" fill="transparent" class="text-gray-700" />
+
+                                        <circle cx="145" cy="145" r="120" stroke="currentColor" stroke-width="15" fill="transparent"
+                                            :stroke-dasharray="circumference"
+                                            :stroke-dashoffset="circumference - ({{$team->latest_progress_metric}} * 20) / 100 * circumference"
+                                            class="text-blue-500" />
+                                    </svg>
+                                    <span class="absolute text-5xl bg-yellow-400 rounded-full w-12 h-12 text-center" x-text="{{ $team->latest_progress_metric }}"></span>
+                                </div>
+
                             </div>
-                            <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                                <dt class="text-sm font-medium text-gray-500 truncate">Progress Metric:</dt>
-                                @if($team->latest_progress_metric)
-                                    <dd class="mt-1 text-sm font-semibold text-blue-500">
-                                        <div class="w-10 p-2 font-bold text-center text-white bg-blue-500">
-                                            {{ $team->latest_progress_metric }}
-                                        </div>
-                                    </dd>
-                                @else
-                                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ __('N/A') }}</dd>
-                                @endif
-                            </div>
+
                             <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Project Start Date:</dt>
                                 <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->start_date->format('m/d/y') }}</dd>
@@ -165,62 +164,8 @@
         </div>
     </div>
 
-    <x-jet-dialog-modal wire:model="confirmingUpdating">
-        <x-slot name="title">
-            {{ __('Update Project') }}
-        </x-slot>
-
-        <x-slot name="content">
-            <div>
-                <x-jet-label for="name" value="{{ __('Project Name') }}" />
-                <x-jet-input id="name" type="text" class="block w-full mt-1" model="updateForm.name" wire:model.defer="updateForm.name" />
-                <x-jet-input-error for="name" class="mt-2" />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label for="priority_level" value="{{ __('Priority Level') }}" />
-                <x-jet-input id="priority_level" type="text" class="block w-full mt-1" wire:model.defer="updateForm.priority_level" />
-                <x-jet-input-error for="priority_level" class="mt-2" />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label for="start_date" value="{{ __('Start Date') }}" />
-                <x-jet-input type="date" id="start_date"  onkeydown="return false" required pattern="\d{4}-\d{2}-\d{2}" class="block w-full mt-1" wire:model.defer="updateForm.start_date" />
-                <x-jet-input-error for="start_date" class="mt-2" />
-            </div>
-        </x-slot>
-
-        <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingUpdating')" wire:loading.attr="disabled">
-                {{ __('Cancel') }}
-            </x-jet-secondary-button>
-
-            <x-jet-button class="ml-2" wire:click="update" spinner="update">
-                {{ __('Update') }}
-            </x-jet-button>
-        </x-slot>
-    </x-jet-dialog-modal>
-
-    <x-jet-confirmation-modal wire:model="confirmingDestroying">
-            <x-slot name="title">
-                {{ __('Archive Project') }}
-            </x-slot>
-
-            <x-slot name="content">
-                {{ __('Are you sure you would like to archive this project?') }}
-            </x-slot>
-
-            <x-slot name="footer">
-                <x-jet-secondary-button wire:click="$toggle('confirmingDestroying')" wire:loading.attr="disabled">
-                    {{ __('Cancel') }}
-                </x-jet-secondary-button>
-
-                <x-jet-danger-button class="ml-2" wire:click="destroy" spinner="destroy">
-                    {{ __('Archive') }}
-                </x-jet-danger-button>
-            </x-slot>
-        </x-jet-confirmation-modal>
-
+   @include('teams._update')
+   @include('teams._destroy')
 </div>
 
 @push('scripts')
@@ -240,6 +185,8 @@
                     "{!! $events->sortBy('date')->map(fn($item) => $item->date->format('m/d/y'))->implode('","') !!}"
                 ],
                 datasets: [{
+                    tension: 0.1,
+                    fill: true,
                     label: 'Progress',
                     borderColor: "blue",
                     yAxisID: 'y',
@@ -256,14 +203,14 @@
                 }, {
                     label: 'Net Projected Value',
                     borderColor: "red",
-                    yAxisID: 'y1',
+                    // yAxisID: 'y1',
                     data: [
                         {{ $events->sortBy('date')->map(fn($item) => (string) $item->pivot?->net_projected_value)->implode(',') }}
                     ],
                 },{
                     label: 'Investment',
                     borderColor: "green",
-                    yAxisID: 'y2',
+                    // yAxisID: 'y2',
                     data: [
                         {{ $events->sortBy('date')->map(fn($item) => (string) $item->pivot?->investment)->implode(',') }}
                     ],
@@ -275,7 +222,7 @@
                     mode: 'index',
                     intersect: false,
                 },
-                stacked: false,
+                // stacked: false,
                 plugins: {
                     // title: {
                     //     display: true,
@@ -289,17 +236,17 @@
                         position: 'left',
 
                     },
-                    y1: {
-                        position: 'left',
-                        display: true,
-                        type: 'logarithmic'
-                    },
-                    y2: {
-                        position: 'right',
-                        display: true,
-                        type: 'logarithmic'
+                    // y1: {
+                    //     // position: 'left',
+                    //     // display: true,
+                    //     type: 'logarithmic'
+                    // },
+                    // y2: {
+                    //     // position: 'right',
+                    //     // display: true,
+                    //     type: 'logarithmic'
 
-                    }
+                    // }
 
                 }
             }

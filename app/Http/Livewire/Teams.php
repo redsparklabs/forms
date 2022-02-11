@@ -60,7 +60,11 @@ class Teams extends BaseComponent
     public $createForm = [
         'name' => '',
         'priority_level' => '',
-        'start_date' => ''
+        'start_date' => '',
+        'description' => '',
+        'minimum_success_criteria' => '',
+        'estimated_launch_date' => '',
+        'sponsor' => '',
     ];
 
     /**
@@ -68,6 +72,7 @@ class Teams extends BaseComponent
      */
     protected $messages = [
         'createForm.name.required' => 'Please add a name for this project.',
+        'createForm.description.required' => 'Please enter a description for this project.',
         'createForm.start_date.required' => 'Please enter a start date for this project.',
         'createForm.start_date.date' => 'Please enter a proper start date.',
     ];
@@ -77,6 +82,7 @@ class Teams extends BaseComponent
      */
     protected $rules = [
         'createForm.name' => ['required'],
+        'createForm.description' => ['required'],
         'createForm.start_date' => ['required', 'date'],
     ];
 

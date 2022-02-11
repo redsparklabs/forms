@@ -28,28 +28,14 @@ class UpdateTeam
 
         $this->fill($attributes)->validateAttributes();
 
-        $team->name = Arr::get($attributes, 'name');
-        $team->priority_level = Arr::get($attributes, 'priority_level');
-        $team->start_date = Arr::get($attributes, 'start_date');
-
-        $team->save();
-    }
-
-    /**
-     * @return array
-     */
-    public function rules(): array
-    {
-        return [
-            'name' => ['required', 'string'],
-        ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getValidationErrorBag(): string
-    {
-        return 'updateTeam';
+        tap($team)->update([
+            'name' => Arr::get($attributes, 'name'),
+            'priority_level' => Arr::get($attributes, 'priority_level'),
+            'start_date' => Arr::get($attributes, 'start_date'),
+            'description' =>  Arr::get($attributes, 'description'),
+            'minimum_success_criteria' =>  Arr::get($attributes, 'minimum_success_criteria'),
+            'estimated_launch_date' =>  Arr::get($attributes, 'estimated_launch_date'),
+            'sponsor' =>  Arr::get($attributes, 'sponsor'),
+        ]);
     }
 }
