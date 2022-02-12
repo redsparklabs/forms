@@ -1,12 +1,11 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
+// const defaultTheme = require('tailwindcss/defaultTheme');
 
 
 module.exports = {
-    mode: 'jit',
     presets: [
         require('./vendor/wireui/wireui/tailwind.config.js')
     ],
-    purge: [
+    content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './vendor/laravel/jetstream/**/*.blade.php',
         './storage/framework/views/*.php',
@@ -16,12 +15,33 @@ module.exports = {
         './vendor/wireui/wireui/src/View/**/*.php',
         './safelist.txt'
     ],
-
+    safelist: [
+        'text-karban-green-1',
+        'text-karban-green-2',
+        'text-karban-green-3',
+        'text-karban-green-4',
+        'text-karban-green-5',
+        'text-karban-green-6',
+    ],
     theme: {
-
         extend: {
-            fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+            gridTemplateColumns: {
+                '7': 'repeat(7, minmax(0, 1fr))',
+                '9': 'repeat(9, minmax(0, 1fr))',
+                '11': 'repeat(11, minmax(0, 1fr))',
+            },
+            colors: {
+                karban: {
+                    red: '#ff3c32',
+                    green: {
+                        1: '#67cc58',
+                        2: '#b8d99b',
+                        3: '#93c66e',
+                        4: '#6a9e4a',
+                        5: '#11af3b',
+                        6: '#00c241'
+                    },
+                },
             },
         },
     },
@@ -29,33 +49,5 @@ module.exports = {
     plugins: [
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
-        require('tailwind-safelist-generator')({
-            patterns: [
-                'text-{colors}',
-                'bg-{colors}',
-                'row-span-2',
-                'row-span-1',
-                'row-span-3',
-                'row-col-1',
-                'row-col-2',
-                'row-col-3',
-                'h-8',
-                'h-9',
-                'h-10',
-                'h-11',
-                'h-12',
-                'h-14',
-                'h-16',
-                'h-20',
-                'h-24',
-                'h-28',
-                'h-32',
-                'h-36',
-                'h-40',
-                'h-44',
-                'h-48',
-                'h-52',
-            ],
-        }),
     ],
 };

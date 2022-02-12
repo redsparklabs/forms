@@ -37,22 +37,4 @@ class CreateForm
 
         return $form;
     }
-
-    /**
-     * @return array
-     */
-    public function rules(): array
-    {
-        return [
-            'name' => ['required', 'string', 'min:4'],
-        ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getValidationErrorBag(): string
-    {
-        return 'addForm';
-    }
 }

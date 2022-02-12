@@ -122,7 +122,6 @@ class Team extends Model
      */
     public function getLatestProgressMetricAttribute()
     {
-
         if ($this->events->isNotEmpty()) {
 
             $data = calculateSections($this->latestEvent(), $this);
@@ -133,6 +132,15 @@ class Team extends Model
         }
     }
 
+    public function stage()
+    {
+        $metric = $this->latest_progress_metric;
+        foreach(config('stages') as $stage) {
+            if($metric >= $stage['start_scale'] && $metric <= $stage['end_scale']) {
+                return (object) $stage;
+            }
+        }
+    }
     /**
      * Get the pivot table name for the team and event relationship.
      *

@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Form;
 use App\Models\Team;
 use Illuminate\Support\Str;
 
@@ -8,31 +7,31 @@ if (!function_exists('colorize')) {
     /**
      * Colorize
      *
-     * @param  integer $number
+     * @param integer $number
      *
      * @return string|null
      */
-    function colorize($number)
+    function colorize(int $number): ?string
     {
 
-        if (inbetween($number, 0, .99)) {
-            return 'bg-red-900';
+        if (inbetween($number, 0, 1)) {
+            return 'karban-green-2';
         }
 
-        if (inbetween($number, 1, 1.99)) {
-            return 'bg-pink-900';
+        if (inbetween($number, 1.1, 2)) {
+            return 'karban-green-3';
         }
 
-        if (inbetween($number, 2, 2.99)) {
-            return 'bg-yellow-500';
+        if (inbetween($number, 2.1, 3)) {
+            return 'karban-green-4';
         }
 
-        if (inbetween($number, 3, 3.99)) {
-            return 'bg-green-400';
+        if (inbetween($number, 3.1, 4)) {
+            return 'karban-green-5';
         }
 
-        if (inbetween($number, 4, 5)) {
-            return 'bg-green-900';
+        if (inbetween($number, 4.1, 5)) {
+            return 'karban-green-6';
         }
 
         return null;
@@ -43,13 +42,13 @@ if (!function_exists('inbetween')) {
     /**
      * Check if a number is between two other numbers
      *
-     * @param  integer $val
-     * @param  integer $min
-     * @param  float $max
+     * @param integer $val
+     * @param integer $min
+     * @param float $max
      *
      * @return bool
      */
-    function inbetween($val, $min, $max)
+    function inbetween(int $val, int $min, float $max): bool
     {
         return ($val >= $min && $val <= $max);
     }
@@ -59,12 +58,12 @@ if (!function_exists('calculateSections')) {
     /**
      * Calculate the sections for a form
      *
-     * @param  Form $form
-     * @param  Team $team
+     * @param $event
+     * @param Team $team
      *
      * @return array
      */
-    function calculateSections($event, Team $team)
+    function calculateSections($event, Team $team): array
     {
         $responses = $event->responses()->where('team_id', $team->id)->get();
 
@@ -78,7 +77,7 @@ if (!function_exists('calculateSections')) {
 
         foreach ($responses as $response) {
             $total = 0;
-            foreach ($allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->all() as $section => $sectionData) {
+            foreach ($allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->all() as $sectionData) {
 
                 $sectionQuestions = $sectionData->pluck('question')->map(fn ($item) => Str::slug($item))->toArray();
 
@@ -95,7 +94,7 @@ if (!function_exists('calculateSections')) {
                     return in_array($key, $sectionQuestions);
                 })->sum();
 
-                $sectionCount[$section . '_count'] += number_format($sectionTotal / $allSections->count(), 1);
+                $sectionCount[$section . '_count'] .= number_format($sectionTotal / $allSections->count(), 1);
             }
         }
 

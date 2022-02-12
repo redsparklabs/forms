@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Spatie\ValidationRules\Rules\Delimited;
 use App\Models\Form;
@@ -19,11 +20,12 @@ class UpdateForm
     /**
      * Handle the action
      *
-     * @param  User         $user
-     * @param  Organization $organization
-     * @param  Form         $form
-     * @param  array        $attributes
+     * @param User $user
+     * @param Organization $organization
+     * @param Form $form
+     * @param array $attributes
      * @return void
+     * @throws AuthorizationException
      */
     public function handle(User $user, Organization $organization, Form $form, array $attributes)
     {

@@ -16,15 +16,15 @@ class UpdateQuestion
     use AsObject, WithAttributes;
 
     /**
-     * @param  User         $user
-     * @param  Organization $organization
-     * @param  Question     $question
-     * @param  array        $attributes
+     * @param User $user
+     * @param Organization $organization
+     * @param Question $question
+     * @param array $attributes
      * @return void
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function handle(User $user, Organization $organization, Question $question, array $attributes)
     {
-
         Gate::forUser($user)->authorize('updateQuestion', $organization);
 
         $this->fill($attributes)->validateAttributes();
@@ -38,24 +38,5 @@ class UpdateQuestion
         $question->description = $description;
 
         $question->save();
-    }
-
-    /**
-     * @return array
-     */
-    public function rules(): array
-    {
-        return [
-            'question' => ['required'],
-            'description' => ['required'],
-        ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getValidationErrorBag(): string
-    {
-        return 'updateQuestion';
     }
 }

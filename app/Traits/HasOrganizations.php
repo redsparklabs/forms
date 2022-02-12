@@ -17,7 +17,7 @@ trait HasOrganizations
      * @param  mixed  $organization
      * @return bool
      */
-    public function isCurrentOrganization($organization)
+    public function isCurrentOrganization($organization): bool
     {
         return $organization?->id === $this->currentOrganization->id;
     }
@@ -27,7 +27,7 @@ trait HasOrganizations
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function currentOrganization()
+    public function currentOrganization(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         if (is_null($this->current_organization_id) && $this->id) {
             $this->switchOrganization($this->personalOrganization());

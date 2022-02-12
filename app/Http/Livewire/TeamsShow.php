@@ -36,6 +36,7 @@ class TeamsShow extends BaseComponent
     protected $listeners = [
         'refresh' => 'render',
         'created' => 'render',
+        'updated' => 'render',
     ];
 
     /**

@@ -199,7 +199,7 @@
                                 $number = number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
                             }
                         @endphp
-                        <div class="{{ $question['classes'] }} {{ colorize($number) }} flex items-center justify-center text-center p-4">{{ $question['question'] }}<br/>{{ $number}}</div>
+                        <div class="{{ $question['classes'] }} bg-{{ colorize($number) }} flex items-center justify-center text-center p-4">{{ $question['question'] }}<br/>{{ $number}}</div>
                     @endforeach
                 </div>
 
@@ -215,7 +215,7 @@
                             }
                         @endphp
 
-                        <div class="{{ $question['classes']}} {{ colorize($number) }} flex text-center items-center justify-center">{{ $question['question'] }}<br/>{{ $number}}</div>
+                        <div class="{{ $question['classes']}} bg-{{ colorize($number) }} flex text-center items-center justify-center">{{ $question['question'] }}<br/>{{ $number}}</div>
                     @endforeach
                 </div>
             </div>
