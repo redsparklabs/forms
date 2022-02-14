@@ -112,7 +112,7 @@ class Team extends Model
      */
     public function latestform()
     {
-        return $this->latestEvent()?->forms()->latest()->first();
+        return $this->latestEvent()?->forms()->first();
     }
 
     /**

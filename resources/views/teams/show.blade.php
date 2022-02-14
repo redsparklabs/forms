@@ -108,10 +108,11 @@
                 <div class="text-md font-medium text-gray-500 truncate mb-4">Business Model Development</div>
                 <div class="grid grid-flow-col grid-rows-2 gap-1 w-full">
                     @php
-                        $responses = $team->latestform()?->responses()->where('team_id', $team->id)->get();
+                    // @dd($team);
+                        $responses = $team->latestForm()?->responses()->where('team_id', $team->id)->get();
                     @endphp
                     @if($responses)
-                        @foreach($team->latestform()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $question)
+                        @foreach($team->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $question)
                             @php
                                 $number = 0;
                                 $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
@@ -127,7 +128,7 @@
 
                 <div class="grid grid-flow-col grid-rows-2 gap-1 mt-1 w-full">
                     @if($responses)
-                         @foreach($team->latestform()->allQuestions()->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
+                         @foreach($team->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
                             @php
                                 $mappedResponses = collect($responses)->map(function ($value) {
                                     return $value->response['questions'];
@@ -207,7 +208,7 @@
                                                 ${{ number_format($event->teams->find($team->id)->pivot->net_projected_value, 2) ?? 'N/A' }}
                                             </td>
                                             <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                                <x-buttons.green-link text="View Results" href="{{ route('events.results',[$event->id, $event->latestForm()->id, $team->id]) }}" />
+                                                <x-buttons.green-link text="View Results" href="{{ route('events.results',[$event->id, $team->id]) }}" />
                                             </td>
                                         </tr>
                                     @empty

@@ -118,18 +118,18 @@ class Results extends Component
      * @param  Team   $team
      * @return void
      */
-    public function mount(Event $event, Form $form, Team $team)
+    public function mount(Event $event, Team $team)
     {
         $this->event = $event;
-        $this->form = $form;
+        $this->form = $event->latestForm();
         $this->team = $team;
 
-        $this->questions = $form->allQuestions();
-        $this->feedback_questions = $form->feedbackQuestions();
+        $this->questions = $this->form->allQuestions();
+        $this->feedback_questions = $this->form->feedbackQuestions();
         $this->sections = collect($this->questions)->groupBy('section')->reject(fn ($item, $key) => $key == 'custom');
         $this->sectionTotals = $this->sections->keys()->mapWithkeys(fn ($item) => [$item . '_count' => 0])->all();
         $this->totalSections = $this->sections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
-        $this->responses = $this->form->responses()->where('team_id', $team->id)->get();
+        $this->responses = $this->event->responses()->where('team_id', $team->id)->get();
     }
 
     /**

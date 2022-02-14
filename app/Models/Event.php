@@ -91,15 +91,6 @@ class Event extends Model
         return $this->forms()->first();
     }
 
-            /**
-     * Responses
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function responses()
-    {
-        return $this->hasMany(Responses::class);
-    }
 
     /**
      * Grab the current stage
@@ -140,5 +131,16 @@ class Event extends Model
     public function teams()
     {
         return $this->belongsToMany(Team::class)->using(EventTeam::class)->withPivot('net_projected_value', 'investment');
+    }
+
+
+    /**
+     * Responses
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function responses()
+    {
+        return $this->hasMany(Responses::class);
     }
 }

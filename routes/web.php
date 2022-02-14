@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('organizations/{organization}/questions', Questions::class)->name('questions');
     Route::get('/growth-boards', Events::class, 'index')->name('events.index');
     Route::get('/growth-boards/{event}', EventsShow::class)->name('events.show');
-    Route::get('/growth-boards/{event}/form/{form}/projects/{team}/results', Results::class)->name('events.results');
+    Route::get('/growth-boards/{event}/projects/{team}/results', Results::class)->name('events.results');
 
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
     Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
