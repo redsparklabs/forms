@@ -49,9 +49,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/projects/{team}', TeamsShow::class)->name('teams.show');
     Route::get('organizations/{organization}/forms', Forms::class)->name('forms');
     Route::get('organizations/{organization}/questions', Questions::class)->name('questions');
-    Route::get('/growth-boards', Events::class, 'index')->name('events.index');
-    Route::get('/growth-boards/{event}', EventsShow::class)->name('events.show');
-    Route::get('/growth-boards/{event}/projects/{team}/results', Results::class)->name('events.results');
+    Route::get('/assessments', Events::class, 'index')->name('events.index');
+    Route::get('/assessments/{event}', EventsShow::class)->name('events.show');
+    Route::get('/assessments/{event}/projects/{team}/results', Results::class)->name('events.results');
 
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
     Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');

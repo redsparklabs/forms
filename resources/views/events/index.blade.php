@@ -4,12 +4,12 @@
             <div class="flex justify-between">
                 <div>
                     <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                        {{ __('Growth Boards')}}
+                        {{ __('Assessments')}}
                     </h2>
                 </div>
                 <div>
                     @if (Gate::check('addEvent', $organization) && $organization->teams->isNotEmpty())
-                        <x-buttons.green :text="__('Schedule Growth Board')" wire:click="confirmCreate()" />
+                        <x-buttons.green :text="__('Schedule Assessment')" wire:click="confirmCreate()" />
                     @endif
                 </div>
             </div>
@@ -20,11 +20,11 @@
 
         <x-jet-action-section :background="false">
             <x-slot name="title">
-                {{ __('Growth Boards') }}
+                {{ __('Assessments') }}
             </x-slot>
 
             <x-slot name="description">
-                {{ __('All of the Growth Boards that are part of this organization.') }}
+                {{ __('All of the Assessments that are part of this organization.') }}
             </x-slot>
 
             <x-slot name="content">
@@ -135,11 +135,11 @@
         <!-- Create Event Confirmation Modal -->
         <x-jet-dialog-modal wire:model="confirmingCreating">
             <x-slot name="title">
-                {{ __('Add Growth Board') }}
+                {{ __('Add Assessment') }}
             </x-slot>
 
             <x-slot name="description">
-                {{ __('Add a new Growth Board to your organization.') }}
+                {{ __('Add a new assessment to your organization.') }}
             </x-slot>
 
             <x-slot name="content">
