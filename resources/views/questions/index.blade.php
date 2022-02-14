@@ -9,9 +9,7 @@
                 </div>
                 <div>
                     @if (Gate::check('addQuestion', $organization))
-                        <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" wire:click="confirmCreate()">
-                            {{ __('Create') }}
-                        </button>
+                        <x-buttons.green wire:click="confirmCreate()">{{ __('Create') }}</x-buttons.green>
                     @endif
                 </div>
             </div>
@@ -75,15 +73,11 @@
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                             @if (Gate::check('updateQuestion', $organization))
-                                                                <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" wire:click="confirmUpdate('{{ $question->id }}')">
-                                                                    {{ __('Update') }}
-                                                                </button>
+                                                                <x-buttons.green  wire:click="confirmUpdate('{{ $question->id }}')">{{ __('Update') }}</x-buttons.green>
                                                             @endif
 
                                                             @if (Gate::check('removeQuestion', $organization))
-                                                                <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" wire:click="confirmDestroy('{{ $question->id }}')">
-                                                                    {{ __('Archive') }}
-                                                                </button>
+                                                                <x-buttons.red wire:click="confirmDestroy('{{ $question->id }}')">{{ __('Archive') }}</x-buttons.red>
                                                             @endif
                                                         </td>
                                                     </tr>

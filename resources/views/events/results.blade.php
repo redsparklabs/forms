@@ -1,15 +1,13 @@
 <div>
     <header class="bg-white shadow">
-        <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="py-6 mx-auto max-w-7xl">
             <div class="flex">
                 <div class="w-full">
                     <div>
                         <div class="flex">
                             <h3 class="flex-1 text-lg leading-6 font-medium text-gray-900">Growth Board - {{ $event->name }} </h3>
                             <div>
-                               <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"  wire:click="confirmUpdate('{{ $event->id }}', '{{ $form->id }}', '{{ $questions }}')">
-                                    {{ __('Update') }}
-                                </button>
+                                <x-buttons.green text="Update" wire:click="confirmUpdate('{{ $event->id }}', '{{ $form->id }}', '{{ $questions }}')" />
                             </div>
                         </div>
                         <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
@@ -28,18 +26,36 @@
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Current Progress Metric</dt>
                                 <dd class="mt-1 text-sm font-semibold text-blue-500">
-                                    <div class="p-2 font-bold text-white bg-blue-500 w-10 text-center">
-                                        {{ $event->progressMetric($team) }}
+                                     <div class="flex items-center justify-center">
+                                        @php
+                                            $circumference = 2 * 22 / 7 * 120;
+                                        @endphp
+                                        <svg class="transform -rotate-90 w-72 h-72">
+                                            <circle cx="145" cy="145" r="120" stroke="currentColor" stroke-width="30" fill="transparent" class="text-gray-100" />
+
+                                            <circle cx="145" cy="145" r="120" stroke="currentColor" stroke-width="30" fill="transparent"
+                                                stroke-dasharray="{{ $circumference }}"
+                                                stroke-dashoffset="{{ $circumference - ($event->progressMetric($team) * 20) / 100 * $circumference }}"
+                                                class="text-{{ $event->stage($event->progressMetric($team))->color}}" />
+                                        </svg>
+                                        <div class="flex items-center justify-center absolute text-5xl bg-{{ $event->stage($event->progressMetric($team))->color }} text-white rounded-full w-32 h-32 text-center p-4">{{ number_format($event->progressMetric($team), 1) }}</div>
+                                    </div>
+                                    <div class="flex mt-4">
+                                        <div class="flex-1 p-2 text-white font-bold text-center bg-karban-green-2">1</div>
+                                        <div class="flex-1 p-2 text-white font-bold text-center bg-karban-green-3">2</div>
+                                        <div class="flex-1 p-2 text-white font-bold text-center bg-karban-green-4">3</div>
+                                        <div class="flex-1 p-2 text-white font-bold text-center bg-karban-green-5">4</div>
+                                        <div class="flex-1 p-2 text-white font-bold text-center bg-karban-green-6">5</div>
                                     </div>
                                 </dd>
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ number_format($event->teams()->find($team->id)->pivot->investment, 2) ?? 'N/A'}}</dd>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($event->teams()->find($team->id)->pivot->investment, 2) ?? 'N/A'}}</dd>
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">NPV</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ number_format($event->teams()->find($team->id)->pivot->net_projected_value, 2) ?? 'N/A'}}</dd>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($event->teams()->find($team->id)->pivot->net_projected_value, 2) ?? 'N/A'}}</dd>
                             </div>
                         </dl>
                     </div>
@@ -47,7 +63,7 @@
             </div>
         </div>
     </header>
-    <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6 w-3/4 m-auto my-4">
+    <div class="px-4 py-5 bg-white shadow rounded-lg max-w-7xl overflow-hidden sm:p-6 m-auto my-4">
          <div>
             <table class="w-1/2 m-auto border-collapse">
                 <thead class="table-auto h-[278px]">
@@ -187,36 +203,40 @@
             </table>
 
             <div class="w-2/3 m-auto mt-10">
-                <div class="grid grid-flow-col grid-rows-2 gap-4">
+                <div class="grid grid-flow-col grid-rows-2 gap-1 w-full">
 
-                     @foreach($questions->where('hidden', false)->sortBy('order')->take(7) as $question)
-                        @php
-                            $mappedQuestions = collect($responses)->map(function ($value) {
-                                return $value->response['questions'];
-                            });
-                            $number = 0;
-                            if($mappedQuestions->pluck(Str::slug($question['question']))->sum() > 0) {
-                                $number = number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
-                            }
-                        @endphp
-                        <div class="{{ $question['classes'] }} bg-{{ colorize($number) }} flex items-center justify-center text-center p-4">{{ $question['question'] }}<br/>{{ $number}}</div>
-                    @endforeach
+                    @if($responses)
+                        @foreach($questions->where('hidden', false)->sortBy('order')->take(7) as $question)
+                            @php
+                                $number = 0;
+                                $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
+                                if($mappedResponses->pluck(Str::slug($question['question']))->sum() > 0) {
+                                    $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
+                                }
+
+                            @endphp
+                            <div class="{{ $question['classes'] }} bg-{{ colorize($number) }} flex items-center justify-center text-center p-4 text-white font-bold py-8 rounded">{{ $question['question'] }}<br/>{{ $number}}</div>
+                        @endforeach
+                    @endif
                 </div>
 
-                <div class="grid grid-flow-col gap-4 mt-2">
-                     @foreach($questions->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
-                        @php
-                            $mappedQuestions = collect($responses)->map(function ($value) {
-                                return $value->response['questions'];
-                            });
-                            $number = 0;
-                            if($mappedQuestions->pluck(Str::slug($question['question']))->sum()) {
-                                $number = number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
-                            }
-                        @endphp
+                <div class="grid grid-flow-col grid-rows-2 gap-1 mt-1 w-full">
+                    @if($responses)
+                         @foreach($questions->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
+                            @php
+                                $mappedResponses = collect($responses)->map(function ($value) {
+                                    return $value->response['questions'];
+                                });
+                                $number = 0;
+                                if($mappedResponses->pluck(Str::slug($question['question']))->sum()) {
+                                    $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
+                                }
+                            @endphp
 
-                        <div class="{{ $question['classes']}} bg-{{ colorize($number) }} flex text-center items-center justify-center">{{ $question['question'] }}<br/>{{ $number}}</div>
-                    @endforeach
+                            <div class="{{ $question['classes']}} bg-{{ colorize($number) }} flex text-center items-center justify-center text-white font-bold py-8 rounded">
+                            {{ $question['question'] }}<br/>{{ $number}}</div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>

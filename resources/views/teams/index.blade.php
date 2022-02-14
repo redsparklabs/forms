@@ -9,9 +9,7 @@
                     </h2>
                 </div>
                 <div>
-                    <a class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" wire:click="confirmCreate()">
-                        {{ __('Add Project') }}
-                    </a>
+                    <x-buttons.green wire:click="confirmCreate()">{{ __('Add Project') }}</x-buttons.green>
                 </div>
             </div>
         </div>
@@ -110,16 +108,14 @@
                                                 </td>
 
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    {{ number_format($team->latestPivot()?->net_projected_value, 2) ?? 'N/A' }}
+                                                    ${{ number_format($team->latestPivot()?->net_projected_value, 2) ?? 'N/A' }}
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    {{ number_format($team->latestPivot()?->investment, 2) ?? 'N/A' }}
+                                                    ${{ number_format($team->latestPivot()?->investment, 2) ?? 'N/A' }}
                                                 </td>
 
                                                  <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                                    <a class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" href="{{ route('teams.show', $team->id) }}">
-                                                        {{ __('View') }}
-                                                    </a>
+                                                    <x-buttons.green-link href="{{ route('teams.show', $team->id) }}">{{ __('View') }}</x-buttons.green-link>
                                                 </td>
                                             </tr>
                                         @empty

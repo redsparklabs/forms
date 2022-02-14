@@ -4,10 +4,10 @@
             <div class="flex justify-between">
                 <div class="flex justify-content">
                     <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                        {{ __('Growth Board - ' . $event->name) }} - {{ $event->date->format('m/d/y') }}
-                        <button class="w-32 ml-4 items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-yellow-600 hover:bg-yellow-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500" wire:click="confirmUpdate('{{ $event->id }}')">
-                        {{ __('Update') }}
-                    </button>
+                        {{ __('Growth Board - ' . $event->name) }} - {{ $event->date?->format('m/d/y') }}
+                        <x-buttons.yellow wire:click="confirmUpdate('{{ $event->id }}')">
+                            {{ __('Update') }}
+                        </x-buttons.yellow>
                     </h2>
                     </div>
                 <div>

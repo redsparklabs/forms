@@ -9,9 +9,7 @@
                 </div>
                 <div>
                     @if (Gate::check('addForm', $organization))
-                        <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" wire:click="confirmCreate()">
-                            {{ __('Create') }}
-                        </button>
+                        <x-buttons.green  wire:click="confirmCreate()">{{ __('Create') }}</x-buttons.green>
                     @endif
                 </div>
             </div>
@@ -73,15 +71,14 @@
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                         @if (Gate::check('updateForm', $organization))
-                                                            <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" wire:click="confirmUpdate('{{ $form->id }}')">
-                                                                {{ __('Update') }}
-                                                            </button>
+                                                            <x-buttons.yellow wire:click="confirmUpdate('{{ $form->id }}')">{{ __('Update') }}</x-buttons.yellow>
+
                                                         @endif
 
                                                         @if (Gate::check('updateForm', $organization))
-                                                            <a class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" href="{{ route('form-builder', $form->id) }}" target="_blank">
+                                                           <x-buttons.green-link href="{{ route('form-builder', $form->id) }}" target="_blank">
                                                                 {{ __('View') }}
-                                                            </a>
+                                                            </x-buttons.green-link>
                                                         @endif
 
                                                         {{-- @if (Gate::check('removeForm', $organization))

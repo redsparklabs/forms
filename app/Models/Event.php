@@ -102,6 +102,20 @@ class Event extends Model
     }
 
     /**
+     * Grab the current stage
+     *
+     * @return object|null
+     */
+    public function stage($metric)
+    {
+        foreach(config('stages') as $stage) {
+            if($metric >= $stage['start_scale'] && $metric <= $stage['end_scale']) {
+                return (object) $stage;
+            }
+        }
+    }
+
+    /**
      * Get the progress metric total.
      *
      * @param  Team $team

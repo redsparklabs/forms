@@ -9,9 +9,7 @@
                 </div>
                 <div>
                     @if (Gate::check('addEvent', $organization) && $organization->teams->isNotEmpty())
-                        <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" wire:click="confirmCreate()">
-                            {{ __('Schedule Growth Board') }}
-                        </button>
+                        <x-buttons.green :text="__('Schedule Growth Board')" wire:click="confirmCreate()" />
                     @endif
                 </div>
             </div>
@@ -87,9 +85,7 @@
 
                                                     <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                                         @if(Gate::check('viewEvent', $organization))
-                                                            <a class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" href="{{ route('events.show', $event->id) }}">
-                                                                {{ __('View Results') }}
-                                                            </a>
+                                                            <x-buttons.green-link :text="__('View Results')" href="{{ route('events.show', $event->id) }}" />
                                                         @endif
 
 
