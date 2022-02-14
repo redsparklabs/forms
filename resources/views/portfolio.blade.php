@@ -60,13 +60,13 @@
                                                             {{ $team->name }}
                                                         </td>
                                                         <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                            @if($team->progress_metric)
+                                                            {{-- @if($team->progress_metric) --}}
                                                                 <div class="w-10 p-2 font-bold text-center text-white bg-blue-500">
-                                                                    {{ $team->progress_metric }}
+                                                                    {{ $team->latest_progress_metric }}
                                                                 </div>
-                                                            @else
+                                                            {{-- @else
                                                                 {{ __('N/A') }}
-                                                            @endif
+                                                            @endif --}}
                                                         </td>
                                                         <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                                             {{ $team->priority_level }}

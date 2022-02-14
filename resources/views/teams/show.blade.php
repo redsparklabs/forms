@@ -21,6 +21,9 @@
             <div class="grid grid-cols-9 gap-4 mt-5">
                 <div class="row-span-3 col-span-3 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                     <span class="inline-block text-sm font-medium text-gray-500 mb-2">Latest Progress Metric</span>
+
+                    {{-- <x-growth-circle :color="$team->stage()->color" :metric="$team->latest_progress_metric" /> --}}
+
                     <div class="flex items-center justify-center">
                         @php
                             $circumference = 2 * 22 / 7 * 120;
