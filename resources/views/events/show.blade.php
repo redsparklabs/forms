@@ -4,7 +4,7 @@
             <div class="flex justify-between">
                 <div class="flex justify-content">
                     <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                        {{ __('Growth Board - ' . $event->name) }} - {{ $event->date?->format('m/d/y') }}
+                        {{ __('Assessment - ' . $event->name) }} - {{ $event->date?->format('m/d/y') }}
                         <x-buttons.yellow wire:click="confirmUpdate('{{ $event->id }}')">
                             {{ __('Update') }}
                         </x-buttons.yellow>
@@ -71,7 +71,7 @@
                                                 'bg-gray-50' => $loop->even
                                             ])>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                    <a class="text-blue-500 underline" href="{{ route('teams.show', $team->id) }}">{{ $team->name }}</a>
+                                                    <a class="text-karban-green-4 underline" href="{{ route('teams.show', $team->id) }}">{{ $team->name }}</a>
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
 
