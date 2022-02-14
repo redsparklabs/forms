@@ -191,9 +191,13 @@
                     @foreach($responses as $response)
                     <tr class="border-b-2 border-black border-solid">
                         <td class="py-2 text-left">{{ $response->email }} </td>
-                        @foreach($response->response['questions']['custom'] as $custom)
-                            <td class="px-4 py-2"> {{ $custom }} </td>
-                        @endforeach
+                        @if(Arr::get($response->response, 'questions.custom'))
+                            @foreach(Arr::get($response->response, 'questions.custom') as $custom)
+                                <td class="px-4 py-2"> {{ $custom }} </td>
+                            @endforeach
+                        @else
+                            <td class="px-4 py-2"></td>
+                        @endif
                     </tr>
                     @endforeach
                     <tr>
