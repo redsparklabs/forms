@@ -12,10 +12,10 @@
                     </div>
                 <div>
 
-                    <a class="mr-2 text-xs hover:text-blue-400" href="{{ route('form-builder', $event->slug) }}" target="_blank">{{ route('form-builder', $event->slug) }}</a>
-                    <button type="button"class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 copy" data-clipboard-text="{{ route('form-builder', $event->slug) }}">
-                        {{ __('Copy Link') }}
-                    </button>
+                    <a class="mr-2 text-xs hover:text-karban-green-4" href="{{ route('form-builder', $event->slug) }}" target="_blank">{{ route('form-builder', $event->slug) }}</a>
+                        <x-buttons.green data-clipboard-text="{{ route('form-builder', $event->slug) }}">
+                            {{ __('Copy Link') }}
+                        </x-buttons.green>
                 </div>
             </div>
         </div>
@@ -74,10 +74,8 @@
                                                     <a class="text-blue-500 underline" href="{{ route('teams.show', $team->id) }}">{{ $team->name }}</a>
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    @if($team->progress_metric)
-                                                        <div class="w-10 p-2 font-bold text-center text-white bg-blue-500">
-                                                            {{ $team->progress_metric }}
-                                                        </div>
+                                                    @if($team->latest_progress_metric)
+                                                        <span class="font-bold text-lg text-{{ colorize($team->latest_progress_metric) }}"> {{ $team->latest_progress_metric}}</span>
                                                     @else
                                                         {{ __('N/A') }}
                                                     @endif
@@ -86,9 +84,7 @@
                                                     {{ $team->priority_level }}
                                                 </td>
                                                  <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                                    <a class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" href="{{ route('events.results', [$event->id, $event->latestForm()->id, $team->id]) }}">
-                                                        {{ __('View Results') }}
-                                                    </a>
+                                                    <x-buttons.green-link href="{{ route('events.results', [$event->id, $team->id]) }}">  {{ __('View Results') }}</x-buttons.green-link>
                                                 </td>
                                             </tr>
                                         @empty

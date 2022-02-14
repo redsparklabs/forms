@@ -92,9 +92,9 @@
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                                     @if($team->latest_progress_metric )
-                                                        <div class="w-10 p-2 font-bold text-center text-white bg-blue-500">
+                                                        <span class="font-bold text-lg text-{{ colorize($team->latest_progress_metric) }}">
                                                             {{ $team->latest_progress_metric }}
-                                                        </div>
+                                                        </span>
                                                     @else
                                                         {{ __('N/A') }}
                                                     @endif

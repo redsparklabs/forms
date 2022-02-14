@@ -3111,6 +3111,10 @@ select {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
+.hover\:text-karban-green-4:hover {
+  --tw-text-opacity: 1;
+  color: rgb(106 158 74 / var(--tw-text-opacity));
+}
 .hover\:opacity-100:hover {
   opacity: 1;
 }
