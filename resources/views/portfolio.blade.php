@@ -60,10 +60,14 @@
                                                             {{ $team->name }}
                                                         </td>
                                                         <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                            <span class="font-bold text-lg text-{{ colorize($team->latestEvent()->progressMetric($team)) }}">{{ $team->latestEvent()->progressMetric($team) }}</span>
+                                                            @if($team->latestEvent())
+                                                                <span class="font-bold text-lg text-{{ colorize($team->?latestEvent()->progressMetric($team)) }}">{{ $team->?latestEvent()->progressMetric($team) }}</span>
+                                                            @else
+                                                                {{ __('N/A') }}
+                                                            @endif
                                                         </td>
                                                         <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                            {{ $team->priority_level }}
+                                                            {{ $team->priority_level ? $team->priority_level : __('N/A') }}
                                                         </td>
                                                          <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                                             <x-buttons.green-link href="{{ route('teams.show', $team->id) }}">{{ __('View') }}</x-buttons.green-link>

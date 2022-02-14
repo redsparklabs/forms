@@ -75,7 +75,7 @@
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
 
-                                                   <span class="font-bold text-lg text-{{ colorize($team->events()->find($event->id)->progressMetric($team)) }}">{{ $team->events()->find($event->id)->progressMetric($team) }}</span>
+                                                   <span class="font-bold text-lg text-{{ colorize($team->events()->find($event->id)?->progressMetric($team)) }}">{{ $team->events()->find($event->id)->progressMetric($team) }}</span>
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                                     {{ $team->priority_level }}

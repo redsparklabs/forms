@@ -22,7 +22,7 @@
                 <div class="row-span-3 col-span-3 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                     <span class="inline-block text-sm font-medium text-gray-500 mb-2">Latest Progress Metric</span>
 
-                    {{-- <x-growth-circle :color="$team->stage()->color" :metric="$team->latest_progress_metric" /> --}}
+
 
                     <div class="flex items-center justify-center">
                         @php
@@ -33,10 +33,10 @@
 
                             <circle cx="145" cy="145" r="120" stroke="currentColor" stroke-width="30" fill="transparent"
                                 stroke-dasharray="{{ $circumference }}"
-                                stroke-dashoffset="{{ $circumference - ($team->latestEvent()->progressMetric($team) * 20) / 100 * $circumference }}"
-                                class="text-{{ $team->latestEvent()->stage($team->latestEvent()->progressMetric($team))->color}}" />
+                                stroke-dashoffset="{{ $circumference - ($team->latestEvent()?->progressMetric($team) * 20) / 100 * $circumference }}"
+                                class="text-{{ $team->latestEvent()?->stage($team->latestEvent()?->progressMetric($team))->color}}" />
                         </svg>
-                        <div class="flex items-center justify-center absolute text-5xl bg-{{ $team->latestEvent()->stage($team->latestEvent()->progressMetric($team))->color }} text-white rounded-full w-32 h-32 text-center p-4">{{ number_format($team->latestEvent()->progressMetric($team), 1) }}</div>
+                        <div class="flex items-center justify-center absolute text-5xl bg-{{ $team->latestEvent()?->stage($team->latestEvent()?->progressMetric($team))->color }} text-white rounded-full w-32 h-32 text-center p-4">{{ number_format($team->latestEvent()?->progressMetric($team), 1) }}</div>
                     </div>
 
                     <div class="flex mt-4">
@@ -72,17 +72,17 @@
 
                 <div class="col-start-4 col-span-3 col-end-7 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                     <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestEvent()->pivot?->investment, 2) ?? 'N/A'}}</dd>
+                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestEvent()?->pivot?->investment, 2)}}</dd>
                 </div>
 
                  <div class="col-start-7 col-span-3 x-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                     <dt class="text-sm font-medium text-gray-500 truncate">Net Present Value (NPV)</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestEvent()->pivot?->net_projected_value, 2) ?? 'N/A'}}</dd>
+                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestEvent()?->pivot?->net_projected_value, 2)}}</dd>
                 </div>
 
                 <div class="col-start-4 col-span-3 col-end-7 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                     <dt class="text-sm font-medium text-gray-500 truncate">Development Stage</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->latestEvent()->stage($team->latestEvent()->progressMetric($team))->name }}</dd>
+                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->name }}</dd>
                 </div>
 
                  <div class="col-start-7 col-span-3 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
@@ -146,8 +146,8 @@
             </div>
             <div class="flex-1 shadow p-4 rounded">
                 <div class="text-md font-medium text-gray-500 truncate">Stage of Development</div>
-                <div class="text-lg font-semibold my-2">{{ $team->latestEvent()->stage($team->latestEvent()->progressMetric($team))->name }}</div>
-                <div>{{ $team->latestEvent()->stage($team->latestEvent()->progressMetric($team))->description }}</div>
+                <div class="text-lg font-semibold my-2">{{ $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->name }}</div>
+                <div>{{ $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->description }}</div>
             </div>
         </div>
     </div>
