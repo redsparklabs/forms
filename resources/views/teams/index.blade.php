@@ -91,12 +91,17 @@
                                                     {{ $team->name }}
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    <span class="font-bold text-lg text-{{ colorize($team->latestEvent()->progressMetric($team)) }}">
-                                                        {{ $team->latestEvent()->progressMetric($team) }}
-                                                    </span>
+                                                    @if($team->latestEvent())
+                                                        <span class="font-bold text-lg text-{{ colorize($team->latestEvent()->progressMetric($team)) }}">
+                                                            {{ $team->latestEvent()->progressMetric($team) }}
+                                                        </span>
+                                                    @else
+                                                        {{ __('N/A') }}
+                                                    @endif
+
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    {{ $team->priority_level ?? 'N/A' }}
+                                                    {{ $team->priority_level ? $team->priority_level : 'N/A' }}
                                                 </td>
 
                                                  <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
@@ -104,10 +109,10 @@
                                                 </td>
 
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    ${{ number_format($team->latestEvent()->pivot?->net_projected_value, 2) ?? 'N/A' }}
+                                                    ${{ number_format($team->latestEvent()?->pivot?->net_projected_value, 2)}}
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    ${{ number_format($team->latestEvent()->pivot?->investment, 2) ?? 'N/A' }}
+                                                    ${{ number_format($team->latestEvent()?->pivot?->investment, 2) }}
                                                 </td>
 
                                                  <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">

@@ -61,10 +61,10 @@ class Teams extends BaseComponent
         'name' => '',
         'priority_level' => '',
         'start_date' => '',
-        'description' => '',
-        'minimum_success_criteria' => '',
-        'estimated_launch_date' => '',
-        'sponsor' => '',
+        'description' => null,
+        'minimum_success_criteria' => null,
+        'estimated_launch_date' => null,
+        'sponsor' => null,
     ];
 
     /**
