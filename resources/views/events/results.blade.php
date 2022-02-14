@@ -75,9 +75,9 @@
                             </div>
                         </th>
                         @foreach($questions as $question)
-                            <th scope="col" class="w-10 bg-white border whitespace-nowrap">
+                            <th scope="col" class="w-10 bg-white border whitespace-nowrap text-gray-700">
                                 <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
-                                    <span class="text-{{ $question['color'] }} p-2">{{ $question['question'] }}</span>
+                                    <span class="p-2">{{ $question['question'] }}</span>
                                 </div>
                             </th>
                         @endforeach
@@ -178,12 +178,12 @@
                 <thead class="table-auto">
                     <tr>
                         <th scope="col">
-                            <div class="mb-2 text-lg text-left">Qualitative Feedback</div>
+                            <div class="mb-2 text-lg text-left text-gray-700">Qualitative Feedback</div>
                             <div class="text-xs font-normal text-left">Feedback, Questions, Ideas, and follow-up items.</div>
                         </th>
                         @foreach($feedback_questions as $question)
                             <th scope="col" class="px-4 py-2 text-left">
-                                <div class="mb-2 text-lg text-blue-600">{{ $question['question'] }}</div>
+                                <div class="mb-2 text-lg text-gray-700">{{ $question['question'] }}</div>
                                 <div class="text-xs font-normal">{{ $question['description'] }}</div>
                             </th>
                         @endforeach
