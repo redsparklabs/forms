@@ -24,7 +24,7 @@ class OrganizationFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->company(),
-            'user_id' => User::factory(),
+            'user_id' => \App\Models\User::factory(),
             'personal_organization' => true,
         ];
     }

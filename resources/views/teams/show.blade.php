@@ -105,35 +105,39 @@
                 <div class="text-md font-medium text-gray-500 truncate mb-4">Business Models Development</div>
                 <div class="grid grid-flow-col grid-rows-2 gap-1 w-full">
                     @php
-                        $responses = $team->latestform()->responses()->where('team_id', $team->id)->get();
+                        $responses = $team->latestform()?->responses()->where('team_id', $team->id)->get();
                     @endphp
-                    @foreach($team->latestform()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $question)
-                        @php
-                            $number = 0;
-                            $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
-                            if($mappedResponses->pluck(Str::slug($question['question']))->sum() > 0) {
-                                $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
-                            }
+                    @if($responses) {
+                        @foreach($team->latestform()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $question)
+                            @php
+                                $number = 0;
+                                $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
+                                if($mappedResponses->pluck(Str::slug($question['question']))->sum() > 0) {
+                                    $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
+                                }
 
-                        @endphp
-                        <div class="{{ $question['classes'] }} bg-{{ colorize($number) }} flex items-center justify-center text-center p-4 text-white font-bold py-8 rounded">{{ $number}}</div>
-                    @endforeach
+                            @endphp
+                            <div class="{{ $question['classes'] }} bg-{{ colorize($number) }} flex items-center justify-center text-center p-4 text-white font-bold py-8 rounded">{{ $number}}</div>
+                        @endforeach
+                    @endif
                 </div>
 
                 <div class="grid grid-flow-col grid-rows-2 gap-1 mt-1 w-full">
-                     @foreach($team->latestform()->allQuestions()->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
-                        @php
-                            $mappedResponses = collect($responses)->map(function ($value) {
-                                return $value->response['questions'];
-                            });
-                            $number = 0;
-                            if($mappedResponses->pluck(Str::slug($question['question']))->sum()) {
-                                $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
-                            }
-                        @endphp
+                    @if($responses) {
+                         @foreach($team->latestform()->allQuestions()->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
+                            @php
+                                $mappedResponses = collect($responses)->map(function ($value) {
+                                    return $value->response['questions'];
+                                });
+                                $number = 0;
+                                if($mappedResponses->pluck(Str::slug($question['question']))->sum()) {
+                                    $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
+                                }
+                            @endphp
 
-                        <div class="{{ $question['classes']}} bg-{{ colorize($number) }} flex text-center items-center justify-center text-white font-bold py-8 rounded">{{ $number}}</div>
-                    @endforeach
+                            <div class="{{ $question['classes']}} bg-{{ colorize($number) }} flex text-center items-center justify-center text-white font-bold py-8 rounded">{{ $number}}</div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
             <div class="flex-1 shadow p-4 rounded">

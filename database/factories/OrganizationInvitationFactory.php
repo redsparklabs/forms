@@ -22,7 +22,7 @@ class OrganizationInvitationFactory extends Factory
     public function definition(): array
     {
         return [
-            'organization_id' => \App\Models\Organization::factory(),
+            'organization_id' =>\App\Models\Organization::factory(),
             'email' => $this->faker->safeEmail,
             'role' => $this->faker->word,
         ];

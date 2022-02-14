@@ -22,8 +22,8 @@ class MembershipFactory extends Factory
     public function definition(): array
     {
         return [
-            'organization_id' => $this->faker->randomNumber(),
-            'user_id' => $this->faker->randomNumber(),
+            'organization_id' => \App\Models\Organization::factory(),
+            'user_id' => rand(1, 100),
             'role' => $this->faker->word,
         ];
     }

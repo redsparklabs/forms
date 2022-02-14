@@ -106,7 +106,7 @@
                                                 </td>
 
                                                  <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    {{ $team->start_date->format('m/d/y') ?? 'N/A' }}
+                                                    {{ $team->start_date?->format('m/d/y') ?? 'N/A' }}
                                                 </td>
 
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">

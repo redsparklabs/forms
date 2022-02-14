@@ -25,7 +25,7 @@ class FormFactory extends Factory
             'name' => $this->faker->name,
             'slug' => $this->faker->slug,
             'description' => $this->faker->text,
-            'organization_id' => $this->faker->randomNumber(),
+            'organization_id' => \App\Models\Organization::factory(),
         ];
     }
 }

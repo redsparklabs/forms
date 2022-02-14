@@ -27,7 +27,7 @@ class QuestionFactory extends Factory
             'color' => $this->faker->text,
             'section' => $this->faker->text,
             'hidden' => $this->faker->boolean,
-            'organization_id' => $this->faker->randomNumber(),
+            'organization_id' => \App\Models\Organization::factory(),
         ];
     }
 }

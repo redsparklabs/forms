@@ -94,7 +94,7 @@
                                         @empty
                                             @if(!$keyword)
                                                 <tr class="bg-white">
-                                                    <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap" colspan="4">
+                                                    <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap text-center" colspan="4">
                                                         {{ __('No Projects created.')}} {{ __('Go ahead and') }} <a class="text-blue-500 underline" href="{{ route('teams.index', 'create') }}">{{ __('add one') }}</a>!
                                                     </td>
                                                 </tr>
