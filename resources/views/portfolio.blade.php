@@ -61,7 +61,7 @@
                                                         </td>
                                                         <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                                             @if($team->latestEvent())
-                                                                <span class="font-bold text-lg text-{{ colorize($team->?latestEvent()->progressMetric($team)) }}">{{ $team->?latestEvent()->progressMetric($team) }}</span>
+                                                                <span class="font-bold text-lg text-{{ colorize($team->latestEvent()?->progressMetric($team)) }}">{{ $team->latestEvent()?->progressMetric($team) }}</span>
                                                             @else
                                                                 {{ __('N/A') }}
                                                             @endif
