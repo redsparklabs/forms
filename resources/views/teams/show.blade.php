@@ -69,12 +69,12 @@
 
                 <div class="col-start-4 col-span-3 col-end-7 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                     <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->latestPivot()?->investment ?? 'N/A'}}</dd>
+                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ number_format($team->latestPivot()?->investment, 2) ?? 'N/A'}}</dd>
                 </div>
 
                  <div class="col-start-7 col-span-3 x-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                     <dt class="text-sm font-medium text-gray-500 truncate">Net Present Value (NPV)</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->latestPivot()?->net_projected_value ?? 'N/A'}}</dd>
+                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ number_format($team->latestPivot()?->net_projected_value, 2) ?? 'N/A'}}</dd>
                 </div>
 
                 <div class="col-start-4 col-span-3 col-end-7 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
@@ -201,7 +201,7 @@
                                                 <span class="font-bold text-lg text-{{ colorize($event->progressMetric($team)) }}">{{ $event->progressMetric($team) }}</span>
                                             </td>
                                              <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                {{ $event->teams->find($team->id)->pivot->net_projected_value ?? 'N/A' }}
+                                                {{ number_format($event->teams->find($team->id)->pivot->net_projected_value, 2) ?? 'N/A' }}
                                             </td>
                                             <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                                 <x-buttons.green-link text="View Results" href="{{ route('events.results',[$event->id, $event->latestForm()->id, $team->id]) }}" />

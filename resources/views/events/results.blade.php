@@ -18,15 +18,15 @@
                                 <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->name }}</dd>
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                                <dt class="text-sm font-medium text-gray-500 truncate">Project Start Date:</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->start_date->format('m/d/y') }}</dd>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Project Start Date</dt>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->start_date?->format('m/d/y') }}</dd>
                             </div>
                              <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                                <dt class="text-sm font-medium text-gray-500 truncate">Priority Level:</dt>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Priority Level</dt>
                                 <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->priority_level }}</dd>
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                                <dt class="text-sm font-medium text-gray-500 truncate">Current Progress Metric:</dt>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Current Progress Metric</dt>
                                 <dd class="mt-1 text-sm font-semibold text-blue-500">
                                     <div class="p-2 font-bold text-white bg-blue-500 w-10 text-center">
                                         {{ $event->progressMetric($team) }}
@@ -34,12 +34,12 @@
                                 </dd>
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                                <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date:</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $event->teams()->find($team->id)->pivot->investment ?? 'N/A'}}</dd>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date</dt>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ number_format($event->teams()->find($team->id)->pivot->investment, 2) ?? 'N/A'}}</dd>
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                                <dt class="text-sm font-medium text-gray-500 truncate">NPV:</dt>
-                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $event->teams()->find($team->id)->pivot->net_projected_value ?? 'N/A'}}</dd>
+                                <dt class="text-sm font-medium text-gray-500 truncate">NPV</dt>
+                                <dd class="mt-1 text-sm font-semibold text-gray-900">{{ number_format($event->teams()->find($team->id)->pivot->net_projected_value, 2) ?? 'N/A'}}</dd>
                             </div>
                         </dl>
                     </div>

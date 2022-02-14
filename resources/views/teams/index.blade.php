@@ -110,10 +110,10 @@
                                                 </td>
 
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    {{ $team->latestPivot()?->net_projected_value ?? 'N/A' }}
+                                                    {{ number_format($team->latestPivot()?->net_projected_value, 2) ?? 'N/A' }}
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    {{ $team->latestPivot()?->investment ?? 'N/A' }}
+                                                    {{ number_format($team->latestPivot()?->investment, 2) ?? 'N/A' }}
                                                 </td>
 
                                                  <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
