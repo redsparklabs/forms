@@ -79,22 +79,6 @@ class Team extends Model
     }
 
     /**
-     * Get the progress percentage.
-     *
-     * @param  Event $event
-     * @return string|void
-     */
-    // public function progressMetric(Event $event)
-    // {
-    //     // Grab latest form
-    //     $data = calculateSections($event, $this);
-
-    //     if ($data) {
-    //         return number_format($data['progressMetricTotal'], 1);
-    //     }
-    // }
-
-    /**
      * Get the latest event
      *
      * @return \App\Models\Event|null
@@ -103,56 +87,4 @@ class Team extends Model
     {
         return $this->events()->latest('date')->first();
     }
-
-
-    /**
-     * Get the latest form
-     *
-     * @return \App\Models\Form
-     */
-    // public function latestForm()
-    // {
-    //     return $this->latestEvent()?->forms()->first();
-    // }
-
-    /**
-     * Get the progress metric total.
-     *
-     * @return void|string
-     */
-    // public function getLatestProgressMetricAttribute()
-    // {
-    //     if ($this->events->isNotEmpty()) {
-
-    //         $data = calculateSections($this->latestEvent(), $this);
-
-    //         if ($data) {
-    //             return number_format($data['progressMetricTotal'], 1);
-    //         }
-    //     }
-    // }
-
-    /**
-     * Grab the current stage
-     *
-     * @return object|null
-     */
-    // public function stage()
-    // {
-    //     $metric = $this->latest_progress_metric;
-    //     foreach(config('stages') as $stage) {
-    //         if($metric >= $stage['start_scale'] && $metric <= $stage['end_scale']) {
-    //             return (object) $stage;
-    //         }
-    //     }
-    // }
-    /**
-     * Get the pivot table name for the team and event relationship.
-     *
-     * @return string
-     */
-    // public function latestpivot()
-    // {
-    //     return $this->latestEvent()?->pivot;
-    // }
 }
