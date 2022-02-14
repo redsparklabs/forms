@@ -31,7 +31,7 @@ class Events extends BaseComponent
     /**
      * @var string
      */
-    public $sortByField = 'name';
+    public $sortByField = 'date';
 
     /**
      * @var null
@@ -41,7 +41,7 @@ class Events extends BaseComponent
     /**
      * @var string
      */
-    public $sortDirection = 'asc';
+    public $sortDirection = 'desc';
 
     /**
      * @var string
