@@ -57,7 +57,7 @@ class TeamsShow extends BaseComponent
     /**
      * @var string
      */
-    public $sortDirection = 'asc';
+    public $sortDirection = 'desc';
 
     /**
      * @var array

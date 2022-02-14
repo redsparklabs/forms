@@ -91,13 +91,9 @@
                                                     {{ $team->name }}
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    @if($team->latest_progress_metric )
-                                                        <span class="font-bold text-lg text-{{ colorize($team->latest_progress_metric) }}">
-                                                            {{ $team->latest_progress_metric }}
-                                                        </span>
-                                                    @else
-                                                        {{ __('N/A') }}
-                                                    @endif
+                                                    <span class="font-bold text-lg text-{{ colorize($team->latestEvent()->progressMetric($team)) }}">
+                                                        {{ $team->latestEvent()->progressMetric($team) }}
+                                                    </span>
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                                     {{ $team->priority_level ?? 'N/A' }}
@@ -108,10 +104,10 @@
                                                 </td>
 
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    ${{ number_format($team->latestPivot()?->net_projected_value, 2) ?? 'N/A' }}
+                                                    ${{ number_format($team->latestEvent()->pivot?->net_projected_value, 2) ?? 'N/A' }}
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    ${{ number_format($team->latestPivot()?->investment, 2) ?? 'N/A' }}
+                                                    ${{ number_format($team->latestEvent()->pivot?->investment, 2) ?? 'N/A' }}
                                                 </td>
 
                                                  <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">

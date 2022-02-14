@@ -88,7 +88,7 @@ class Event extends Model
      */
     public function latestForm()
     {
-        return $this->forms()->first();
+        return $this->forms()->latest()->first();
     }
 
 

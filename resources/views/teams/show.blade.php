@@ -33,10 +33,10 @@
 
                             <circle cx="145" cy="145" r="120" stroke="currentColor" stroke-width="30" fill="transparent"
                                 stroke-dasharray="{{ $circumference }}"
-                                stroke-dashoffset="{{ $circumference - ($team->latest_progress_metric * 20) / 100 * $circumference }}"
-                                class="text-{{ $team->stage()->color}}" />
+                                stroke-dashoffset="{{ $circumference - ($team->latestEvent()->progressMetric($team) * 20) / 100 * $circumference }}"
+                                class="text-{{ $team->latestEvent()->stage($team->latestEvent()->progressMetric($team))->color}}" />
                         </svg>
-                        <div class="flex items-center justify-center absolute text-5xl bg-{{ $team->stage()->color }} text-white rounded-full w-32 h-32 text-center p-4">{{ number_format($team->latest_progress_metric, 1) }}</div>
+                        <div class="flex items-center justify-center absolute text-5xl bg-{{ $team->latestEvent()->stage($team->latestEvent()->progressMetric($team))->color }} text-white rounded-full w-32 h-32 text-center p-4">{{ number_format($team->latestEvent()->progressMetric($team), 1) }}</div>
                     </div>
 
                     <div class="flex mt-4">
@@ -72,17 +72,17 @@
 
                 <div class="col-start-4 col-span-3 col-end-7 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                     <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestPivot()?->investment, 2) ?? 'N/A'}}</dd>
+                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestEvent()->pivot?->investment, 2) ?? 'N/A'}}</dd>
                 </div>
 
                  <div class="col-start-7 col-span-3 x-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                     <dt class="text-sm font-medium text-gray-500 truncate">Net Present Value (NPV)</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestPivot()?->net_projected_value, 2) ?? 'N/A'}}</dd>
+                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestEvent()->pivot?->net_projected_value, 2) ?? 'N/A'}}</dd>
                 </div>
 
                 <div class="col-start-4 col-span-3 col-end-7 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                     <dt class="text-sm font-medium text-gray-500 truncate">Development Stage</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->stage()->name }}</dd>
+                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->latestEvent()->stage($team->latestEvent()->progressMetric($team))->name }}</dd>
                 </div>
 
                  <div class="col-start-7 col-span-3 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
@@ -109,10 +109,10 @@
                 <div class="grid grid-flow-col grid-rows-2 gap-1 w-full">
                     @php
                     // @dd($team);
-                        $responses = $team->latestForm()?->responses()->where('team_id', $team->id)->get();
+                        $responses = $team->latestEvent()?->responses()->where('team_id', $team->id)->get();
                     @endphp
                     @if($responses)
-                        @foreach($team->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $question)
+                        @foreach($team->latestEvent()->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $question)
                             @php
                                 $number = 0;
                                 $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
@@ -128,7 +128,7 @@
 
                 <div class="grid grid-flow-col grid-rows-2 gap-1 mt-1 w-full">
                     @if($responses)
-                         @foreach($team->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
+                         @foreach($team->latestEvent()->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
                             @php
                                 $mappedResponses = collect($responses)->map(function ($value) {
                                     return $value->response['questions'];
@@ -146,8 +146,8 @@
             </div>
             <div class="flex-1 shadow p-4 rounded">
                 <div class="text-md font-medium text-gray-500 truncate">Stage of Development</div>
-                <div class="text-lg font-semibold my-2">{{ $team->stage()->name }}</div>
-                <div>{{ $team->stage()->description }}</div>
+                <div class="text-lg font-semibold my-2">{{ $team->latestEvent()->stage($team->latestEvent()->progressMetric($team))->name }}</div>
+                <div>{{ $team->latestEvent()->stage($team->latestEvent()->progressMetric($team))->description }}</div>
             </div>
         </div>
     </div>

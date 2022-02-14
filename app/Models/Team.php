@@ -84,15 +84,15 @@ class Team extends Model
      * @param  Event $event
      * @return string|void
      */
-    public function progressMetric(Event $event)
-    {
-        // Grab latest form
-        $data = calculateSections($event, $this);
+    // public function progressMetric(Event $event)
+    // {
+    //     // Grab latest form
+    //     $data = calculateSections($event, $this);
 
-        if ($data) {
-            return number_format($data['progressMetricTotal'], 1);
-        }
-    }
+    //     if ($data) {
+    //         return number_format($data['progressMetricTotal'], 1);
+    //     }
+    // }
 
     /**
      * Get the latest event
@@ -110,49 +110,49 @@ class Team extends Model
      *
      * @return \App\Models\Form
      */
-    public function latestform()
-    {
-        return $this->latestEvent()?->forms()->first();
-    }
+    // public function latestForm()
+    // {
+    //     return $this->latestEvent()?->forms()->first();
+    // }
 
     /**
      * Get the progress metric total.
      *
      * @return void|string
      */
-    public function getLatestProgressMetricAttribute()
-    {
-        if ($this->events->isNotEmpty()) {
+    // public function getLatestProgressMetricAttribute()
+    // {
+    //     if ($this->events->isNotEmpty()) {
 
-            $data = calculateSections($this->latestEvent(), $this);
+    //         $data = calculateSections($this->latestEvent(), $this);
 
-            if ($data) {
-                return number_format($data['progressMetricTotal'], 1);
-            }
-        }
-    }
+    //         if ($data) {
+    //             return number_format($data['progressMetricTotal'], 1);
+    //         }
+    //     }
+    // }
 
     /**
      * Grab the current stage
      *
      * @return object|null
      */
-    public function stage()
-    {
-        $metric = $this->latest_progress_metric;
-        foreach(config('stages') as $stage) {
-            if($metric >= $stage['start_scale'] && $metric <= $stage['end_scale']) {
-                return (object) $stage;
-            }
-        }
-    }
+    // public function stage()
+    // {
+    //     $metric = $this->latest_progress_metric;
+    //     foreach(config('stages') as $stage) {
+    //         if($metric >= $stage['start_scale'] && $metric <= $stage['end_scale']) {
+    //             return (object) $stage;
+    //         }
+    //     }
+    // }
     /**
      * Get the pivot table name for the team and event relationship.
      *
      * @return string
      */
-    public function latestpivot()
-    {
-        return $this->latestEvent()?->pivot;
-    }
+    // public function latestpivot()
+    // {
+    //     return $this->latestEvent()?->pivot;
+    // }
 }

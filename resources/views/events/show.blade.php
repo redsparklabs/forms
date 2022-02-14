@@ -74,11 +74,8 @@
                                                     <a class="text-blue-500 underline" href="{{ route('teams.show', $team->id) }}">{{ $team->name }}</a>
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                                                    @if($team->latest_progress_metric)
-                                                        <span class="font-bold text-lg text-{{ colorize($team->latest_progress_metric) }}"> {{ $team->latest_progress_metric}}</span>
-                                                    @else
-                                                        {{ __('N/A') }}
-                                                    @endif
+
+                                                   <span class="font-bold text-lg text-{{ colorize($team->events()->find($event->id)->progressMetric($team)) }}">{{ $team->events()->find($event->id)->progressMetric($team) }}</span>
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                                     {{ $team->priority_level }}
