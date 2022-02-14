@@ -69,13 +69,13 @@
                 <thead class="table-auto h-[278px]">
                     <tr>
                         <th scope="col" class="align-bottom">GB Member</th>
-                        <th scope="col" class="w-10 bg-karban-green-3 border whitespace-nowrap">
+                        <th scope="col" class="w-10 bg-karban-green-3 border-2 whitespace-nowrap">
                             <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
                                 <span class="p-2 text-white ">PROGRESS METRIC</span>
                             </div>
                         </th>
                         @foreach($questions as $question)
-                            <th scope="col" class="w-10 bg-white border whitespace-nowrap text-gray-700">
+                            <th scope="col" class="w-10 bg-white border-2 whitespace-nowrap text-gray-700">
                                 <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
                                     <span class="p-2">{{ $question['question'] }}</span>
                                 </div>
@@ -83,7 +83,7 @@
                         @endforeach
 
                         @foreach($sections->all() as $section => $sectionData)
-                            <th scope="col" class="w-10 bg-karban-green-3 text-white border whitespace-nowrap">
+                            <th scope="col" class="w-10 bg-karban-green-3 text-white border-2 whitespace-nowrap">
                                 <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
                                     <span class="text-{{ Arr::get($sectionData, 'color') }} p-2">{{ implode(' ', explode('_', $section)) }}</span>
                                 </div>
