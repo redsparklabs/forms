@@ -59,6 +59,16 @@ class Team extends Model
     }
 
     /**
+     * Responses
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function responses()
+    {
+        return $this->hasMany(Responses::class);
+    }
+
+    /**
      * Get the default profile photo URL if no profile photo has been uploaded.
      *
      * @return string
@@ -94,16 +104,6 @@ class Team extends Model
         return $this->events()->latest('date')->first();
     }
 
-        /**
-     * Responses
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function responses()
-    {
-        return $this->hasMany(Responses::class);
-    }
-
 
     /**
      * Get the latest form
@@ -132,6 +132,11 @@ class Team extends Model
         }
     }
 
+    /**
+     * Grab the current stage
+     *
+     * @return object|null
+     */
     public function stage()
     {
         $metric = $this->latest_progress_metric;

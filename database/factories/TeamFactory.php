@@ -23,6 +23,12 @@ class TeamFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
+            'start_date' => $this->faker->dateTime()->format('d-m-Y'),
+            'priority_level' => rand(1,10),
+            'description' => $this->faker->text,
+            'minimum_success_criteria' => $this->faker->text,
+            'estimated_launch_date' => $this->faker->dateTime()->format('d-m-Y'),
+            'sponsor' => $this->faker->text,
             'organization_id' => \App\Models\Organization::factory(),
         ];
     }

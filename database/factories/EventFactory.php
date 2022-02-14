@@ -25,7 +25,7 @@ class EventFactory extends Factory
             'slug' => $this->faker->slug,
             'name' => $this->faker->name,
             'date' => $this->faker->dateTime()->format('d-m-Y'),
-            'organization_id' => \App\Models\Organization::factory(),
+            'organization_id' =>  \App\Models\Organization::factory(),
         ];
     }
 }

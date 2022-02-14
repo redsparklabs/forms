@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Membership;
+use App\Models\Role;
 
 class MembershipFactory extends Factory
 {
@@ -21,9 +22,10 @@ class MembershipFactory extends Factory
     */
     public function definition(): array
     {
+
         return [
             'organization_id' => \App\Models\Organization::factory(),
-            'user_id' => rand(1, 100),
+            'user_id' => \App\Models\User::factory(),
             'role' => $this->faker->word,
         ];
     }

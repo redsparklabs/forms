@@ -23,8 +23,8 @@ class FormQuestionFactory extends Factory
     {
         return [
             'id' => $this->faker->randomNumber(),
-            'form_id' => rand(1, 100),
-            'question_id' => rand(1, 100),
+            'form_id' => \App\Models\Form::factory(),
+            'question_id' => \App\Models\Question::factory(),
             'order' => $this->faker->randomNumber(),
         ];
     }

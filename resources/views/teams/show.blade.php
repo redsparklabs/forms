@@ -107,7 +107,7 @@
                     @php
                         $responses = $team->latestform()?->responses()->where('team_id', $team->id)->get();
                     @endphp
-                    @if($responses) {
+                    @if($responses)
                         @foreach($team->latestform()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $question)
                             @php
                                 $number = 0;
@@ -123,7 +123,7 @@
                 </div>
 
                 <div class="grid grid-flow-col grid-rows-2 gap-1 mt-1 w-full">
-                    @if($responses) {
+                    @if($responses)
                          @foreach($team->latestform()->allQuestions()->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
                             @php
                                 $mappedResponses = collect($responses)->map(function ($value) {

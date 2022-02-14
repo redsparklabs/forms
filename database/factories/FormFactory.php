@@ -23,7 +23,6 @@ class FormFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'slug' => $this->faker->slug,
             'description' => $this->faker->text,
             'organization_id' => \App\Models\Organization::factory(),
         ];
