@@ -28,7 +28,7 @@
             </x-slot>
 
             <x-slot name="description">
-                {{ __('All of the projects that are part of this Growth Board.') }}
+                {{ __('All of the projects that are part of this Assessment Board.') }}
             </x-slot>
 
             <x-slot name="content">
