@@ -176,7 +176,7 @@
                     <tr>
                         <th scope="col">
                             <div class="mb-2 text-lg text-left">Qualitative Feedback</div>
-                            <div class="text-xs font-normal">Feedback, Questions, Ideas, and follow-up items.</div>
+                            <div class="text-xs font-normal text-left">Feedback, Questions, Ideas, and follow-up items.</div>
                         </th>
                         @foreach($feedback_questions as $question)
                             <th scope="col" class="px-4 py-2 text-left">

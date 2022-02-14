@@ -14,7 +14,7 @@
                     </x-slot>
 
                     <x-slot name="description">
-                        <a class="text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('teams.index', 'create') }}">{{ __('Add Project') }}</a>
+                        <a class="text-sm text-karban-green-4 cursor-pointer focus:outline-none" href="{{ route('teams.index', 'create') }}">{{ __('Add Project') }}</a>
                     </x-slot>
 
                     <x-slot name="content">
@@ -116,7 +116,7 @@
                     </x-slot>
 
                     <x-slot name="description">
-                        <a class="text-sm text-blue-500 cursor-pointer focus:outline-none" href="{{ route('events.index', 'create') }}">
+                        <a class="text-sm text-karban-green-4 cursor-pointer focus:outline-none" href="{{ route('events.index', 'create') }}">
                             {{ __('Schedule Growth Board') }}
                         </a>
                     </x-slot>

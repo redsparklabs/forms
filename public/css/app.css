@@ -1946,6 +1946,14 @@ select {
   --tw-border-opacity: 1;
   border-color: rgb(156 163 175 / var(--tw-border-opacity));
 }
+.border-karban-green-4 {
+  --tw-border-opacity: 1;
+  border-color: rgb(106 158 74 / var(--tw-border-opacity));
+}
+.border-karban-green-3 {
+  --tw-border-opacity: 1;
+  border-color: rgb(147 198 110 / var(--tw-border-opacity));
+}
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -3160,6 +3168,10 @@ select {
 }
 .focus\:border-transparent:focus {
   border-color: transparent;
+}
+.focus\:border-karban-green-4:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(106 158 74 / var(--tw-border-opacity));
 }
 .focus\:bg-indigo-600:focus {
   --tw-bg-opacity: 1;
