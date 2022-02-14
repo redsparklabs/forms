@@ -69,7 +69,7 @@
                 <thead class="table-auto h-[278px]">
                     <tr>
                         <th scope="col" class="align-bottom">GB Member</th>
-                        <th scope="col" class="w-10 bg-blue-500 border whitespace-nowrap">
+                        <th scope="col" class="w-10 bg-karban-green-3 border whitespace-nowrap">
                             <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
                                 <span class="p-2 text-white ">PROGRESS METRIC</span>
                             </div>
@@ -83,7 +83,7 @@
                         @endforeach
 
                         @foreach($sections->all() as $section => $sectionData)
-                            <th scope="col" class="w-10 bg-white border whitespace-nowrap">
+                            <th scope="col" class="w-10 bg-karban-green-3 text-white border whitespace-nowrap">
                                 <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
                                     <span class="text-{{ Arr::get($sectionData, 'color') }} p-2">{{ implode(' ', explode('_', $section)) }}</span>
                                 </div>
@@ -115,14 +115,14 @@
                             @php
                                 $progressMetricTotal += number_format($total / $totalSections, 1);
                             @endphp
-                            <td class="p-2 text-right bg-white border-2">{{ number_format($total / $totalSections, 1) }}</td>
+                            <td class="p-2 text-right font-bold text-white bg-karban-green-3 border-2">{{ number_format($total / $totalSections, 1) }}</td>
 
                             @foreach($questions as $question)
                                 <td class="p-2 text-center bg-white border-2">{{ Arr::get($response->questions, Str::slug($question['question'])) }}</td>
                             @endforeach
 
                             @foreach($sections->all() as $section => $sectionData)
-                                <td class="p-2 text-center bg-white border-2">
+                                <td class="p-2 text-center text-white font-bold bg-karban-green-3 border-2 ">
                                     @php
                                         $sectionQuestions = collect($sectionData)->pluck('question')->map(fn($item) => Str::slug($item))->toArray();
                                         $total = collect($response->questions)->filter(function($item, $key) use($sectionQuestions) {
@@ -140,18 +140,21 @@
 
                     <tr>
                         <td></td>
-                        <td class="p-2 font-bold text-right text-white bg-blue-500 border-2">
+                        <td class="p-2 font-bold text-right text-white bg-{{colorize(number_format($progressMetricTotal / $responses->count(), 1))}} border-2">
                             @if($progressMetricTotal > 0)
                                 {{ number_format($progressMetricTotal / $responses->count(), 1) }}
                             @endif
                         </td>
 
                         @foreach($questions as $question)
-                            <td class="p-2 text-center bg-blue-100 border-2">
-                                @php
-                                    $mappedQuestions = collect($responses)->map(function ($value) {
+                        @php
+                         $mappedQuestions = collect($responses)->map(function ($value) {
                                         return $value->response['questions'];
                                     });
+                                    @endphp
+                            <td class="p-2 font-bold text-center text-white  bg-{{ colorize(number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1)) }} border-2">
+                                @php
+
 
                                     if( $mappedQuestions->pluck(Str::slug($question['question']))->sum() > 0) {
                                         echo number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
@@ -161,7 +164,7 @@
                         @endforeach
 
                         @foreach($sections->all() as $section => $sectionData)
-                            <td class="bg-{{ Arr::get($sectionData, 'color') }} border-2 text-center p-2">
+                            <td class="text-white  font-bold bg-{{colorize(number_format($sectionTotals[$section .'_count'] / $responses->count(), 1) ) }} border-2 text-center p-2">
                                 @if($sectionTotals[$section .'_count'])
                                     {{ number_format($sectionTotals[$section .'_count'] / $responses->count(), 1) }}
                                 @endif
@@ -219,7 +222,7 @@
                                 }
 
                             @endphp
-                            <div class="{{ $question['classes'] }} bg-{{ colorize($number) }} flex items-center justify-center text-center p-4 text-white font-bold py-8 rounded">{{ $question['question'] }}<br/>{{ $number}}</div>
+                            <div class="{{ $question['classes'] }} bg-{{ colorize($number) }} flex items-center justify-center text-center p-4 text-white font-bold py-8 rounded">{{ $question['abbrev'] }}<br/>{{ $number}}</div>
                         @endforeach
                     @endif
                 </div>
@@ -238,7 +241,7 @@
                             @endphp
 
                             <div class="{{ $question['classes']}} bg-{{ colorize($number) }} flex text-center items-center justify-center text-white font-bold py-8 rounded">
-                            {{ $question['question'] }}<br/>{{ $number}}</div>
+                            {{ $question['abbrev'] }}<br/>{{ $number}}</div>
                         @endforeach
                     @endif
                 </div>

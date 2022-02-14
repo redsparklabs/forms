@@ -23,6 +23,7 @@ return [
     'business-model' => [
         [
             'question' => 'Opportunity Segments',
+            'abbrev' => 'Opp Segments',
             'description' => 'The team is targeting a clearly defined, underserved segment for value-creation.',
             'color' => 'yellow-500',
             'section' => 'Desirability_(Market)',
@@ -30,6 +31,7 @@ return [
             'classes' => 'row-span-3'
         ], [
             'question' => 'Customer Need',
+            'abbrev' => 'Cust Need',
             'description' => 'The team is addressing a clearly defined, unmet user need.',
             'color' => 'yellow-500',
             'section' => 'Desirability_(Market)',
@@ -37,6 +39,7 @@ return [
             'classes' => 'row-span-3'
         ], [
             'question' => 'Value Proposition',
+            'abbrev' => 'Value Prop',
             'description' => 'There is a clear definition of value being delivered to the opportunity segment (value = solution satisfies unmet need).',
             'color' => 'yellow-500',
             'section' => 'Desirability_(Market)',
@@ -44,6 +47,7 @@ return [
             'classes' => 'row-span-3'
         ], [
             'question' => 'Solution',
+            'abbrev' => 'Solution',
             'description' => 'The technology or solution is technically feasible & scalable.',
             'color' => 'purple-500',
             'section' => 'Feasability_(Technical)',
@@ -51,6 +55,7 @@ return [
             'classes' => 'col-span-2 row-span-2'
         ], [
             'question' => 'Channels',
+            'abbrev' => 'Channels',
             'description' => 'There is clear evidence of the channel(s) through which value can be delivered to the customer.',
             'color' => 'purple-500',
             'section' => 'Feasability_(Technical)',
@@ -58,6 +63,7 @@ return [
             'classes' => 'col-span-2'
         ], [
             'question' => 'Competitive Advantage',
+            'abbrev' => 'Comp Adv',
             'description' => 'There is a clear definition of how the solution is different or more valuable compared to competing solutions and offerings.',
             'color' => 'purple-500',
             'section' => 'Feasability_(Technical)',
@@ -65,6 +71,7 @@ return [
             'classes' => 'col-span-2 row-span-2'
         ], [
             'question' => 'Key Metrics',
+            'abbrev' => 'Key Metrics',
             'description' => 'There is clear evidence of the metrics used for how success is measured.',
             'color' => 'green-500',
             'section' => 'Viability_(Regulatory)',
@@ -72,6 +79,7 @@ return [
             'classes' => 'col-span-2 '
         ], [
             'question' => 'Revenue',
+            'abbrev' => 'Revenue',
             'description' => 'There is revenue OR a clear definition of how the solution can be monetized.',
             'color' => 'green-500',
             'section' => 'Viability_(Regulatory)',
@@ -79,6 +87,7 @@ return [
             'classes' => 'row-span-3'
         ], [
             'question' => 'Costs',
+            'abbrev' => 'Costs',
             'description' => 'There is clear evidence of the costs necessary to launch and maintain this business model.',
             'color' => 'green-500',
             'section' => 'Viability_(Regulatory)',
