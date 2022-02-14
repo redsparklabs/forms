@@ -102,7 +102,7 @@
     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 pt-10">
         <div class="flex">
             <div class="mr-12 flex-1 gap-4 shadow p-4 rounded">
-                <div class="text-md font-medium text-gray-500 truncate mb-4">Business Models Development</div>
+                <div class="text-md font-medium text-gray-500 truncate mb-4">Business Model Development</div>
                 <div class="grid grid-flow-col grid-rows-2 gap-1 w-full">
                     @php
                         $responses = $team->latestform()?->responses()->where('team_id', $team->id)->get();
