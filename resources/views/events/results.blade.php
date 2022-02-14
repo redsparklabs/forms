@@ -25,7 +25,7 @@
                             </div>
                             <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
                                 <dt class="text-sm font-medium text-gray-500 truncate">Current Progress Metric</dt>
-                                <dd class="mt-1 text-sm font-semibold text-blue-500">
+                                <dd class="mt-1 text-sm font-semibold">
                                      <div class="flex items-center justify-center">
                                         @php
                                             $circumference = 2 * 22 / 7 * 120;
