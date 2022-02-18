@@ -107,10 +107,10 @@
                                         'bg-white' => $loop->odd,
                                         'bg-gray-50' => $loop->even
                                     ])>
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                             {{ $team->name }}
                                         </td>
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                             {{ $team->start_date?->format('m/d/y') ?? 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
@@ -199,10 +199,10 @@
                                         'bg-white' => $loop->odd,
                                         'bg-gray-50' => $loop->even
                                     ])>
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                             {{ $event->name }}
                                         </td>
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                             {{ $event->date?->format('m/d/y') ?? 'N/A' }}
                                         </td>
 
@@ -210,7 +210,7 @@
 
                                         </td>
                                          <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                            <x-buttons.green-link href="{{ route('events.show', $team->id) }}">{{ __('View Details') }}</x-buttons.green-link>
+                                            <x-buttons.green-link href="{{ route('events.show', $event->id) }}">{{ __('View Details') }}</x-buttons.green-link>
                                         </td>
                                     </tr>
                                 @empty

@@ -93,6 +93,10 @@ class Team extends Model
      */
     public function latestEvent()
     {
-        return $this->events()->latest('date')->first();
+
+        return $this->events()->latest('date')->get()->reject(function($event) {
+            return $event->progressMetric($this) == 0;
+        })->first();
+
     }
 }

@@ -101,7 +101,7 @@
 
     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 pt-5" x-cloak x-data="{ activeTab:  0 }">
         <div class="flex z-0 relative top-0.5 ">
-            <label @click.prevent="activeTab = 0; return false;" class="shadow border-gray-100 border-l border-t border-r border-gray-200  px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md text-sm font-medium text-gray-500 truncate" :class="activeTab == 0 ? 'text-gray-900' : 'border-b'">Progress Metrics</label>
+            <label @click.prevent="activeTab = 0; return false; " class="shadow border-gray-100 border-l border-t border-r border-gray-200  px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md text-sm font-medium text-gray-500 truncate" :class="activeTab == 0 ? 'text-gray-900' : 'border-b'">Progress Metrics</label>
             <label @click.prevent="activeTab = 1" class="shadow relative border-l border-t border-r border-gray-200 px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md ml-1 text-sm font-medium text-gray-500 truncate" :class="activeTab == 1 ? 'text-gray-900' : 'border-b'">Assessment History</label>
 
             <label @click.prevent="activeTab = 2" class="shadow relative border-l border-t border-r border-gray-200 px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md ml-1 text-sm font-medium text-gray-500 truncate" :class="activeTab == 2 ? 'text-gray-900' : 'border-b'">Business Model Progression</label>
@@ -163,8 +163,12 @@
                                              <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                 ${{ number_format($event->teams->find($team->id)->pivot->net_projected_value, 2) ?? 'N/A' }}
                                             </td>
-                                            <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                                <x-buttons.green-link text="View Results" href="{{ route('events.results',[$event->id, $team->id]) }}" />
+                                              <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                              @if($event->progressMetric($team) > 0)
+                                                    <x-buttons.green-link href="{{ route('events.results', [$event->id, $team->id]) }}">  {{ __('View Results') }}</x-buttons.green-link>
+                                                @else
+                                                    <x-buttons.yellow>Awaiting Results</x-buttons.green>
+                                                @endif
                                             </td>
                                         </tr>
                                     @empty

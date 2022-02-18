@@ -33,6 +33,7 @@ class Event extends Model
      */
     protected $casts = [];
 
+protected $with = ['responses'];
     /**
      * The attributes that are mass assignable.
      *
@@ -114,8 +115,6 @@ class Event extends Model
      */
     public function progressMetric(Team $team)
     {
-        // $form = $this->forms()->latest()->first();
-
         $data = calculateSections($this, $team);
 
         if($data) {

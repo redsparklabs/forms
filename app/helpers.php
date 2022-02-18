@@ -65,6 +65,7 @@ if (!function_exists('calculateSections')) {
      */
     function calculateSections($event, Team $team): array
     {
+
         $responses = $event->responses()->where('team_id', $team->id)->get();
 
         $progressMetricTotal = 0;
