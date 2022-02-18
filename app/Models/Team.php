@@ -23,6 +23,7 @@ class Team extends Model
      */
     protected $dates = ['start_date', 'estimated_launch_date'];
 
+protected $with = ['events'];
     /**
      * The attributes that are mass assignable.
      *
@@ -37,7 +38,6 @@ class Team extends Model
         'estimated_launch_date',
         'sponsor',
     ];
-
     /**
      * Get the owner of the team.
      *
@@ -94,7 +94,7 @@ class Team extends Model
     public function latestEvent()
     {
 
-        return $this->events()->latest('date')->get()->reject(function($event) {
+        return $this->events->sortBy('date')->reject(function($event) {
             return $event->progressMetric($this) == 0;
         })->first();
 

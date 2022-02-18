@@ -33,7 +33,7 @@ class Event extends Model
      */
     protected $casts = [];
 
-protected $with = ['responses'];
+protected $with = ['responses', 'forms'];
     /**
      * The attributes that are mass assignable.
      *
@@ -89,7 +89,7 @@ protected $with = ['responses'];
      */
     public function latestForm()
     {
-        return $this->forms()->latest()->first();
+        return $this->forms->sortBy('created_at')->first();
     }
 
 
