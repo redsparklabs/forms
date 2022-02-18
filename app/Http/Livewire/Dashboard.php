@@ -6,7 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
-class Portfolio extends Component
+class Dashboard extends Component
 {
     use WithPagination;
     /**
@@ -104,6 +104,8 @@ class Portfolio extends Component
      */
     public function render()
     {
+
+
         $teams = $this->user
             ->currentOrganization
             ->teams()
@@ -118,6 +120,6 @@ class Portfolio extends Component
             ->orderBy($this->eventsSortByField, $this->eventsSortDirection)
             ->paginate(25, ['*'], 'eventsPage');
 
-        return view('portfolio', compact('teams', 'events'));
+        return view('dashboard', compact('teams', 'events'));
     }
 }

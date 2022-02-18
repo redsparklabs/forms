@@ -4,7 +4,7 @@ use App\Http\Livewire\Forms;
 use App\Http\Livewire\Teams;
 use App\Http\Livewire\Events;
 use App\Http\Livewire\EventsShow;
-use App\Http\Livewire\Portfolio;
+use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\TeamsShow;
 use App\Http\Livewire\Questions;
 use App\Http\Livewire\FormBuilder;
@@ -44,8 +44,8 @@ if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
 Route::get('form/{id}', FormBuilder::class)->name('form-builder');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/portfolio', Portfolio::class, )->name('portfolio');
-    Route::get('/projects', Teams::class)->name('teams.index');
+    Route::get('/dashboard', Dashboard::class, )->name('dashboard');
+    Route::get('/portfolio', Teams::class)->name('teams.index');
     Route::get('/projects/{team}', TeamsShow::class)->name('teams.show');
     Route::get('organizations/{organization}/forms', Forms::class)->name('forms');
     Route::get('organizations/{organization}/questions', Questions::class)->name('questions');

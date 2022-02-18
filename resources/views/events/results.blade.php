@@ -141,26 +141,30 @@
                     <tr>
                         <td></td>
                         <td class="p-2 font-bold text-right text-white bg-{{colorize(number_format($progressMetricTotal / $responses->count(), 1))}} border">
-                            @if($progressMetricTotal > 0)
+                            @if($progressMetricTotal > 0 && $responses->count() > 0)
                                 {{ number_format($progressMetricTotal / $responses->count(), 1) }}
                             @endif
                         </td>
 
                         @foreach($questions as $question)
-                        @php
-                         $mappedQuestions = collect($responses)->map(function ($value) {
-                                        return $value->response['questions'];
-                                    });
+                            @php
+                                $mappedQuestions = collect($responses)->map(function ($value) {
+                                    return $value->response['questions'];
+                                });
+                            @endphp
+                            @dd($mappedQuestions->count() )
+                            @if($mappedQuestions->count() > 0)
+
+                                <td class="p-2 font-bold text-center text-white bg-{{ colorize(number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1)) }} border">
+                                    @php
+
+
+                                        if( $mappedQuestions->pluck(Str::slug($question['question']))->sum() > 0) {
+                                            echo number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
+                                        }
                                     @endphp
-                            <td class="p-2 font-bold text-center text-white bg-{{ colorize(number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1)) }} border">
-                                @php
-
-
-                                    if( $mappedQuestions->pluck(Str::slug($question['question']))->sum() > 0) {
-                                        echo number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
-                                    }
-                                @endphp
-                            </td>
+                                </td>
+                            @endif
                         @endforeach
 
                         @foreach($sections->all() as $section => $sectionData)

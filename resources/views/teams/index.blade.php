@@ -5,7 +5,7 @@
             <div class="flex justify-between">
                 <div>
                     <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                        {{ __('Projects') }}
+                        {{ __('Portfolio') }}
                     </h2>
                 </div>
                 <div>

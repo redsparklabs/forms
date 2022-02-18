@@ -5,22 +5,21 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex items-center flex-shrink-0">
-                    <a href="{{ route('portfolio') }}">
+                    <a href="{{ route('dashboard') }}">
                         <x-jet-application-mark class="block w-auto h-9" />
                     </a>
                 </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
-                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('portfolio') }}" :active="request()->is('portfolio')">
-                        {{ __('Portfolio') }}
+                <div class="hidden space-x-8 sm:-my-px sm:ml-4 sm:flex">
+                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->is('dashboard')">
+                        {{ __('Dashboard') }}
                     </x-jet-nav-link>
                 </div>
-
                 <div class="hidden space-x-8 sm:-my-px sm:ml-4 sm:flex">
                     <x-jet-nav-link href="{{ route('teams.index') }}" :active="request()->is('projects*')">
-                        {{ __('Projects') }}
+                        {{ __('Portfolio') }}
                     </x-jet-nav-link>
                 </div>
 
@@ -130,8 +129,8 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('portfolio') }}" :active="request()->routeIs('portfolio')">
-                {{ __('Portfolio') }}
+            <x-jet-responsive-nav-link href="{{ route('teams.index') }}" :active="request()->routeIs('projects')">
+                {{ __('Projects') }}
             </x-jet-responsive-nav-link>
         </div>
 

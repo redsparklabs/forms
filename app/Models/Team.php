@@ -58,6 +58,14 @@ class Team extends Model
         return $this->belongsToMany(Event::class)->using(EventTeam::class)->withPivot('net_projected_value', 'investment');
     }
 
+    public function totalNPV()
+    {
+        $p = 0;
+        foreach($this->events as $event) {
+            $p += $event->pivot->net_projected_value;
+        }
+        return $p;
+    }
     /**
      * Responses
      *
