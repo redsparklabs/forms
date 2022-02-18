@@ -101,9 +101,12 @@
 
     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 pt-5" x-cloak x-data="{ activeTab:  0 }">
         <div class="flex z-0 relative top-0.5 ">
-            <label @click="activeTab = 0" class="shadow border-gray-100 border-l border-t border-r border-gray-200  px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md text-sm font-medium text-gray-500 truncate" :class="activeTab == 0 ? 'text-gray-900' : 'border-b'">Progress Metrics</label>
-            <label @click="activeTab = 1" class="shadow relative border-l border-t border-r border-gray-200 px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md ml-1 text-sm font-medium text-gray-500 truncate" :class="activeTab == 1 ? 'text-gray-900' : 'border-b'">Assessment History</label>
+            <label @click.prevent="activeTab = 0; return false;" class="shadow border-gray-100 border-l border-t border-r border-gray-200  px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md text-sm font-medium text-gray-500 truncate" :class="activeTab == 0 ? 'text-gray-900' : 'border-b'">Progress Metrics</label>
+            <label @click.prevent="activeTab = 1" class="shadow relative border-l border-t border-r border-gray-200 px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md ml-1 text-sm font-medium text-gray-500 truncate" :class="activeTab == 1 ? 'text-gray-900' : 'border-b'">Assessment History</label>
+
+            <label @click.prevent="activeTab = 2" class="shadow relative border-l border-t border-r border-gray-200 px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md ml-1 text-sm font-medium text-gray-500 truncate" :class="activeTab == 2 ? 'text-gray-900' : 'border-b'">Business Model Progression</label>
         </div>
+
         <div class="border-gray-100 border-l border-b border-r shadow relative rounded-tr-md rounded-b-md p-4 z-10 bg-white" :class="{ 'active': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0">
             <canvas id="myChart" width="1025"  role="img" aria-label="" ></canvas>
         </div>
@@ -191,57 +194,59 @@
                 </div>
             </div>
         </div>
-    </div>
+        <div class="border-gray-100 border-l border-b shadow relative rounded-tr-md rounded-b-md p-4 z-10 bg-white" :class="{ 'active': activeTab === 1 2" x-show.transition.in.opacity.duration.600="activeTab === 2">
 
-    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 pt-10">
-        <div class="flex">
-            <div class="mr-12 flex-1 gap-4 shadow p-4 rounded">
-                <div class="text-md font-medium text-gray-500 truncate mb-4">Business Model Development</div>
-                <div class="grid grid-flow-col grid-rows-2 gap-1 w-full">
-                    @php
-                    // @dd($team);
-                        $responses = $team->latestEvent()?->responses()->where('team_id', $team->id)->get();
-                    @endphp
-                    @if($responses)
-                        @foreach($team->latestEvent()->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $question)
-                            @php
-                                $number = 0;
-                                $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
-                                if($mappedResponses->pluck(Str::slug($question['question']))->sum() > 0) {
-                                    $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
-                                }
+            <div class="flex">
+                <div class="mr-12 flex-1 gap-4 shadow p-4 rounded">
+                    <div class="text-md font-medium text-gray-500 truncate mb-4">Business Model Development</div>
+                    <div class="grid grid-flow-col grid-rows-2 gap-1 w-full">
+                        @php
+                        // @dd($team);
+                            $responses = $team->latestEvent()?->responses()->where('team_id', $team->id)->get();
+                        @endphp
+                        @if($responses)
+                            @foreach($team->latestEvent()->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $question)
+                                @php
+                                    $number = 0;
+                                    $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
+                                    if($mappedResponses->pluck(Str::slug($question['question']))->sum() > 0) {
+                                        $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
+                                    }
 
-                            @endphp
-                            <div class="{{ $question['classes'] }} bg-{{ colorize($number) }} flex items-center justify-center text-center p-4 text-white font-bold py-8 rounded">{{ $number}}</div>
-                        @endforeach
-                    @endif
+                                @endphp
+                                <div class="{{ $question['classes'] }} bg-{{ colorize($number) }} flex items-center justify-center text-center p-4 text-white font-bold py-8 rounded">{{ $number}}</div>
+                            @endforeach
+                        @endif
+                    </div>
+
+                    <div class="grid grid-flow-col grid-rows-2 gap-1 mt-1 w-full">
+                        @if($responses)
+                             @foreach($team->latestEvent()->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
+                                @php
+                                    $mappedResponses = collect($responses)->map(function ($value) {
+                                        return $value->response['questions'];
+                                    });
+                                    $number = 0;
+                                    if($mappedResponses->pluck(Str::slug($question['question']))->sum()) {
+                                        $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
+                                    }
+                                @endphp
+
+                                <div class="{{ $question['classes']}} bg-{{ colorize($number) }} flex text-center items-center justify-center text-white font-bold py-8 rounded">{{ $number}}</div>
+                            @endforeach
+                        @endif
+                    </div>
                 </div>
-
-                <div class="grid grid-flow-col grid-rows-2 gap-1 mt-1 w-full">
-                    @if($responses)
-                         @foreach($team->latestEvent()->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
-                            @php
-                                $mappedResponses = collect($responses)->map(function ($value) {
-                                    return $value->response['questions'];
-                                });
-                                $number = 0;
-                                if($mappedResponses->pluck(Str::slug($question['question']))->sum()) {
-                                    $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
-                                }
-                            @endphp
-
-                            <div class="{{ $question['classes']}} bg-{{ colorize($number) }} flex text-center items-center justify-center text-white font-bold py-8 rounded">{{ $number}}</div>
-                        @endforeach
-                    @endif
+                <div class="flex-1 shadow p-4 rounded">
+                    <div class="text-md font-medium text-gray-500 truncate">Stage of Development</div>
+                    <div class="text-lg font-semibold my-2">{{ $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->name }}</div>
+                    <div>{{ $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->description }}</div>
                 </div>
-            </div>
-            <div class="flex-1 shadow p-4 rounded">
-                <div class="text-md font-medium text-gray-500 truncate">Stage of Development</div>
-                <div class="text-lg font-semibold my-2">{{ $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->name }}</div>
-                <div>{{ $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->description }}</div>
             </div>
         </div>
     </div>
+
+
 
     @include('teams._update')
     @include('teams._destroy')

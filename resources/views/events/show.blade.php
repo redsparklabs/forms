@@ -80,8 +80,12 @@
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                                     {{ $team->priority_level }}
                                                 </td>
-                                                 <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                                    <x-buttons.green-link href="{{ route('events.results', [$event->id, $team->id]) }}">  {{ __('View Results') }}</x-buttons.green-link>
+                                             <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                                    @if($team->events()->find($event->id)->progressMetric($team) > 0)
+                                                        <x-buttons.green-link href="{{ route('events.results', [$event->id, $team->id]) }}">  {{ __('View Results') }}</x-buttons.green-link>
+                                                    @else
+                                                        <x-buttons.yellow>Awaiting Results</x-buttons.green>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @empty

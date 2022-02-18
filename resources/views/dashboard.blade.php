@@ -67,7 +67,7 @@
                      <div class="flex items-center">
                         <div class="flex-1">
                             <h2 class="font-semibold text-md text-gray-500 leading-tight">
-                                {{ __('Protfolio Projects') }}
+                                {{ __('Portfolio Projects') }}
                             </h2>
                         </div>
                         <div class="w-1/4 mb-2 justify-end">
@@ -84,7 +84,7 @@
                                             <x-sort :dir="$projectsSortDirection" :active="$projectsSortByField == 'name'"/>
                                         @endif
                                     </th>
-                                     <th scope="col" class="px-6 py-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer hover:text-gray-900" wire:click="sortBy('start_date')">
+                                     <th scope="col" class="px-6 py-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer hover:text-gray-900" wire:click="sortByProject('start_date')">
                                         {{ __('Start Date') }}
                                         @if($teams->count() > 1)
                                             <x-sort :dir="$projectsSortDirection" :active="$projectsSortByField == 'start_date'"/>
@@ -147,6 +147,92 @@
                         @if($teams->hasPages())
                             <div class="p-4">
                                 {{ $teams->links() }}
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 pt-5">
+        <div class="flex flex-col">
+            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                     <div class="flex items-center">
+                        <div class="flex-1">
+                            <h2 class="font-semibold text-md text-gray-500 leading-tight">
+                                {{ __('Assessment History') }}
+                            </h2>
+                        </div>
+                        <div class="w-1/4 mb-2 justify-end">
+                            <x-jet-input id="keywords" type="text" class="block w-full mt-1" wire:model="eventsKeyword" :placeholder="__('Search')"/>
+                        </div>
+                    </div>
+                    <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer hover:text-gray-900" wire:click="sortByEvent('name')">
+                                        {{ __('Name') }}
+                                        @if($events->count() > 1)
+                                            <x-sort :dir="$eventsSortDirection" :active="$eventsSortByField == 'name'"/>
+                                        @endif
+                                    </th>
+                                     <th scope="col" class="px-6 py-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer hover:text-gray-900" wire:click="sortByEvent('start_date')">
+                                        {{ __('Start Date') }}
+                                        @if($events->count() > 1)
+                                            <x-sort :dir="$eventsSortDirection" :active="$eventsSortByField == 'start_date'"/>
+                                        @endif
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer hover:text-gray-900">
+                                        {{ __('Location') }}
+                                    </th>
+                                    <th scope="col" class="relative px-6 py-3">
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($events as $event)
+                                    <tr @class([
+                                        'bg-white' => $loop->odd,
+                                        'bg-gray-50' => $loop->even
+                                    ])>
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                            {{ $event->name }}
+                                        </td>
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                            {{ $event->date?->format('m/d/y') ?? 'N/A' }}
+                                        </td>
+
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+
+                                        </td>
+                                         <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                            <x-buttons.green-link href="{{ route('events.show', $team->id) }}">{{ __('View Details') }}</x-buttons.green-link>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    @if(!$eventsKeyword)
+                                        <tr class="bg-white">
+                                        <td class="px-6 py-4 text-sm font-medium text-center text-gray-500 whitespace-nowrap" colspan="4">
+                                            {{ __('No Projects created.')}} {{ __('Go ahead and') }} <a class="text-blue-500 underline" href="{{route('events.index', 'create') }}">{{ __('add one') }}</a>!
+                                        </td>
+                                    </tr>
+                                    @else
+                                        <tr class="bg-white">
+                                            <td class="px-6 py-4 text-sm font-medium text-center text-gray-500 whitespace-nowrap" colspan="4">
+                                                {{ __('No Assessments found found.') }}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforelse
+                            </tbody>
+                        </table>
+                        @if($events->hasPages())
+                            <div class="p-4">
+                                {{ $events->links() }}
                             </div>
                         @endif
                     </div>

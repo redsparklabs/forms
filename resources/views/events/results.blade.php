@@ -109,7 +109,6 @@
                                         return in_array($key, $sectionQuestions);
                                     })->sum();
                                 @endphp
-
                             @endforeach
 
                             @php
@@ -140,10 +139,12 @@
 
                     <tr>
                         <td></td>
-                        <td class="p-2 font-bold text-right text-white bg-{{colorize(number_format($progressMetricTotal / $responses->count(), 1))}} border">
-                            @if($progressMetricTotal > 0 && $responses->count() > 0)
+                        @if($progressMetricTotal > 0 && $responses->count() > 0)
+                            <td class="p-2 font-bold text-right text-white bg-{{colorize(number_format($progressMetricTotal / $responses->count(), 1))}} border">
                                 {{ number_format($progressMetricTotal / $responses->count(), 1) }}
-                            @endif
+                        @else
+                            <td></td>
+                        @endif
                         </td>
 
                         @foreach($questions as $question)
@@ -152,7 +153,6 @@
                                     return $value->response['questions'];
                                 });
                             @endphp
-                            @dd($mappedQuestions->count() )
                             @if($mappedQuestions->count() > 0)
 
                                 <td class="p-2 font-bold text-center text-white bg-{{ colorize(number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1)) }} border">
@@ -168,11 +168,13 @@
                         @endforeach
 
                         @foreach($sections->all() as $section => $sectionData)
-                            <td class="text-white  font-bold bg-{{colorize(number_format($sectionTotals[$section .'_count'] / $responses->count(), 1) ) }} border text-center p-2">
-                                @if($sectionTotals[$section .'_count'])
+                            @if($sectionTotals[$section .'_count'] && $responses->count())
+                                <td class="text-white  font-bold bg-{{colorize(number_format($sectionTotals[$section .'_count'] / $responses->count(), 1) ) }} border text-center p-2">
                                     {{ number_format($sectionTotals[$section .'_count'] / $responses->count(), 1) }}
-                                @endif
-                            </td>
+                                </td>
+                            @else
+                                <td> </td>
+                            @endif
                         @endforeach
                     </tr>
                 </tbody>
