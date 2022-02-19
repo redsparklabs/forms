@@ -68,6 +68,7 @@ class Events extends BaseComponent
         'date' => '',
         'teams' => [],
         'forms' => '',
+        'department' => ''
     ];
 
     /**
@@ -78,6 +79,7 @@ class Events extends BaseComponent
         'date' => '',
         'teams' => [],
         'forms' => '',
+        'department' => ''
     ];
 
     /**

@@ -27,7 +27,8 @@ class CreateEvent
 
         $event = $organization->events()->create([
             'name' => Arr::get($attributes, 'name'),
-            'date' => Arr::get($attributes, 'date')
+            'date' => Arr::get($attributes, 'date'),
+            'department' => Arr::get($attributes, 'department')
         ]);
 
         $event->teams()->sync(Arr::get($attributes, 'teams'));
@@ -44,6 +45,7 @@ class CreateEvent
             'teams' => ['required'],
             'date' => ['required', 'date'],
             'forms' => ['required'],
+            'department' => [],
         ];
     }
 

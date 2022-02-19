@@ -64,6 +64,12 @@
                                                         <x-sort :dir="$sortDirection" :active="$sortByField == 'date'"/>
                                                     @endif
                                                 </th>
+                                                 <th scope="col" class="py-3 pl-6 pr-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer hover:text-gray-900" wire:click="sortBy('department')">
+                                                    {{ __('Department') }}
+                                                    @if($events->count() > 1)
+                                                        <x-sort :dir="$sortDirection" :active="$sortByField == 'department'"/>
+                                                    @endif
+                                                </th>
                                                 <th scope="col" class="py-3 pl-6 pr-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                                 </th>
                                             </tr>
@@ -81,6 +87,10 @@
 
                                                     <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
                                                         {{ $event->date?->format('m/d/y') }}
+                                                    </td>
+
+                                                    <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+                                                        {{ $event->department ? $event->department : 'N/A' }}
                                                     </td>
 
                                                     <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
@@ -157,6 +167,12 @@
                 </div>
 
                 <div class="col-span-6 mb-4 sm:col-span-4">
+                    <x-jet-label for="department" value="{{ __('Department') }}" />
+                    <x-jet-input id="department" type="text" class="block w-full mt-1" wire:model.defer="createForm.department" />
+                    <x-jet-input-error for="createForm.department" class="mt-2" />
+                </div>
+
+                <div class="col-span-6 mb-4 sm:col-span-4">
                     <x-jet-label for="team" value="{{ __('Projects') }}" />
                     <div class="grid grid-cols-4 gap-4">
                         @foreach($organization->teams as $id => $team)
@@ -213,6 +229,12 @@
                     <x-jet-label for="date" value="{{ __('Date') }}" />
                     <x-jet-input id="date" onkeydown="return false" type="date" class="block w-full mt-1" required pattern="\d{4}-\d{2}-\d{2}" wire:model.defer="updateForm.date" />
                     <x-jet-input-error for="updateForm.date" class="mt-2" />
+                </div>
+
+                <div class="col-span-6 mb-4 sm:col-span-4">
+                    <x-jet-label for="department" value="{{ __('Department') }}" />
+                    <x-jet-input id="department" type="text" class="block w-full mt-1" wire:model.defer="updateForm.department" />
+                    <x-jet-input-error for="updateForm.department" class="mt-2" />
                 </div>
 
                 <div class="col-span-6 mb-4 sm:col-span-4">

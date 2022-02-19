@@ -225,7 +225,7 @@
                                         </td>
 
                                         <td class="px-6 py-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-
+                                            {{ $event->department ? $event->department : 'N/A' }}
                                         </td>
                                          <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                             <x-buttons.green-link href="{{ route('events.show', $event->id) }}">{{ __('View Details') }}</x-buttons.green-link>

@@ -65,26 +65,26 @@
     </header>
     <div class="px-4 py-5 bg-white shadow rounded-lg max-w-7xl overflow-hidden sm:p-6 m-auto my-4">
          <div>
-            <table class="w-1/2 m-auto border-collapse">
+            <table class="w-full m-auto border-collapse">
                 <thead class="table-auto h-[278px]">
                     <tr>
                         <th scope="col" class="align-bottom">GB Member</th>
-                        <th scope="col" class="w-10 bg-karban-green-3 border-2 whitespace-nowrap">
-                            <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
+                        <th scope="col" class="w-20 bg-karban-green-3 border-2 whitespace-nowrap">
+                            <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10 ml-2">
                                 <span class="p-2 text-white ">PROGRESS METRIC</span>
                             </div>
                         </th>
                         @foreach($questions as $question)
-                            <th scope="col" class="w-10 bg-white border-2 whitespace-nowrap text-gray-700">
-                                <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
+                            <th scope="col" class="w-20 bg-white border-2 whitespace-nowrap text-gray-700">
+                                <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10 ml-2">
                                     <span class="p-2">{{ $question['question'] }}</span>
                                 </div>
                             </th>
                         @endforeach
 
                         @foreach($sections->all() as $section => $sectionData)
-                            <th scope="col" class="w-10 bg-karban-green-3 text-white border-2 whitespace-nowrap">
-                                <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10">
+                            <th scope="col" class="w-20 bg-karban-green-3 text-white border-2 whitespace-nowrap">
+                                <div style="transform: translate(0, 115px) rotate(270deg);" class="w-10 ml-2">
                                     <span class="text-{{ Arr::get($sectionData, 'color') }} p-2">{{ implode(' ', explode('_', $section)) }}</span>
                                 </div>
                             </th>
@@ -95,7 +95,7 @@
 
                     @foreach($responses as $response)
                         <tr>
-                            <td class="p-2"> {{ $response->email }} </td>
+                            <td class="p-2 pl-0"> {{ $response->email }} </td>
 
                             @php
                                 $total = 0;
@@ -114,7 +114,7 @@
                             @php
                                 $progressMetricTotal += number_format($total / $totalSections, 1);
                             @endphp
-                            <td class="p-2 text-right font-bold text-white bg-karban-green-3 border">{{ number_format($total / $totalSections, 1) }}</td>
+                            <td class="p-2 text-center font-bold text-white bg-karban-green-3 border">{{ number_format($total / $totalSections, 1) }}</td>
 
                             @foreach($questions as $question)
                                 <td class="p-2 text-center bg-white border">{{ Arr::get($response->questions, Str::slug($question['question'])) }}</td>
@@ -140,7 +140,7 @@
                     <tr>
                         <td></td>
                         @if($progressMetricTotal > 0 && $responses->count() > 0)
-                            <td class="p-2 font-bold text-right text-white bg-{{colorize(number_format($progressMetricTotal / $responses->count(), 1))}} border">
+                            <td class="p-2 font-bold text-center text-white bg-{{colorize(number_format($progressMetricTotal / $responses->count(), 1))}} border">
                                 {{ number_format($progressMetricTotal / $responses->count(), 1) }}
                         @else
                             <td></td>
@@ -169,7 +169,7 @@
 
                         @foreach($sections->all() as $section => $sectionData)
                             @if($sectionTotals[$section .'_count'] && $responses->count())
-                                <td class="text-white  font-bold bg-{{colorize(number_format($sectionTotals[$section .'_count'] / $responses->count(), 1) ) }} border text-center p-2">
+                                <td class="text-white font-bold bg-{{colorize(number_format($sectionTotals[$section .'_count'] / $responses->count(), 1) ) }} border text-center p-2">
                                     {{ number_format($sectionTotals[$section .'_count'] / $responses->count(), 1) }}
                                 </td>
                             @else

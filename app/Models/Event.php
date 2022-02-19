@@ -42,7 +42,8 @@ protected $with = ['responses', 'forms'];
     protected $fillable = [
         'name',
         'slug',
-        'date'
+        'date',
+        'department'
     ];
 
     /**

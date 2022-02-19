@@ -10,7 +10,6 @@ use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Concerns\AsObject;
 use Lorisleiva\Actions\Concerns\WithAttributes;
 
-
 class UpdateEvent
 {
     use AsObject, WithAttributes;
@@ -31,6 +30,7 @@ class UpdateEvent
         tap($event)->update([
             'name' => Arr::get($attributes, 'name'),
             'date' => Arr::get($attributes, 'date'),
+            'department' => Arr::get($attributes, 'department'),
         ]);
 
         $event->teams()->sync(Arr::get($attributes, 'teams'));
@@ -47,6 +47,7 @@ class UpdateEvent
             'teams' => ['required'],
             'date' => ['required', 'date'],
             'forms' => ['required'],
+            'department' => [],
         ];
     }
 
