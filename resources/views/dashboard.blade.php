@@ -16,48 +16,62 @@
     </div>
 
     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 pt-5">
-       <div class="grid grid-cols-9 gap-4 mt-5">
-            <div class="col-span-2 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
+       <div class="grid grid-cols-3 gap-4 mt-5">
+            <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                 <dt class="text-sm font-medium text-gray-500 truncate">Total Net Present Value (NPV)</dt>
+                <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
+                    ${{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum(), 2) }}
+                </dd>
+                <dt class="text-sm font-medium text-gray-500 truncate">Average NPV</dt>
+                <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
+                    ${{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum() / $teams->count(), 2) }}
+                </dd>
 
-                    {{-- <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $events->each->pivot->pluck('net_projected_value') }}</dd> --}}
             </div>
-                   {{--   <div class="col-span-2 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Estimated Launch</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">
-                        @if($team->estimated_launch_date)
-                            Q{{ $team->estimated_launch_date?->quarter }} {{ $team->estimated_launch_date?->format('Y') }}
-                        @else
-                            N/A
-                        @endif
-                    </dd>
-                </div>
-
-                 <div class="col-span-2 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Minimum Success Criteria</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->minimum_success_criteria ?? 'N/A' }}</dd>
-                </div>
-
-                <div class="col-start-4 col-span-3 col-end-7 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestEvent()?->pivot?->investment, 2)}}</dd>
-                </div>
-
-                 <div class="col-start-7 col-span-3 x-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Net Projected Value (NPV)</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestEvent()?->pivot?->net_projected_value, 2)}}</dd>
-                </div>
-
-                <div class="col-start-4 col-span-3 col-end-7 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Development Stage</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->name }}</dd>
-                </div>
-
-                 <div class="col-start-7 col-span-3 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Project Sponsor</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->sponsor ?? 'N/A'}}</dd>
-                </div> --}}
+            <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
+                <dt class="text-sm font-medium text-gray-500 truncate">Total Investment To Date</dt>
+                 <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
+                    ${{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum(), 2) }}
+                </dd>
             </div>
+
+             <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
+                <dt class="text-sm font-medium text-gray-500 truncate">Investment to NPV Ratio</dt>
+                <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
+                    @php
+                        $avg_npv = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum() / $teams->count();
+                        $avg_investment = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum() / $teams->count();
+                    @endphp
+
+                    {{ number_format($avg_investment / $avg_npv, 2) }}
+
+                </dd>
+            </div>
+
+            <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
+                <dt class="text-sm font-medium text-gray-500 truncate">Average Portfolio Progress Metric</dt>
+                <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
+                    {{ $teams->get()->map(fn($team) => $team->latestEvent()?->progressMetric($team))->sum() / $teams->count() }}
+                </dd>
+            </div>
+
+            <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
+                <dt class="text-sm font-medium text-gray-500 truncate">Average Stage of Development</dt>
+                <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
+                    {{  stage($teams->get()->map(fn($team) => $team->latestEvent()?->progressMetric($team))->sum() / $teams->count())->name }}<br/>
+                </dd>
+            </div>
+
+             <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
+                <dt class="text-sm font-medium text-gray-500 truncate">Next Estimated Launch</dt>
+                <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
+                    {{ $teams->get()->first()?->name }}<br/>
+                    Q{{ $teams->get()->first()?->estimated_launch_date?->quarter }} | {{ $teams->get()->first()?->estimated_launch_date?->format('Y') }}
+
+                </dd>
+            </div>
+
+        </div>
     </div>
 
     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 pt-5">
@@ -80,13 +94,13 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer hover:text-gray-900" wire:click="sortByProject('name')">
                                         {{ __('Name') }}
-                                        @if($teams->count() > 1)
+                                        @if($teamsPaginated->count() > 1)
                                             <x-sort :dir="$projectsSortDirection" :active="$projectsSortByField == 'name'"/>
                                         @endif
                                     </th>
                                      <th scope="col" class="px-6 py-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer hover:text-gray-900" wire:click="sortByProject('start_date')">
                                         {{ __('Start Date') }}
-                                        @if($teams->count() > 1)
+                                        @if($teamsPaginated->count() > 1)
                                             <x-sort :dir="$projectsSortDirection" :active="$projectsSortByField == 'start_date'"/>
                                         @endif
                                     </th>
@@ -102,7 +116,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($teams as $team)
+                                @forelse ($teamsPaginated as $team)
                                     <tr @class([
                                         'bg-white' => $loop->odd,
                                         'bg-gray-50' => $loop->even
@@ -144,9 +158,9 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        @if($teams->hasPages())
+                        @if($teamsPaginated->hasPages())
                             <div class="p-4">
-                                {{ $teams->links() }}
+                                {{ $teamsPaginated->links() }}
                             </div>
                         @endif
                     </div>
@@ -262,13 +276,13 @@
                     {{-- "{!! $teams->sortBy('date')->map(fn($team) => $team->events()->pluck('date')->date->format('M'))->implode('","') !!}" --}}
                 ],
                 datasets: [
-                    @foreach($teams as $team)
+                    @foreach($teams->get() as $team)
                     {
                         label: "{!! $team->name !!}",
                         tension: .5,
-                        borderColor: "#00c241",
+                        borderColor: '{{ array_rand(array_flip(['#67cc58', '#b8d99b', '#93c66e', '#6a9e4a', '#11af3b', '#00c241'])) }}',
                         borderWidth: 3,
-                        backgroundColor: "#00c241",
+                        backgroundColor: '{{ array_rand(array_flip(['#67cc58', '#b8d99b', '#93c66e', '#6a9e4a', '#11af3b', '#00c241'])) }}',
                         data: [
                             {{ $team->events()->get()->map(fn($e) => $e->progressMetric($team))->implode(',') }}
                         ],

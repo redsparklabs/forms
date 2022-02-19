@@ -3,15 +3,25 @@
 use App\Models\Team;
 use Illuminate\Support\Str;
 
+function getRatio($num1, $num2){
+    for($i = $num2; $i > 1; $i--) {
+        if(($num1 % $i) == 0 && ($num2 % $i) == 0) {
+            $num1 = $num1 / $i;
+            $num2 = $num2 / $i;
+        }
+    }
+    return "$num1:$num2";
+}
+
 if (!function_exists('colorize')) {
     /**
      * Colorize
      *
-     * @param integer $number
+     * @param float $number
      *
      * @return string|null
      */
-    function colorize(int $number): ?string
+    function colorize(float $number): ?string
     {
 
         if (inbetween($number, 0, 1)) {
@@ -42,23 +52,37 @@ if (!function_exists('inbetween')) {
     /**
      * Check if a number is between two other numbers
      *
-     * @param integer $val
-     * @param integer $min
+     * @param float $val
+     * @param float $min
      * @param float $max
      *
      * @return bool
      */
-    function inbetween(int $val, int $min, float $max): bool
+    function inbetween(float $val, float $min, float $max): bool
     {
         return ($val >= $min && $val <= $max);
     }
 }
 
+    /**
+     * Grab the current stage
+     * @param float $metric
+     * @return object|null
+     */
+    function stage(float $metric): object
+    {
+        foreach(config('stages') as $stage) {
+            if($metric >= $stage['start_scale'] && $metric <= $stage['end_scale']) {
+                return (object) $stage;
+            }
+        }
+    }
+
 if (!function_exists('calculateSections')) {
     /**
      * Calculate the sections for a form
      *
-     * @param $event
+     * @param Event event
      * @param Team $team
      *
      * @return array

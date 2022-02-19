@@ -104,11 +104,9 @@ class Dashboard extends Component
      */
     public function render()
     {
+        $teams = $this->user->currentOrganization->teams();
 
-
-        $teams = $this->user
-            ->currentOrganization
-            ->teams()
+        $teamsPaginated = $teams
             ->search($this->projectsKeyword)
             ->orderBy($this->projectsSortByField, $this->projectsSortDirection)
             ->paginate(25);
@@ -120,6 +118,6 @@ class Dashboard extends Component
             ->orderBy($this->eventsSortByField, $this->eventsSortDirection)
             ->paginate(25, ['*'], 'eventsPage');
 
-        return view('dashboard', compact('teams', 'events'));
+        return view('dashboard', compact('teams', 'events', 'teamsPaginated'));
     }
 }
