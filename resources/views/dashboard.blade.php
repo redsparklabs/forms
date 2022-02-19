@@ -30,8 +30,12 @@
             </div>
             <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                 <dt class="text-sm font-medium text-gray-500 truncate">Total Investment To Date</dt>
-                 <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
+                <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
                     ${{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum(), 2) }}
+                </dd>
+                <dt class="text-sm font-medium text-gray-500 truncate">Average Investment To Date</dt>
+                <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
+                    ${{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum() / $teams->count(), 2) }}
                 </dd>
             </div>
 
@@ -51,7 +55,7 @@
             <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                 <dt class="text-sm font-medium text-gray-500 truncate">Average Portfolio Progress Metric</dt>
                 <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
-                    {{ $teams->get()->map(fn($team) => $team->latestEvent()?->progressMetric($team))->sum() / $teams->count() }}
+                    {{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->progressMetric($team))->sum() / $teams->count(), 2) }}
                 </dd>
             </div>
 

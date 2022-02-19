@@ -145,7 +145,7 @@
             <x-slot name="content">
 
                 <div class="col-span-6 mb-4 sm:col-span-4">
-                    <x-jet-label for="name" value="{{ __('Growth Board Name') }}" />
+                    <x-jet-label for="name" value="{{ __('Name') }}" />
                     <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="createForm.name" />
                     <x-jet-input-error for="createForm.name" class="mt-2" />
                 </div>

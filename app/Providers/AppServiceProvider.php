@@ -7,6 +7,7 @@ use Laravel\Jetstream\Jetstream;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use App\Http\Livewire\ClubManager;
+use Illuminate\Database\Eloquent\Model;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,17 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Jetstream::ignoreRoutes();
+        Model::preventLazyLoading();
+
+        if ($this->app->environment('local')) {
+            Model::handleLazyLoadingViolationUsing(function ($model, $relation) {
+                $class = get_class($model);
+
+                ray("Attempted to lazy load [{$relation}] on model [{$class}].");
+            });
+
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+        }
     }
 
     /**
