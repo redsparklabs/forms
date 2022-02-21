@@ -86,7 +86,7 @@ protected $with = ['events'];
     public function latestEvent()
     {
 
-        return $this->events->sortBy('date')->reject(function($event) {
+        return $this->events->sortByDesc('date')->reject(function($event) {
             return $event->progressMetric($this) == 0;
         })->first();
 
