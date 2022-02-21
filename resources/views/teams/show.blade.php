@@ -217,7 +217,7 @@
                             $responses = $team->latestEvent()?->responses()->where('team_id', $team->id)->get();
                         @endphp
                         @if($responses)
-                            @foreach($team->latestEvent()->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $question)
+                            @foreach($team->latestEvent()->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $i => $question)
                                 @php
                                     $number = 0;
                                     $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
@@ -226,14 +226,30 @@
                                     }
 
                                 @endphp
-                                <div class="{{ $question['classes'] }} bg-{{ colorize($number) }} flex items-center justify-center text-center p-4 text-white font-bold py-8 rounded">{{ $number}}</div>
+                                    <div x-data="{ tooltip{{$i}}: false }"
+                                     class="{{ $question['classes'] }} bg-{{ colorize($number) }}  rounded flex"
+                                    >
+                                        <div
+                                            x-on:mouseover="tooltip{{$i}} = true"
+                                            x-on:mouseleave="tooltip{{$i}} = false"
+                                            class="text-center p-4 items-center justify-center flex w-full text-white font-bold py-8"
+                                        >
+                                            <div>{{ $number}}</div>
+                                        </div>
+                                          <div class="relative" x-cloak x-show.transition.origin.top="tooltip{{$i}}">
+                                            <div class="absolute top-0 z-10 w-48 p-2 -mt-1 text-sm leading-tight text-black transform -translate-x-1/2 -translate-y-full bg-white rounded-lg border border-black">
+                                                <div class="font-bold mb-2">{{ $question['question']}}</div>
+                                                <div>{{ $question['description']}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
                             @endforeach
                         @endif
                     </div>
 
                     <div class="grid grid-flow-col grid-rows-2 gap-1 mt-1 w-full">
                         @if($responses)
-                             @foreach($team->latestEvent()->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $question)
+                             @foreach($team->latestEvent()->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->skip(7)->take(2) as $i => $question)
                                 @php
                                     $mappedResponses = collect($responses)->map(function ($value) {
                                         return $value->response['questions'];
@@ -244,7 +260,23 @@
                                     }
                                 @endphp
 
-                                <div class="{{ $question['classes']}} bg-{{ colorize($number) }} flex text-center items-center justify-center text-white font-bold py-8 rounded">{{ $number}}</div>
+                               <div x-data="{ tooltip2{{$i}}: false }"
+                                     class="{{ $question['classes'] }} bg-{{ colorize($number) }}  rounded flex"
+                                    >
+                                        <div
+                                            x-on:mouseover="tooltip2{{$i}} = true"
+                                            x-on:mouseleave="tooltip2{{$i}} = false"
+                                            class="text-center p-4 items-center justify-center flex w-full text-white font-bold py-8"
+                                        >
+                                            <div>{{ $number}}</div>
+                                        </div>
+                                          <div class="relative" x-cloak x-show.transition.origin.top="tooltip2{{$i}}">
+                                            <div class="absolute top-0 z-10 w-48 p-2 -mt-1 text-sm leading-tight text-black transform -translate-x-1/2 -translate-y-full bg-white rounded-lg border border-black">
+                                                <div class="font-bold mb-2">{{ $question['question']}}</div>
+                                                <div>{{ $question['description']}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
                             @endforeach
                         @endif
                     </div>

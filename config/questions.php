@@ -52,7 +52,7 @@ return [
             'color' => 'purple-500',
             'section' => 'Feasability_(Technical)',
             'order' => 2,
-            'classes' => 'col-span-2 row-span-2'
+            'classes' => 'col-span-1 row-span-2'
         ], [
             'question' => 'Channels',
             'abbrev' => 'Channels',
@@ -60,7 +60,7 @@ return [
             'color' => 'purple-500',
             'section' => 'Feasability_(Technical)',
             'order' => 6,
-            'classes' => 'col-span-2'
+            'classes' => 'col-span-1'
         ], [
             'question' => 'Competitive Advantage',
             'abbrev' => 'Comp Adv',
@@ -68,7 +68,7 @@ return [
             'color' => 'purple-500',
             'section' => 'Feasability_(Technical)',
             'order' => 5,
-            'classes' => 'col-span-2 row-span-2'
+            'classes' => 'col-span-1 row-span-2'
         ], [
             'question' => 'Key Metrics',
             'abbrev' => 'Key Metrics',
@@ -76,7 +76,7 @@ return [
             'color' => 'green-500',
             'section' => 'Viability_(Regulatory)',
             'order' => 3,
-            'classes' => 'col-span-2 '
+            'classes' => 'col-span-1 '
         ], [
             'question' => 'Revenue',
             'abbrev' => 'Revenue',
