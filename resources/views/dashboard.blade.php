@@ -80,9 +80,9 @@
 
     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 pt-5" x-cloak x-data="{ activeTab:  0 }">
         <div class="flex z-0 relative top-0.5 ">
-            <label @click.prevent="activeTab = 0; return false; " class="shadow border-gray-100 border-l border-t border-r border-gray-200  px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md text-sm font-medium text-gray-500 truncate" :class="activeTab == 0 ? 'text-gray-900' : 'border-b'">Projects</label>
+            <a @click="activeTab = 0;" class="shadow border-gray-100 border-l border-t border-r border-gray-200  px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md text-sm font-medium text-gray-500 truncate" :class="activeTab == 0 ? 'text-gray-900' : 'border-b'">Projects</a>
 
-            <label @click.prevent="activeTab = 1" class="shadow relative border-l border-t border-r border-gray-200 px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md ml-1 text-sm font-medium text-gray-500 truncate" :class="activeTab == 1 ? 'text-gray-900' : 'border-b'">Assessment History</label>
+            <a @click="activeTab = 1" class="shadow relative border-l border-t border-r border-gray-200 px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md ml-1 text-sm font-medium text-gray-500 truncate" :class="activeTab == 1 ? 'text-gray-900' : 'border-b'">Assessment History</a>
 
         </div>
 
@@ -288,7 +288,7 @@
             type: "line",
             data: {
                 labels: [
-                    // "{!! $events->sortBy('date')->map(fn($item) => $item->date->format('M'))->implode('","') !!}"
+                    "{!! $events->sortBy('date')->map(fn($item) => $item->date->format('M'))->implode('","') !!}"
                     {{-- "{!! $teams->sortBy('date')->map(fn($team) => $team->events()->pluck('date')->date->format('M'))->implode('","') !!}" --}}
                 ],
                 datasets: [
