@@ -19,17 +19,17 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Jetstream::ignoreRoutes();
-        Model::preventLazyLoading();
+        // Model::preventLazyLoading();
 
-        if ($this->app->environment('local')) {
-            Model::handleLazyLoadingViolationUsing(function ($model, $relation) {
-                $class = get_class($model);
+        // if ($this->app->environment('local')) {
+        //     Model::handleLazyLoadingViolationUsing(function ($model, $relation) {
+        //         $class = get_class($model);
 
-                ray("Attempted to lazy load [{$relation}] on model [{$class}].");
-            });
+        //         ray("Attempted to lazy load [{$relation}] on model [{$class}].");
+        //     });
 
-            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-        }
+        //     $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+        // }
     }
 
     /**
