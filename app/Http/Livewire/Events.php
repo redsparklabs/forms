@@ -162,6 +162,7 @@ class Events extends BaseComponent
             'name' => $event?->name,
             'date' => $event?->date->format('Y-m-d'),
             'teams' => $event?->teams->pluck('id')->mapWithkeys(fn ($item) => [$item => $item]),
+            'department' => $event?->department,
             'forms' => $event?->forms->first()->id
         ];
     }

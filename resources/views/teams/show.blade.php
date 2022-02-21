@@ -81,7 +81,7 @@
                 </div>
 
                  <div class="col-start-7 col-span-3 x-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Net Projected Value (NPV)</dt>
+                    <dt class="text-sm font-medium text-gray-500 truncate">Net Present Value (NPV)</dt>
                     <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestEvent()?->pivot?->net_projected_value, 2)}}</dd>
                 </div>
 
