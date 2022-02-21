@@ -99,7 +99,7 @@
                              <div class="flex items-center">
                                 <div class="flex-1">
                                     <h2 class="font-semibold text-md text-gray-500 leading-tight">
-                                        {{ __('Projects') }}
+                                        {{-- {{ __('Projects') }} --}}
                                     </h2>
                                 </div>
                                 <div class="w-1/4 mb-2 justify-end">
@@ -195,7 +195,7 @@
                              <div class="flex items-center">
                                 <div class="flex-1">
                                     <h2 class="font-semibold text-md text-gray-500 leading-tight">
-                                        {{ __('Assessment History') }}
+                                        {{-- {{ __('Assessment History') }} --}}
                                     </h2>
                                 </div>
                                 <div class="w-1/4 mb-2 justify-end">

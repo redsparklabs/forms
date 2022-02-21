@@ -23,13 +23,13 @@ class DatabaseSeeder extends Seeder
 
         $faker = Faker::create();
 
-        Organization::factory()
-            ->count(5)
-            ->hasTeams(4)
-            ->hasEvents(4)
-            ->hasForms(4)
-            ->hasQuestions(4)
-            ->create();
+        // Organization::factory()
+        //     ->count(5)
+        //     ->hasTeams(4)
+        //     ->hasEvents(4)
+        //     ->hasForms(4)
+        //     ->hasQuestions(4)
+        //     ->create();
         // \App\Models\Organization::factory(5)->create()->each(function ($org) {
         //     $org->events()->saveMany(App\Models\Event::factory())->make());
         // });
@@ -40,18 +40,18 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Organization::factory(5)->create();
         \App\Models\Responses::factory(5000)->create();
 
-        $limit = 100;
-        for ($i = 0; $i < $limit; $i++) {
-            $ids = $faker->randomElements(Event::pluck('id'), rand(1,5));
-            Team::inRandomOrder()->first()->events()->attach($ids, ['investment' => $faker->randomFloat(2), 'net_projected_value' => $faker->randomFloat(2)]);
-        }
-        for ($i = 0; $i < $limit; $i++) {
-            $ids = $faker->randomElements(Form::pluck('id'), rand(1,5));
-            Event::inRandomOrder()->first()->forms()->attach($ids);
-        }
-        for ($i = 0; $i < $limit; $i++) {
-            $ids = $faker->randomElements(Form::pluck('id'), rand(1,5));
-            Question::inRandomOrder()->first()->forms()->attach($ids, ['order' => $i]);
-        }
+        // $limit = 100;
+        // for ($i = 0; $i < $limit; $i++) {
+        //     $ids = $faker->randomElements(Event::pluck('id'), rand(1,5));
+        //     Team::inRandomOrder()->first()->events()->attach($ids, ['investment' => $faker->randomFloat(2), 'net_projected_value' => $faker->randomFloat(2)]);
+        // }
+        // for ($i = 0; $i < $limit; $i++) {
+        //     $ids = $faker->randomElements(Form::pluck('id'), rand(1,5));
+        //     Event::inRandomOrder()->first()->forms()->attach($ids);
+        // }
+        // for ($i = 0; $i < $limit; $i++) {
+        //     $ids = $faker->randomElements(Form::pluck('id'), rand(1,5));
+        //     Question::inRandomOrder()->first()->forms()->attach($ids, ['order' => $i]);
+        // }
     }
 }

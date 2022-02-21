@@ -260,7 +260,7 @@
                                     }
                                 @endphp
 
-                               <div x-data="{ tooltip2{{$i}}: false }"
+                                <div x-data="{ tooltip2{{$i}}: false }"
                                      class="{{ $question['classes'] }} bg-{{ colorize($number) }}  rounded flex"
                                     >
                                         <div

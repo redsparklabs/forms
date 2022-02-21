@@ -198,16 +198,15 @@
 
                 <tbody>
                     @foreach($responses as $response)
-                    <tr class="border-b-2 border-black border-solid">
-                        <td class="py-2 text-left">{{ $response->email }} </td>
                         @if(Arr::get($response->response, 'questions.custom'))
-                            @foreach(Arr::get($response->response, 'questions.custom') as $custom)
-                                <td class="px-4 py-2"> {{ $custom }} </td>
-                            @endforeach
-                        @else
-                            <td class="px-4 py-2"></td>
+                            <tr class="border-b-2 border-black border-solid">
+                                <td class="py-2 text-left">{{ $response->email }} </td>
+
+                                    @foreach(Arr::get($response->response, 'questions.custom') as $custom)
+                                        <td class="px-4 py-2"> {{ $custom }} </td>
+                                    @endforeach
+                            </tr>
                         @endif
-                    </tr>
                     @endforeach
                     <tr>
                         <td class="p-2 text-sm italic" colspan="{{ count($feedback_questions) + 1 }}">*Note: All Scores are calculated based on the last Evaluation, they are not a aggregate of all Progress scores.</td>
@@ -219,7 +218,7 @@
                 <div class="grid grid-flow-col grid-rows-2 gap-1 w-full">
 
                     @if($responses)
-                        @foreach($questions->where('hidden', false)->sortBy('order')->take(7) as $question)
+                        @foreach($questions->where('hidden', false)->sortBy('order')->take(7) as $i => $question)
                             @php
                                 $number = 0;
                                 $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
@@ -228,7 +227,23 @@
                                 }
 
                             @endphp
-                            <div class="{{ $question['classes'] }} bg-{{ colorize($number) }} flex items-center justify-center text-center p-4 text-white font-bold py-8 rounded">{{ $question['abbrev'] }}<br/>{{ $number}}</div>
+                             <div x-data="{ tooltip{{$i}}: false }"
+                                 class="{{ $question['classes'] }} bg-{{ colorize($number) }}  rounded flex"
+                                >
+                                    <div
+                                        x-on:mouseover="tooltip{{$i}} = true"
+                                        x-on:mouseleave="tooltip{{$i}} = false"
+                                        class="text-center p-4 items-center justify-center flex w-full text-white font-bold py-8"
+                                    >
+                                        <div>{{ $question['abbrev'] }} <br/>{{ $number}}</div>
+                                    </div>
+                                      <div class="relative" x-cloak x-show.transition.origin.top="tooltip{{$i}}">
+                                        <div class="absolute top-0 z-10 w-48 p-2 -mt-1 text-sm leading-tight text-black transform -translate-x-1/2 -translate-y-full bg-white rounded-lg border border-black">
+                                            <div class="font-bold mb-2">{{ $question['question']}}</div>
+                                            <div>{{ $question['description']}}</div>
+                                        </div>
+                                    </div>
+                                </div>
                         @endforeach
                     @endif
                 </div>
@@ -246,8 +261,23 @@
                                 }
                             @endphp
 
-                            <div class="{{ $question['classes']}} bg-{{ colorize($number) }} flex text-center items-center justify-center text-white font-bold py-8 rounded">
-                            {{ $question['abbrev'] }}<br/>{{ $number}}</div>
+                             <div x-data="{ tooltip2{{$i}}: false }"
+                                 class="{{ $question['classes'] }} bg-{{ colorize($number) }}  rounded flex"
+                                >
+                                    <div
+                                        x-on:mouseover="tooltip2{{$i}} = true"
+                                        x-on:mouseleave="tooltip2{{$i}} = false"
+                                        class="text-center p-4 items-center justify-center flex w-full text-white font-bold py-8"
+                                    >
+                                        <div>{{ $question['abbrev'] }} <br/>{{ $number}}</div>
+                                    </div>
+                                      <div class="relative" x-cloak x-show.transition.origin.top="tooltip2{{$i}}">
+                                        <div class="absolute top-0 z-10 w-48 p-2 -mt-1 text-sm leading-tight text-black transform -translate-x-1/2 -translate-y-full bg-white rounded-lg border border-black">
+                                            <div class="font-bold mb-2">{{ $question['question']}}</div>
+                                            <div>{{ $question['description']}}</div>
+                                        </div>
+                                    </div>
+                                </div>
                         @endforeach
                     @endif
                 </div>
