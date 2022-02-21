@@ -3,14 +3,35 @@
 use App\Models\Team;
 use Illuminate\Support\Str;
 
-function getRatio($num1, $num2){
-    for($i = $num2; $i > 1; $i--) {
-        if(($num1 % $i) == 0 && ($num2 % $i) == 0) {
-            $num1 = $num1 / $i;
-            $num2 = $num2 / $i;
+function farey($v, $lim = 10) {
+    // No error checking on args.  lim = maximum denominator.
+    // Results are array(numerator, denominator); array(1, 0) is 'infinity'.
+    if($v < 0) {
+        list($n, $d) = farey(-$v, $lim);
+        return array(-$n, $d);
+    }
+    $z = $lim - $lim;   // Get a "zero of the right type" for the denominator
+    list($lower, $upper) = array(array($z, $z+1), array($z+1, $z));
+    while(true) {
+        $mediant = array(($lower[0] + $upper[0]), ($lower[1] + $upper[1]));
+        if($v * $mediant[1] > $mediant[0]) {
+            if($lim < $mediant[1])
+                return $upper;
+            $lower = $mediant;
+        }
+        else if($v * $mediant[1] == $mediant[0]) {
+            if($lim >= $mediant[1])
+                return $mediant;
+            if($lower[1] < $upper[1])
+                return $lower;
+            return $upper;
+        }
+        else {
+            if($lim < $mediant[1])
+                return $lower;
+            $upper = $mediant;
         }
     }
-    return "$num1:$num2";
 }
 
 if (!function_exists('colorize')) {
@@ -69,7 +90,7 @@ if (!function_exists('inbetween')) {
      * @param float $metric
      * @return object|null
      */
-    function stage(float $metric): object
+    function stage(float $metric)
     {
         foreach(config('stages') as $stage) {
             if($metric >= $stage['start_scale'] && $metric <= $stage['end_scale']) {

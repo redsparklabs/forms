@@ -45,10 +45,10 @@
                     @php
                         $avg_npv = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum() / $teams->count();
                         $avg_investment = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum() / $teams->count();
+                        $f = farey($avg_investment / $avg_npv);
+
                     @endphp
-
-                    {{ getRatio(1, number_format($avg_investment / $avg_npv, 2)) }}
-
+                    {{ $f[0]. ':' .$f[1] }}
                 </dd>
             </div>
 
@@ -62,7 +62,7 @@
             <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                 <dt class="text-sm font-medium text-gray-500 truncate">Average Stage of Development</dt>
                 <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
-                    {{  stage($teams->get()->map(fn($team) => $team->latestEvent()?->progressMetric($team))->sum() / $teams->count())->name }}<br/>
+                    {{  stage($teams->get()->map(fn($team) => $team->latestEvent()?->progressMetric($team))->sum() / $teams->count())?->name }}<br/>
                 </dd>
             </div>
 
