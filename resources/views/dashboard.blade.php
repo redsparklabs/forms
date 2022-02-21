@@ -45,10 +45,15 @@
                     @php
                         $avg_npv = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum() / $teams->count();
                         $avg_investment = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum() / $teams->count();
-                        $f = farey($avg_investment / $avg_npv);
+                        if( $avg_npv > 0 && $avg_investment > $avg_npv) {
+                            $f = farey($avg_investment / $avg_npv);
+                            echo $f[0]. ':' .$f[1];
+                        } else {
+                            echo 'N/A';
+                        }
 
                     @endphp
-                    {{ $f[0]. ':' .$f[1] }}
+
                 </dd>
             </div>
 
