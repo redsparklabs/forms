@@ -341,6 +341,10 @@
                         ticks: {
                             stepSize: 1
                         },
+                        title: {
+                          display: true,
+                          text: 'Progress Metric'
+                        }
                     },
                     y1: {
                         position: 'left',

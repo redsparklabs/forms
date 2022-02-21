@@ -377,6 +377,7 @@
                         ticks: {
                             stepSize: 1
                         },
+
                     },
                     y1: {
                         position: 'left',
