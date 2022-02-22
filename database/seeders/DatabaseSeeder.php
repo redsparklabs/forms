@@ -33,11 +33,11 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Organization::factory(5)->create()->each(function ($org) {
         //     $org->events()->saveMany(\App\Models\Event::factory())->make();
         // });
-        // \App\Models\Event::factory(20)->create();
-        // \App\Models\Form::factory(5)->create();
-        // // \App\Models\FormQuestion::factory(5)->create();
-        // \App\Models\Team::factory(5)->create();
-        // \App\Models\Organization::factory(5)->create();
+        \App\Models\Event::factory(20)->create();
+        \App\Models\Form::factory(5)->create();
+        // \App\Models\FormQuestion::factory(5)->create();
+        \App\Models\Team::factory(5)->create();
+        \App\Models\Organization::factory(5)->create();
         \App\Models\Responses::factory(10000)->create();
 
         // $limit = 100;

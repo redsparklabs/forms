@@ -24,7 +24,9 @@
                 </dd>
                 <dt class="text-sm font-medium text-gray-500 truncate">Average NPV</dt>
                 <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
-                    ${{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum() / $teams->count(), 2) }}
+                    @if( $teams->count() > 0)
+                        ${{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum() / $teams->count(), 2) }}
+                    @endif
                 </dd>
 
             </div>
@@ -35,7 +37,9 @@
                 </dd>
                 <dt class="text-sm font-medium text-gray-500 truncate">Average Investment To Date</dt>
                 <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
-                    ${{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum() / $teams->count(), 2) }}
+                    @if( $teams->count() > 0)
+                        ${{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum() / $teams->count(), 2) }}
+                    @endif
                 </dd>
             </div>
 
@@ -43,13 +47,15 @@
                 <dt class="text-sm font-medium text-gray-500 truncate">Investment to NPV Ratio</dt>
                 <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
                     @php
-                        $avg_npv = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum() / $teams->count();
-                        $avg_investment = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum() / $teams->count();
-                        if( $avg_npv > 0 && $avg_investment > $avg_npv) {
-                            $f = farey($avg_investment / $avg_npv);
-                            echo $f[0]. ':' .$f[1];
-                        } else {
-                            echo 'N/A';
+                        if( $teams->count() > 0) {
+                            $avg_npv = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum() / $teams->count();
+                            $avg_investment = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum() / $teams->count();
+                            if( $avg_npv > 0 && $avg_investment > $avg_npv) {
+                                $f = farey($avg_investment / $avg_npv);
+                                echo $f[0]. ':' .$f[1];
+                            } else {
+                                echo 'N/A';
+                            }
                         }
 
                     @endphp
@@ -60,14 +66,19 @@
             <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                 <dt class="text-sm font-medium text-gray-500 truncate">Average Portfolio Progress Metric</dt>
                 <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
-                    {{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->progressMetric($team))->sum() / $teams->count(), 2) }}
+                    @if($teams->count() > 0)
+                        {{ number_format($teams->get()->map(fn($team) => $team->latestEvent()?->progressMetric($team))->sum() / $teams->count(), 2)
+                        }}
+                    @endif
                 </dd>
             </div>
 
             <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
                 <dt class="text-sm font-medium text-gray-500 truncate">Average Stage of Development</dt>
                 <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
-                    {{  stage($teams->get()->map(fn($team) => $team->latestEvent()?->progressMetric($team))->sum() / $teams->count())?->name }}<br/>
+                    @if($teams->count() > 0)
+                        {{  stage($teams->get()->map(fn($team) => $team->latestEvent()?->progressMetric($team))->sum() / $teams->count())?->name }}<br/>
+                    @endif
                 </dd>
             </div>
 
@@ -313,11 +324,11 @@
                             ->mapWithkeys(function($e) use($team)  {
                                 return [$e->date->format('M/y') => $e->progressMetric($team)];
                             });
-ray($data);
+
                             foreach ($period as $time) {
-                                $thedata[$time->format('M/y')] = 0;
+                                $thedata[$time->format('M/y')] = null;
                                 foreach($data as $date => $score) {
-                                   $thedata[] = $score;
+                                   $thedata[$date] = $score;
                                 }
                             }
                         @endphp
