@@ -61,6 +61,10 @@
                         <div class="flex-initial">
                             Not Applicable (N/A)
                         </div>
+                         <div class="flex-1 text-center">
+                            <div><label for="score-[{{ $slug }}]-1" name="score-[{{ $slug }}]-0">0</label></div>
+                            <x-radio id="score-[{{ $slug }}]-0" tabindex="" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="0" />
+                        </div>
                         <div class="flex-1 text-center">
                             <div><label for="score-[{{ $slug }}]-1" name="score-[{{ $slug }}]-1">1</label></div>
                             <x-radio id="score-[{{ $slug }}]-1" tabindex="" class="m-auto" wire:model.defer="create_form.questions.{{ $slug }}" value="1" />

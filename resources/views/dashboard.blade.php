@@ -1,6 +1,6 @@
 <div class="mb-5">
     <header class="bg-white">
-        <div class="px-4 pt-6 pb-10 mx-auto max-w-7xl sm:px-10 lg:px-8">
+        <div class="px-4 pt-6 pb-5 mx-auto max-w-7xl sm:px-10 lg:px-8">
             <div class="flex">
                 <h2 class="flex-1 text-xl font-medium leading-6 text-gray-900 font-bold">
                     {{ $this->user->currentOrganization->name }} {{ __('Portfolio') }}
@@ -9,7 +9,7 @@
         </div>
     </header>
 
-     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 pt-5">
+     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="border shadow relative rounded-lg p-4">
             <canvas id="myChart" width="1025"  role="img" aria-label="" ></canvas>
         </div>
@@ -47,16 +47,17 @@
                 <dt class="text-sm font-medium text-gray-500 truncate">Investment to NPV Ratio</dt>
                 <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
                     @php
-                        if( $teams->count() > 0) {
+
                             $avg_npv = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum() / $teams->count();
                             $avg_investment = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum() / $teams->count();
-                            if( $avg_npv > 0 && $avg_investment > $avg_npv) {
+
+                            if( $avg_npv > 0 && $avg_investment >= $avg_npv) {
                                 $f = farey($avg_investment / $avg_npv);
                                 echo $f[0]. ':' .$f[1];
                             } else {
                                 echo 'N/A';
                             }
-                        }
+
 
                     @endphp
 
@@ -301,7 +302,7 @@
     })
 
     @php
-        $period = \Carbon\CarbonPeriod::create(now()->subMonths(8), ' 1 month', now()->addMonths(8));
+        $period = \Carbon\CarbonPeriod::create(now()->subMonths(12), ' 1 month', now());
     @endphp
     function loadGraph() {
         const chart = new Chart(document.getElementById("myChart"), {
@@ -318,7 +319,7 @@
                             $thedata = [];
 
                             $data = $team->events()
-                            ->whereYear('date', '>', now()->subYears(1)->format('Y'))
+                            // ->whereYear('date', '>', now()->subYears(1)->format('Y'))
                             ->orderBy('date')
                             ->get()
                             ->mapWithkeys(function($e) use($team)  {
@@ -333,6 +334,7 @@
                                     }
                                 }
                             }
+
                         @endphp
                         label: "{!! $team->name !!}",
                         tension: .5,
@@ -355,7 +357,7 @@
                     loop: (context) => context.active
                   }
                 },
-
+                spanGaps: true,
                 hoverRadius: 4,
                 hoverBackgroundColor: '#b8d99b',
                 responsive: true,
