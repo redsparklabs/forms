@@ -284,7 +284,7 @@
                 <div class="flex-1 shadow p-4 rounded">
                     <div class="text-md font-medium text-gray-500 truncate">Stage of Development</div>
                     <div class="text-lg font-semibold my-2">{{ $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->name }}</div>
-                    <div>{{ $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->description }}</div>
+                    <div>{!! $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->description !!}</div>
                 </div>
             </div>
         </div>
