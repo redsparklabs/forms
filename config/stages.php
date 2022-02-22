@@ -3,7 +3,11 @@
 return [
     [
         'name' => 'Needs Discovery',
-        'description' =>  'Explore, discover, and prioritize customer needs worth addressing (Lean Strategy).',
+        'description' =>  '<i>The <b>Needs Discovery Phase</b> focuses on developing, validating, and utilizing strategic customer insights to build an innovation strategy.</i>
+        <br /><br />This phase is a combination of Design Research and Jobs To Be Done Research.
+        <br /><br />Design research begins with the rigorous study of the people we serve and the context in their natural environment. It leads teams to continuously build a deep and rich understanding and empathy of people through observation and co-creation.
+        <br /><br />Job-to-be-done research helps us to break down the user’s experience in discrete steps and to understand where and why the experience is not meeting the user’s needs. 
+        <br /><br />The job-to-be-done is the ultimate unit of analysis to guide our decisions on who to target for value creation based on the unmet need and the context of it.',
         'start_scale' => 0,
         'end_scale' => 1,
         'color' => 'karban-green-2'
