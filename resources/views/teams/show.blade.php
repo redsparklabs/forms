@@ -1,4 +1,4 @@
-<div>
+<div class="mb-5">
     <header class="bg-white">
         <div class="px-4 pt-6 pb-10 mx-auto max-w-7xl sm:px-10 lg:px-8">
             <div class="flex">
