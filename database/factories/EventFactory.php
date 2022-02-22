@@ -24,7 +24,7 @@ class EventFactory extends Factory
         return [
             'slug' => $this->faker->slug,
             'name' => $this->faker->name,
-            'date' => $this->faker->dateTime()->format('d-m-Y'),
+            'date' => $this->faker->dateTimeBetween('-2 years', '+0 days')->format('d-m-Y'),
             'organization_id' =>  \App\Models\Organization::factory(),
         ];
     }

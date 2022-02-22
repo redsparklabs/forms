@@ -42,7 +42,7 @@ if (!function_exists('colorize')) {
      *
      * @return string|null
      */
-    function colorize(float $number): ?string
+    function colorize($number): ?string
     {
 
         if (inbetween($number, 0, 1)) {
@@ -108,18 +108,22 @@ if (!function_exists('calculateSections')) {
      *
      * @return array
      */
-    function calculateSections($event, Team $team): array
+    function calculateSections($event, Team $team)
     {
 
         $responses = $event->responses->where('team_id', $team->id)->all();
-
+ray($responses);
         $progressMetricTotal = 0;
 
-        $questions = $event->latestForm()->allQuestions();
+        $questions = $event->latestForm()?->allQuestions();
+
         $allSections = collect($questions)->groupBy('section')->reject(fn ($item, $key) => $key == 'custom');
         $sectionCount = $allSections->keys()->mapWithkeys(fn ($item) => [$item . '_count' => 0])->all();
         $totalSections = $allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
 
+        if(!$totalSections) {
+            return [];
+        }
 
         foreach ($responses as $response) {
             $total = 0;

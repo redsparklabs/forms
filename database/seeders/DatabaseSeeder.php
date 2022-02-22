@@ -25,20 +25,20 @@ class DatabaseSeeder extends Seeder
 
         // Organization::factory()
         //     ->count(5)
-        //     ->hasTeams(4)
-        //     ->hasEvents(4)
-        //     ->hasForms(4)
+        //     ->hasTeams(10)
+        //     ->hasEvents(10)
+        //     ->hasForms(10)
         //     ->hasQuestions(4)
         //     ->create();
         // \App\Models\Organization::factory(5)->create()->each(function ($org) {
-        //     $org->events()->saveMany(App\Models\Event::factory())->make());
+        //     $org->events()->saveMany(\App\Models\Event::factory())->make();
         // });
-        // \App\Models\Event::factory(5)->create();
+        // \App\Models\Event::factory(20)->create();
         // \App\Models\Form::factory(5)->create();
-        // \App\Models\FormQuestion::factory(5)->create();
+        // // \App\Models\FormQuestion::factory(5)->create();
         // \App\Models\Team::factory(5)->create();
         // \App\Models\Organization::factory(5)->create();
-        \App\Models\Responses::factory(5000)->create();
+        \App\Models\Responses::factory(10000)->create();
 
         // $limit = 100;
         // for ($i = 0; $i < $limit; $i++) {

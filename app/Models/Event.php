@@ -33,7 +33,7 @@ class Event extends Model
      */
     protected $casts = [];
 
-protected $with = ['responses', 'forms'];
+    protected $with = ['responses', 'forms'];
     /**
      * The attributes that are mass assignable.
      *

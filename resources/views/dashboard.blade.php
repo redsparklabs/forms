@@ -275,6 +275,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 
@@ -288,24 +289,46 @@
         loadGraph()
     })
 
+    @php
+        $period = \Carbon\CarbonPeriod::create(now()->subYears(1), ' 1 month', now());
+    @endphp
     function loadGraph() {
         const chart = new Chart(document.getElementById("myChart"), {
             type: "line",
             data: {
                 labels: [
-                    "{!! $events->sortBy('date')->map(fn($item) => $item->date->format('M'))->implode('","') !!}"
-                    {{-- "{!! $teams->sortBy('date')->map(fn($team) => $team->events()->pluck('date')->date->format('M'))->implode('","') !!}" --}}
+                    "{!!collect($period)->map(fn($date) => $date->format('M'))->implode('","') !!}"
                 ],
                 datasets: [
+
                     @foreach($teams->get() as $team)
                     {
+                        @php
+                            $thedata = [];
+
+                            $data = $team->events()
+                            ->whereYear('date', '>', now()->subYears(1)->format('Y'))
+                            ->orderBy('date')
+                            ->get()
+                            ->mapWithkeys(function($e) use($team)  {
+                                return [$e->date->format('M/y') => $e->progressMetric($team)];
+                            });
+ray($data);
+                            foreach ($period as $time) {
+                                $thedata[$time->format('M/y')] = 0;
+                                foreach($data as $date => $score) {
+                                   $thedata[] = $score;
+                                }
+                            }
+                        @endphp
+
                         label: "{!! $team->name !!}",
                         tension: .5,
                         borderColor: '{{ array_rand(array_flip(['#67cc58', '#b8d99b', '#93c66e', '#6a9e4a', '#11af3b', '#00c241'])) }}',
                         borderWidth: 3,
                         backgroundColor: '{{ array_rand(array_flip(['#67cc58', '#b8d99b', '#93c66e', '#6a9e4a', '#11af3b', '#00c241'])) }}',
                         data: [
-                            {{ $team->events()->get()->map(fn($e) => $e->progressMetric($team))->implode(',') }}
+                            {{ collect($data)->implode(',') }}
                         ],
                     },
                     @endforeach
