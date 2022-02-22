@@ -40,14 +40,25 @@ return [
     ],
     [
         'name' => 'Solution-Market Fit',
-        'description' =>  'Validate the customer value and business value your Business Model will create.',
+        'description' =>  '<i>The <b>Solution-Market Fit Phase<b> focuses on testing multiple business models based determine the degree to which the unmet need(s) of the opportunity segment can be satisfied with a particular business model.</i>
+        <br /><br />During this phase teams will be focused on building and market-testing multiple Business Model hypotheses to discover a sustainable model to pursue.
+        <br /><br />The outcome of this phase is a clear understanding of the potential customer value being created by the solution and the potential monetizable value to be captured by the business.
+        <br /><br />Teams will focus to:<ul>
+        <li>Develop and test multiple business model hypotheses</li>
+        <li>Create clear financial forecasting for each business model (Traction Modeling)</li>
+        <li>Develop a metrics suite to measure business model performance</li></ul>',
         'start_scale' => 3.1,
         'end_scale' => 4,
         'color' => 'karban-green-5'
     ],
     [
         'name' => 'Market-Scale Fit',
-        'description' =>  'Grow the Business Model into a sustainable business to prepare for scale.',
+        'description' =>  '<i>The <b>Market-Scale Fit Phase</b> focuses on determining the fastest, most efficient way to penetrate the validated market in order to commercialize the business model. </i>
+        <br /><br />During this phase teams will pilot market-facing business models to measure performance and determine a clear pathway to market.
+        <br /><br />Teams will focus to:<ul>
+        <li>Pilot (a) specific business model(s)</li>
+        <li>Test business model performance using performance metrics</li>
+        <li>Discover a sustainable, scalable business model(s)</li></ul>',
         'start_scale' => 4.1,
         'end_scale' => 5,
         'color' => 'karban-green-6'
