@@ -112,7 +112,7 @@ if (!function_exists('calculateSections')) {
     {
 
         $responses = $event->responses->where('team_id', $team->id)->all();
-ray($responses);
+
         $progressMetricTotal = 0;
 
         $questions = $event->latestForm()?->allQuestions();

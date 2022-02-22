@@ -301,14 +301,14 @@
     })
 
     @php
-        $period = \Carbon\CarbonPeriod::create(now()->subYears(1), ' 1 month', now());
+        $period = \Carbon\CarbonPeriod::create(now()->subMonths(8), ' 1 month', now()->addMonths(8));
     @endphp
     function loadGraph() {
         const chart = new Chart(document.getElementById("myChart"), {
             type: "line",
             data: {
                 labels: [
-                    "{!!collect($period)->map(fn($date) => $date->format('M'))->implode('","') !!}"
+                    "{!!collect($period)->map(fn($date) => $date->format('M / Y'))->implode('","') !!}"
                 ],
                 datasets: [
 
@@ -326,20 +326,22 @@
                             });
 
                             foreach ($period as $time) {
-                                $thedata[$time->format('M/y')] = null;
+                                $thedata[$time->format('M/y')] = '';
                                 foreach($data as $date => $score) {
-                                   $thedata[$date] = $score;
+                                    if($date == $time->format('M/y')) {
+                                        $thedata[$date] = $score;
+                                    }
                                 }
                             }
                         @endphp
-
                         label: "{!! $team->name !!}",
                         tension: .5,
                         borderColor: '{{ array_rand(array_flip(['#67cc58', '#b8d99b', '#93c66e', '#6a9e4a', '#11af3b', '#00c241'])) }}',
                         borderWidth: 3,
                         backgroundColor: '{{ array_rand(array_flip(['#67cc58', '#b8d99b', '#93c66e', '#6a9e4a', '#11af3b', '#00c241'])) }}',
                         data: [
-                            {{ collect($data)->implode(',') }}
+
+                            {{ collect($thedata)->implode(',') }}
                         ],
                     },
                     @endforeach
