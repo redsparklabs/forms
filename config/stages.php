@@ -14,14 +14,26 @@ return [
     ],
     [
         'name' => 'Customer-Need Fit',
-        'description' =>  'Identify and validate the customer’s problem (unmet need).',
+        'description' =>  '<i>The <b>Customer-Need Fit Phase</b> focuses on zooming in on the opportunity segment, identifying the early adopter segment, and validating the need to address.</i>
+        <br /><br />This phase is a combination of Design Research and Jobs To Be Done Research.
+        <br /><br />During the Customer-Need Fit phase teams will go through self immersion and customer research activities to uncover deep insights and gain a rich understanding of customers, their needs, barriers, experiences, etc. - to make an informed decision on who to target for value creation (and why) based on their unmet needs.
+        <br /><br />Teams will focus to:<ul>
+        <li>Gain insights through exploratory research</li>
+        <li>Identify the opportunity segment from existing strategic customer insights</li>
+        <li>Develop personas, job stories, journeys</li></ul>',
         'start_scale' => 1.1,
         'end_scale' => 2,
         'color' => 'karban-green-3'
     ],
     [
         'name' => 'Need-Solution Fit',
-        'description' =>  'Test multiple solutions to validate a value proposition and solution that meeds the customer’s need.',
+        'description' =>  '<i>The <b>Need-Solution Fit Phase</b> focuses on testing multiple value propositions to meet the customer need to identify a feasible solution to create customer value.</i>
+        <br /><br />During this phase teams will be focused on identifying and testing the riskiest assumptions for the value proposition. The goal is to test multiple value propositions using rapid experimentation to produce evidence about which one to pursue.
+        <br /><br />Teams will focus to:<ul>
+        <li>Design multiple Value Propositions to test</li>
+        <li>Identify and map critical Assumptions facing the business model</li>
+        <li>Design, execute and synthesize Rapid Experiments to produce evidence</li>
+        <li>Develop and test solutions to address the problem (MVP Development)</li></ul>',
         'start_scale' => 2.1,
         'end_scale' => 3,
         'color' => 'karban-green-4'
