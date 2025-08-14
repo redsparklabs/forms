@@ -231,7 +231,8 @@
 
                                 @endphp
                                     <div x-data="{ tooltip{{$i}}: false }"
-                                     class="{{ $question['classes'] }} bg-{{ colorize($number) }}  rounded flex"
+                                     class="{{ $question['classes'] }} bg-{{ colorize($number) }}  rounded flex cursor-pointer hover:opacity-80 transition-opacity"
+                                     wire:click="showHistoricalChart('{{ Str::slug($question['question']) }}', '{{ $question['question'] }}', '{{ addslashes($question['description']) }}')"
                                     >
                                         <div
                                             x-on:mouseover="tooltip{{$i}} = true"
@@ -241,9 +242,9 @@
                                             <div>{{ $number}}</div>
                                         </div>
                                           <div class="relative" x-cloak x-show.transition.origin.top="tooltip{{$i}}">
-                                            <div class="absolute top-0 z-10 w-48 p-2 -mt-1 text-sm leading-tight text-black transform -translate-x-1/2 -translate-y-full bg-white rounded-lg border border-black">
-                                                <div class="font-bold mb-2">{{ $question['question']}}</div>
-                                                <div>{{ $question['description']}}</div>
+                                            <div class="absolute top-0 z-10 w-32 p-2 -mt-1 text-sm leading-tight text-black transform -translate-x-1/2 -translate-y-full bg-white rounded-lg border border-black">
+                                                <div class="font-bold text-center">{{ $question['question']}}</div>
+                                                <div class="text-center text-xs mt-1 text-gray-600">View Details</div>
                                             </div>
                                         </div>
                                     </div>
@@ -265,7 +266,8 @@
                                 @endphp
 
                                 <div x-data="{ tooltip2{{$i}}: false }"
-                                     class="{{ $question['classes'] }} bg-{{ colorize($number) }}  rounded flex"
+                                     class="{{ $question['classes'] }} bg-{{ colorize($number) }}  rounded flex cursor-pointer hover:opacity-80 transition-opacity"
+                                     wire:click="showHistoricalChart('{{ Str::slug($question['question']) }}', '{{ $question['question'] }}', '{{ addslashes($question['description']) }}')"
                                     >
                                         <div
                                             x-on:mouseover="tooltip2{{$i}} = true"
@@ -275,9 +277,9 @@
                                             <div>{{ $number}}</div>
                                         </div>
                                           <div class="relative" x-cloak x-show.transition.origin.top="tooltip2{{$i}}">
-                                            <div class="absolute top-0 z-10 w-48 p-2 -mt-1 text-sm leading-tight text-black transform -translate-x-1/2 -translate-y-full bg-white rounded-lg border border-black">
-                                                <div class="font-bold mb-2">{{ $question['question']}}</div>
-                                                <div>{{ $question['description']}}</div>
+                                            <div class="absolute top-0 z-10 w-32 p-2 -mt-1 text-sm leading-tight text-black transform -translate-x-1/2 -translate-y-full bg-white rounded-lg border border-black">
+                                                <div class="font-bold text-center">{{ $question['question']}}</div>
+                                                <div class="text-center text-xs mt-1 text-gray-600">View Details</div>
                                             </div>
                                         </div>
                                     </div>
@@ -301,7 +303,71 @@
         @endcan
     </div>
 
+    <!-- Historical Chart Modal -->
+    <div x-data="{ showModal: @entangle('showHistoricalModal') }" 
+         x-show="showModal" 
+         x-cloak
+         class="fixed inset-0 z-50 overflow-y-auto"
+         style="display: none;">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div x-show="showModal" 
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
+                 @click="$wire.closeHistoricalModal()"></div>
 
+            <!-- Modal content -->
+            <div x-show="showModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="inline-block w-full max-w-4xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
+                
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">
+                        Historical Scoring: {{ $selectedQuestionTitle ?? 'Component' }}
+                    </h3>
+                    <button @click="$wire.closeHistoricalModal()" 
+                            class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                @if($selectedQuestionDescription)
+                    <div class="mb-6 p-4 bg-gray-50 rounded-lg border">
+                        <h4 class="font-semibold text-gray-900 mb-2">{{ $selectedQuestionTitle ?? 'Component' }} Description</h4>
+                        <p class="text-gray-700 text-sm leading-relaxed">{{ $selectedQuestionDescription }}</p>
+                    </div>
+                @endif
+
+                <div class="mb-4">
+                    <canvas id="historicalChart" width="800" height="400"></canvas>
+                </div>
+
+                @if($historicalData && count($historicalData) > 0)
+                    <div class="mt-4 text-sm text-gray-600">
+                        <p><strong>Total Assessments:</strong> {{ count($historicalData) }}</p>
+                        <p><strong>Score Range:</strong> {{ min(array_column($historicalData, 'score')) }} - {{ max(array_column($historicalData, 'score')) }}</p>
+                        <p><strong>Latest Score:</strong> {{ end($historicalData)['score'] ?? 'N/A' }}</p>
+                    </div>
+                @else
+                    <div class="mt-4 text-sm text-gray-500">
+                        <p>No historical data available for this component.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
 
     @include('teams._update')
     @include('teams._destroy')
@@ -404,5 +470,88 @@
             }
         });
     };
+
+    // Historical Chart functionality
+    let historicalChart = null;
+
+    // Listen for Livewire event to render historical chart
+    window.livewire.on('renderHistoricalChart', (data) => {
+        setTimeout(() => {
+            renderHistoricalChart(data);
+        }, 100); // Small delay to ensure modal is fully rendered
+    });
+
+    function renderHistoricalChart(data) {
+        const ctx = document.getElementById('historicalChart');
+        if (!ctx) return;
+
+        // Destroy existing chart if it exists
+        if (historicalChart) {
+            historicalChart.destroy();
+        }
+
+        // Prepare data for Chart.js
+        const labels = data.map(item => item.date);
+        const scores = data.map(item => parseFloat(item.score));
+
+        historicalChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Score',
+                    data: scores,
+                    borderColor: 'rgb(34, 197, 94)',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.1,
+                    pointBackgroundColor: 'rgb(34, 197, 94)',
+                    pointBorderColor: 'white',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5,
+                        ticks: {
+                            stepSize: 1
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        hoverRadius: 8
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        });
+    }
     </script>
 @endpush

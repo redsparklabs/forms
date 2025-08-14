@@ -5,10 +5,12 @@ namespace App\Http\Livewire;
 use App\Models\Team;
 use App\Actions\Teams\DestroyTeam;
 use App\Models\Organization;
+use App\Models\Response;
 use Livewire\WithPagination;
 use App\Actions\Teams\UpdateTeam;
 use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class TeamsShow extends BaseComponent
 {
@@ -71,6 +73,15 @@ class TeamsShow extends BaseComponent
         'estimated_launch_date' => '',
         'sponsor' => '',
     ];
+
+    /**
+     * Historical chart properties
+     */
+    public $showHistoricalModal = false;
+    public $selectedQuestionSlug;
+    public $selectedQuestionTitle;
+    public $selectedQuestionDescription;
+    public $historicalData = [];
 
     /**
      * @var array
@@ -194,6 +205,77 @@ class TeamsShow extends BaseComponent
         );
 
         redirect()->route('teams.index');
+    }
+
+    /**
+     * Show historical chart for a specific question
+     */
+    public function showHistoricalChart($questionSlug, $questionTitle, $questionDescription = '')
+    {
+        $this->selectedQuestionSlug = $questionSlug;
+        $this->selectedQuestionTitle = $questionTitle;
+        $this->selectedQuestionDescription = $questionDescription;
+        $this->loadHistoricalData();
+        $this->showHistoricalModal = true;
+        
+        // Emit event to render chart after modal is shown
+        $this->emit('renderHistoricalChart', $this->historicalData);
+    }
+
+    /**
+     * Close historical chart modal
+     */
+    public function closeHistoricalModal()
+    {
+        $this->showHistoricalModal = false;
+        $this->selectedQuestionSlug = null;
+        $this->selectedQuestionTitle = null;
+        $this->selectedQuestionDescription = null;
+        $this->historicalData = [];
+    }
+
+    /**
+     * Load historical data for the selected question
+     */
+    private function loadHistoricalData()
+    {
+        if (!$this->selectedQuestionSlug) {
+            return;
+        }
+
+        // Get all events for this team, ordered by created date
+        $events = $this->team->events()->orderBy('created_at', 'asc')->get();
+        
+        $historicalData = [];
+        
+        foreach ($events as $event) {
+            // Get responses for this event and team
+            $responses = $event->responses()
+                ->where('team_id', $this->team->id)
+                ->get();
+            
+            if ($responses->isNotEmpty()) {
+                // Calculate average score for this question across all responses in this event
+                $scores = [];
+                foreach ($responses as $response) {
+                    $questionData = $response->response['questions'] ?? [];
+                    if (isset($questionData[$this->selectedQuestionSlug])) {
+                        $scores[] = (float) $questionData[$this->selectedQuestionSlug];
+                    }
+                }
+                
+                if (!empty($scores)) {
+                    $averageScore = array_sum($scores) / count($scores);
+                    $historicalData[] = [
+                        'date' => $event->created_at->format('M j, Y'),
+                        'score' => number_format($averageScore, 1),
+                        'event_id' => $event->id
+                    ];
+                }
+            }
+        }
+        
+        $this->historicalData = $historicalData;
     }
 
     /**
