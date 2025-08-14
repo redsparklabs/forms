@@ -99,11 +99,11 @@
                                                         @endif
 
 
-                                                        @if(Gate::check('updateEvent', $organization))
+                                                        @can('update', $event)
                                                             <x-buttons.yellow wire:click="confirmUpdate('{{ $event->id }}')">
                                                                 {{ __('Update') }}
                                                             </x-buttons.yellow>
-                                                        @endif
+                                                        @endcan
 
                                                         {{-- @if (Gate::check('removeEvent', $organization))
                                                             <button class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" wire:click="confirmDestroy('{{ $event->id }}')">
@@ -263,6 +263,60 @@
                     </div>
                     <x-jet-input-error for="updateForm.forms" class="mt-2" />
                 </div>
+
+                <!-- Questions Section -->
+                @if(!empty($updateForm['questions']))
+                    <div class="col-span-6 sm:col-span-4 mt-6">
+                        <x-jet-label value="{{ __('Questions') }}" />
+                        <div class="mt-4 space-y-3">
+                            @foreach(collect($updateForm['questions'])->sortBy('order') as $questionId => $question)
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <!-- Enable/Disable Checkbox -->
+                                        <div class="flex items-center">
+                                            <input type="checkbox" 
+                                                   id="question_{{ $questionId }}" 
+                                                   wire:model="updateForm.questions.{{ $questionId }}.enabled"
+                                                   class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2">
+                                        </div>
+                                        
+                                        <!-- Question Info -->
+                                        <div class="flex-1">
+                                            <div class="font-medium text-sm {{ $question['enabled'] ? 'text-gray-900' : 'text-gray-500' }}">
+                                                {{ $question['question'] }}
+                                            </div>
+                                            @if($question['description'])
+                                                <div class="text-xs text-gray-500 mt-1">
+                                                    {{ $question['description'] }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Order Controls -->
+                                    <div class="flex items-center space-x-1">
+                                        <button type="button" 
+                                                wire:click="moveQuestionUp({{ $questionId }})"
+                                                class="p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600"
+                                                title="Move Up">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                            </svg>
+                                        </button>
+                                        <button type="button" 
+                                                wire:click="moveQuestionDown({{ $questionId }})"
+                                                class="p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600"
+                                                title="Move Down">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </x-slot>
 
             <x-slot name="footer">

@@ -12,6 +12,10 @@ class FormQuestion extends Pivot implements Sortable
     use SortableTrait;
     use SoftDeletes;
 
+    protected $table = 'form_question';
+    protected $primaryKey = 'id';
+    public $incrementing = true;
+
     /**
      * The attributes that are dates.
      *
@@ -40,5 +44,11 @@ class FormQuestion extends Pivot implements Sortable
         static::deleted(function (Sortable $model) {
             static::setNewOrder($model->buildSortQuery()->pluck($model->primaryKey)->toArray());
         });
+    }
+    
+    // Ensure sorting is scoped per form
+    public function buildSortQuery()
+    {
+        return static::query()->where('form_id', $this->form_id)->orderBy($this->sortable['order_column_name']);
     }
 }

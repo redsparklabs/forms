@@ -79,20 +79,26 @@ class Events extends BaseComponent
         'date' => '',
         'teams' => [],
         'forms' => '',
-        'department' => ''
+        'department' => '',
+        'questions' => []
     ];
 
     /**
      * Mount the component
      *
-     * @param  Organization $organization
-     *
      * @return void
      */
-    public function mount(Organization $organization)
+    public function mount()
     {
         $this->user = Auth::user();
-        $this->organization = $this->user->currentOrganization;
+        
+        // Handle organization-based access (organization admins)
+        if ($this->user->allOrganizations()->count() > 0) {
+            $this->organization = $this->user->currentOrganization;
+        } else {
+            // For project-scoped team members, organization will be null
+            $this->organization = null;
+        }
 
         if (request()->has('create')) {
             $this->confirmingCreating = true;
@@ -158,12 +164,31 @@ class Events extends BaseComponent
     public function confirmUpdateAction()
     {
         $event = $this->organization->events()->find($this->idBeingUpdated);
+        $form = $event?->forms->first();
+        
+        // Get questions with their current order and enabled status
+        $questions = [];
+        if ($form) {
+            $formQuestions = $form->questions()->orderBy('form_question.order')->get();
+            foreach ($formQuestions as $question) {
+                $questions[$question->id] = [
+                    'id' => $question->id,
+                    'question' => $question->question,
+                    'description' => $question->description,
+                    'section' => $question->section,
+                    'enabled' => !$question->hidden,
+                    'order' => $question->pivot->order
+                ];
+            }
+        }
+        
         $this->updateForm = [
             'name' => $event?->name,
             'date' => $event?->date->format('Y-m-d'),
             'teams' => $event?->teams->pluck('id')->mapWithkeys(fn ($item) => [$item => $item]),
             'department' => $event?->department,
-            'forms' => $event?->forms->first()->id
+            'forms' => $event?->forms->first()->id,
+            'questions' => $questions
         ];
     }
 
@@ -188,14 +213,82 @@ class Events extends BaseComponent
             'updateForm.date.required' => 'Please enter a proper date.',
         ]);
 
-        $organization  = $this->organization->events()->find($this->idBeingUpdated);
+        $event = $this->organization->events()->find($this->idBeingUpdated);
 
+        // Update the event
         UpdateEvent::run(
             $this->user,
             $this->organization,
-            $organization,
+            $event,
             $this->updateForm
         );
+
+        // Update question settings if questions are provided
+        if (!empty($this->updateForm['questions'])) {
+            $form = $event->forms()->first();
+            if ($form) {
+                foreach ($this->updateForm['questions'] as $questionId => $questionData) {
+                    // Update question enabled/disabled status
+                    \App\Models\Question::where('id', $questionId)
+                        ->update(['hidden' => !$questionData['enabled']]);
+                    
+                    // Update question order in pivot table
+                    $form->questions()->updateExistingPivot($questionId, [
+                        'order' => $questionData['order']
+                    ]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Move question up in order
+     *
+     * @param int $questionId
+     * @return void
+     */
+    public function moveQuestionUp($questionId)
+    {
+        $questions = $this->updateForm['questions'];
+        $currentOrder = $questions[$questionId]['order'];
+        
+        // Find the question with the previous order
+        foreach ($questions as $id => $question) {
+            if ($question['order'] == $currentOrder - 1) {
+                // Swap orders
+                $this->updateForm['questions'][$id]['order'] = $currentOrder;
+                $this->updateForm['questions'][$questionId]['order'] = $currentOrder - 1;
+                break;
+            }
+        }
+        
+        // Trigger Livewire reactivity by reassigning the entire array
+        $this->updateForm = $this->updateForm;
+    }
+
+    /**
+     * Move question down in order
+     *
+     * @param int $questionId
+     * @return void
+     */
+    public function moveQuestionDown($questionId)
+    {
+        $questions = $this->updateForm['questions'];
+        $currentOrder = $questions[$questionId]['order'];
+        
+        // Find the question with the next order
+        foreach ($questions as $id => $question) {
+            if ($question['order'] == $currentOrder + 1) {
+                // Swap orders
+                $this->updateForm['questions'][$id]['order'] = $currentOrder;
+                $this->updateForm['questions'][$questionId]['order'] = $currentOrder + 1;
+                break;
+            }
+        }
+        
+        // Trigger Livewire reactivity by reassigning the entire array
+        $this->updateForm = $this->updateForm;
     }
 
     /**
@@ -221,11 +314,28 @@ class Events extends BaseComponent
      */
     public function render()
     {
-        $events = $this->organization
-            ->events()
-            ->search($this->keyword)
-            ->orderBy($this->sortByField, $this->sortDirection)
-            ->paginate(25);
+        // Check if user has an organization (organization admin)
+        if ($this->user->allOrganizations()->count() > 0 && $this->organization) {
+            // Organization-based access (existing logic)
+            $events = $this->organization
+                ->events()
+                ->search($this->keyword)
+                ->orderBy($this->sortByField, $this->sortDirection)
+                ->paginate(25);
+        } else {
+            // Project-scoped access for team members
+            // Get events only for teams this user belongs to
+            $userTeamIds = \App\Models\Team::whereHas('members', function ($query) {
+                $query->where('user_id', $this->user->id);
+            })->pluck('id');
+
+            $events = \App\Models\Event::whereHas('teams', function ($query) use ($userTeamIds) {
+                $query->whereIn('teams.id', $userTeamIds);
+            })
+                ->search($this->keyword)
+                ->orderBy($this->sortByField, $this->sortDirection)
+                ->paginate(25);
+        }
 
         return view('events.index', compact('events'));
     }

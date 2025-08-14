@@ -3,7 +3,11 @@
         <div class="px-4 pt-6 pb-5 mx-auto max-w-7xl sm:px-10 lg:px-8">
             <div class="flex">
                 <h2 class="flex-1 text-xl font-medium leading-6 text-gray-900 font-bold">
-                    {{ $this->user->currentOrganization->name }} {{ __('Portfolio') }}
+                    @if(isset($isProjectScopedUser) && $isProjectScopedUser)
+                        {{ __('My Projects') }}
+                    @else
+                        {{ $this->user->currentOrganization->name }} {{ __('Portfolio') }}
+                    @endif
                 </h2>
             </div>
         </div>
@@ -47,17 +51,19 @@
                 <dt class="text-sm font-medium text-gray-500 truncate">Investment to NPV Ratio</dt>
                 <dd class="text-lg font-semibold text-gray-900 flex items-center m-6 justify-center">
                     @php
+                            $teamCollection = $teams->get();
+                            $count = $teams->count();
+                            $sum_npv = $teamCollection->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum();
+                            $sum_investment = $teamCollection->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum();
 
-                            $avg_npv = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->net_projected_value)->sum() / $teams->count();
-                            $avg_investment = $teams->get()->map(fn($team) => $team->latestEvent()?->pivot->investment)->sum() / $teams->count();
-
-                            // if( $avg_npv > 0 && $avg_investment >= $avg_npv) {
+                            if ($count > 0 && $sum_npv > 0) {
+                                $avg_npv = $sum_npv / $count;
+                                $avg_investment = $sum_investment / $count;
                                 $f = farey($avg_investment / $avg_npv);
-                                echo $f[0]. ':' .$f[1];
-                            // } else {
-                                // echo 'N/A';
-                            // }
-
+                                echo $f[0] . ':' . $f[1];
+                            } else {
+                                echo 'N/A';
+                            }
 
                     @endphp
 

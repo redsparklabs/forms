@@ -78,6 +78,11 @@ class EventsShow extends BaseComponent
      */
     public function mount(Event $event)
     {
+        // Check if user can view this event
+        if (!auth()->user()->can('view', $event)) {
+            abort(403, 'You do not have permission to view this assessment.');
+        }
+        
         $this->event = $event;
         $this->organization = $this->event->organization;
     }

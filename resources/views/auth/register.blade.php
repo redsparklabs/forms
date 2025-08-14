@@ -6,8 +6,18 @@
 
         <x-jet-validation-errors class="mb-4" />
 
+        @if (request()->has('invitation'))
+            <div class="mb-4 text-sm text-gray-600">
+                {{ __('You have been invited to join a team. Complete your registration to accept the invitation.') }}
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('register') }}">
             @csrf
+            
+            @if (request()->has('invitation'))
+                <input type="hidden" name="invitation_token" value="{{ request('invitation') }}">
+            @endif
 
             <div>
                 <x-jet-label for="name" value="{{ __('Name') }}" />

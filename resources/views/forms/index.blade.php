@@ -186,7 +186,7 @@
                                     $counter++;
                                 @endphp
                                 <div class="flex">
-                                    <button type="button" class="flex-initial relative px-4 py-3 w-full rounded-lg focus:z-10 focus:outline-none {{ $index > 0 ? 'border-t border-gray-200 rounded-t-none' : '' }} {{ ! $loop->last ? 'rounded-b-none' : '' }}" wire:click="syncQuestion('{{ $question->id }}')">
+                                    <button type="button" class="flex-initial relative px-4 py-3 w-full rounded-lg focus:z-10 focus:outline-none {{ $index > 0 ? 'border-t border-gray-200 rounded-t-none' : '' }} {{ ! $loop->last ? 'rounded-b-none' : '' }}" wire:click="syncQuestion({{ $question->id }})">
                                         <div class="{{ $assignedQuestions->contains($question->id) ? '' : 'opacity-50 hover:opacity-100' }}">
 
                                             <div class="flex items-center text-left">

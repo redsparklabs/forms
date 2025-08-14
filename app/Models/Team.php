@@ -85,10 +85,98 @@ protected $with = ['events'];
      */
     public function latestEvent()
     {
-
         return $this->events->sortByDesc('date')->reject(function($event) {
             return $event->progressMetric($this) == 0;
         })->first();
+    }
 
+    /**
+     * Get all team members.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'team_user', 'team_id', 'user_id')
+            ->using(TeamMember::class)
+            ->withPivot(['role', 'status', 'email', 'invitation_token', 'invitation_sent_at'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Get all active team members.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function activeMembers()
+    {
+        return $this->members()->wherePivot('status', TeamMember::STATUS_ACTIVE);
+    }
+
+    /**
+     * Get all pending team member invitations.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function pendingInvitations()
+    {
+        return $this->members()->wherePivot('status', TeamMember::STATUS_INVITED);
+    }
+
+    /**
+     * Get the owner of the team.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function owner()
+    {
+        return $this->members()
+            ->wherePivot('role', TeamMember::ROLE_OWNER);
+    }
+
+    /**
+     * Get the owner user of the team.
+     *
+     * @return \App\Models\User|null
+     */
+    public function getOwnerAttribute()
+    {
+        return $this->owner()->first();
+    }
+
+    /**
+     * Get all team leads.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function leads()
+    {
+        return $this->members()
+            ->wherePivot('role', TeamMember::ROLE_LEAD);
+    }
+
+    /**
+     * Check if the given user is a member of this team.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function hasMember(User $user)
+    {
+        return $this->members()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Check if the given user is the owner of this team.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
+    public function isOwnedBy(User $user)
+    {
+        return $this->members()
+            ->where('user_id', $user->id)
+            ->wherePivot('role', TeamMember::ROLE_OWNER)
+            ->exists();
     }
 }

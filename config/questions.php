@@ -50,7 +50,7 @@ return [
             'abbrev' => 'Solution',
             'description' => 'The technology or solution is technically feasible & scalable.',
             'color' => 'purple-500',
-            'section' => 'Feasability_(Technical)',
+            'section' => 'Feasibility_(Technical)',
             'order' => 2,
             'classes' => 'col-span-1 row-span-2'
         ], [
@@ -58,7 +58,7 @@ return [
             'abbrev' => 'Channels',
             'description' => 'There is clear evidence of the channel(s) through which value can be delivered to the customer.',
             'color' => 'purple-500',
-            'section' => 'Feasability_(Technical)',
+            'section' => 'Feasibility_(Technical)',
             'order' => 6,
             'classes' => 'col-span-1'
         ], [
@@ -66,7 +66,7 @@ return [
             'abbrev' => 'Comp Adv',
             'description' => 'There is a clear definition of how the solution is different or more valuable compared to competing solutions and offerings.',
             'color' => 'purple-500',
-            'section' => 'Feasability_(Technical)',
+            'section' => 'Feasibility_(Technical)',
             'order' => 5,
             'classes' => 'col-span-1 row-span-2'
         ], [
@@ -100,14 +100,14 @@ return [
             'question' => 'Team Performance',
             'description' => 'How confident are you that this team has the expertise, background and experience needed to continue to progress in the Business Model?',
             'color' => 'red-500',
-            'section' => 'Intutive_Scoring',
+            'section' => 'Intuitive_Scoring',
             'order' => 10,
             'hidden' => true,
         ], [
             'question' => 'Team Gameplan',
             'description' => 'How confident are you the proposed gameplan for progression will meet the desired outcomes for the next sprint?',
             'color' => 'red-500',
-            'section' => 'Intutive_Scoring',
+            'section' => 'Intuitive_Scoring',
             'hidden' => true,
         ]
     ],

@@ -30,7 +30,13 @@ class CreateQuestion
 
         $description = Arr::get($attributes, 'description');
 
-        $organization->questions()->create(['question' => $question, 'description' => $description]);
+        $section = Arr::get($attributes, 'section', 'General');
+
+        $organization->questions()->create([
+            'question' => $question,
+            'description' => $description,
+            'section' => $section,
+        ]);
     }
 
     /**

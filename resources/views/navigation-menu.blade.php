@@ -5,60 +5,95 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex items-center flex-shrink-0">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('home') }}">
                         <x-jet-application-mark class="block w-auto h-9" />
                     </a>
                 </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
-                <div class="hidden space-x-8 sm:-my-px sm:ml-4 sm:flex">
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->is('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-jet-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-4 sm:flex">
-                    <x-jet-nav-link href="{{ route('teams.index') }}" :active="request()->is('projects*')">
-                        {{ __('Portfolio') }}
-                    </x-jet-nav-link>
-                </div>
+                @if(Auth::user()->allOrganizations()->count() > 0)
+                    <!-- Organization owners/admins navigation -->
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-4 sm:flex">
+                        <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->is('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-jet-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-4 sm:flex">
+                        <x-jet-nav-link href="{{ route('teams.index') }}" :active="request()->is('projects*')">
+                            {{ __('Portfolio') }}
+                        </x-jet-nav-link>
+                    </div>
 
-                <!-- Organizations Dropdown -->
-                <div class="relative ml-3">
-                    <x-jet-dropdown align="right" width="60">
-                        <x-slot name="trigger">
-                            <span class="inline-flex rounded-md">
-                                @if(Auth::user()->currentOrganization)
+                    <!-- Assessments Dropdown -->
+                    <div class="relative ml-3">
+                        <x-jet-dropdown align="right" width="60">
+                            <x-slot name="trigger">
+                                <span class="inline-flex rounded-md">
+                                    @if(Auth::user()->currentOrganization)
+                                        <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition bg-white border border-transparent rounded-md hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50">
+                                        {{ __('Assessments') }}
+
+                                            <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    @endif
+                                </span>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <div class="w-60">
+                                    @if(Auth::user()->currentOrganization)
+                                        <x-jet-dropdown-link href="{{ route('events.index') }}">
+                                            {{ __(' Assessment History') }}
+                                        </x-jet-dropdown-link>
+
+                                        <x-jet-dropdown-link href="{{ route('forms', Auth::user()->currentOrganization->id) }}">
+                                            {{ __('Assessment Forms') }}
+                                        </x-jet-dropdown-link>
+
+                                        <x-jet-dropdown-link href="{{ route('questions', Auth::user()->currentOrganization->id) }}">
+                                            {{ __('Assessment Questions') }}
+                                        </x-jet-dropdown-link>
+                                    @endif
+                                </div>
+                            </x-slot>
+                        </x-jet-dropdown>
+                    </div>
+                @else
+                    <!-- Project-scoped team members navigation -->
+                    <div class="relative ml-3">
+                        <x-jet-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <span class="inline-flex rounded-md">
                                     <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition bg-white border border-transparent rounded-md hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50">
-                                    {{ __('Assessments') }}
+                                        {{ __('Projects') }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                         </svg>
                                     </button>
-                                @endif
-                            </span>
-                        </x-slot>
+                                </span>
+                            </x-slot>
 
-                        <x-slot name="content">
-                            <div class="w-60">
-                                @if(Auth::user()->currentOrganization)
-                                    <x-jet-dropdown-link href="{{ route('events.index') }}">
-                                        {{ __(' Assessment History') }}
-                                    </x-jet-dropdown-link>
-
-                                    <x-jet-dropdown-link href="{{ route('forms', Auth::user()->currentOrganization->id) }}">
-                                        {{ __('Assessment Forms') }}
-                                    </x-jet-dropdown-link>
-
-                                    <x-jet-dropdown-link href="{{ route('questions', Auth::user()->currentOrganization->id) }}">
-                                        {{ __('Assessment Questions') }}
-                                    </x-jet-dropdown-link>
-                                @endif
-                            </div>
-                        </x-slot>
-                    </x-jet-dropdown>
-                </div>
+                            <x-slot name="content">
+                                <div class="w-48">
+                                    @php
+                                        $userTeams = \App\Models\Team::whereHas('members', function ($query) {
+                                            $query->where('user_id', Auth::id());
+                                        })->get();
+                                    @endphp
+                                    @foreach($userTeams as $team)
+                                        <x-jet-dropdown-link href="{{ route('teams.show', $team) }}">
+                                            {{ $team->name }}
+                                        </x-jet-dropdown-link>
+                                    @endforeach
+                                </div>
+                            </x-slot>
+                        </x-jet-dropdown>
+                    </div>
+                @endif
 
                 <!-- Settings Dropdown -->
                 <div class="relative ml-3">
@@ -86,9 +121,11 @@
                             <div class="block px-4 py-2 text-xs text-gray-400">
                                 {{ __('Manage Account') }}
                             </div>
-                            <x-jet-dropdown-link href="{{ route('organizations.show', Auth::user()->currentOrganization->id) }}">
-                                {{ __('Organization Settings') }}
-                            </x-jet-dropdown-link>
+                            @if(Auth::user()->allOrganizations()->count() > 0)
+                                <x-jet-dropdown-link href="{{ route('organizations.show', Auth::user()->currentOrganization->id) }}">
+                                    {{ __('Organization Settings') }}
+                                </x-jet-dropdown-link>
+                            @endif
 
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}

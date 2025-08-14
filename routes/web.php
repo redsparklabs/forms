@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
 use Laravel\Jetstream\Http\Controllers\Livewire\PrivacyPolicyController;
 use Laravel\Jetstream\Http\Controllers\Livewire\TermsOfServiceController;
+use App\Http\Controllers\TeamInvitationController;
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,7 +45,12 @@ if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
 
 Route::get('form/{id}', FormBuilder::class)->name('form-builder');
 
+// Team Invitation Acceptance Route (public, no auth required)
+Route::get('/teams/{team}/invitations/{token}', [TeamInvitationController::class, 'accept'])
+    ->name('team-invitations.accept');
+
 Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/dashboard', Dashboard::class, )->name('dashboard');
     Route::get('/portfolio', Teams::class)->name('teams.index');
     Route::get('/projects/{team}', TeamsShow::class)->name('teams.show');
@@ -62,5 +69,15 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         ->middleware(['signed'])
         ->name('organization-invitations.accept');
 
-
+    // Team Invitation Management Routes (auth required)
+    Route::prefix('teams/{team}')->group(function () {
+        Route::post('/invite', [TeamInvitationController::class, 'invite'])
+            ->name('team-invitations.invite');
+            
+        Route::post('/invitations/{invitation}/resend', [TeamInvitationController::class, 'resend'])
+            ->name('team-invitations.resend');
+            
+        Route::delete('/invitations/{invitation}', [TeamInvitationController::class, 'revoke'])
+            ->name('team-invitations.revoke');
+    });
 });

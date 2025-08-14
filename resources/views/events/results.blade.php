@@ -7,7 +7,9 @@
                         <div class="flex">
                             <h3 class="flex-1 text-lg leading-6 font-medium text-gray-900">Growth Board - {{ $event->name }} </h3>
                             <div>
-                                <x-buttons.green text="Update" wire:click="confirmUpdate('{{ $event->id }}', '{{ $form->id }}', '{{ $questions }}')" />
+                                @can('update', $event)
+                                    <x-buttons.green text="Update" wire:click="confirmUpdate('{{ $event->id }}', '{{ $form->id }}', '{{ $questions }}')" />
+                                @endcan
                             </div>
                         </div>
                         <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
@@ -98,26 +100,42 @@
                             <td class="p-2 pl-0"> {{ $response->email }} </td>
 
                             @php
-                                $total = 0;
+                                // Use same weighted calculation as top metric for consistency
+                                $desirabilityQuestions = ['opportunity-segments', 'customer-need', 'value-proposition'];
+                                $feasibilityQuestions = ['solution', 'channels', 'competitive-advantage'];
+                                $viabilityQuestions = ['key-metrics', 'revenue', 'costs'];
+                                
+                                // Calculate Desirability (Market) - 40% weight
+                                $desirabilityTotal = 0;
+                                foreach ($desirabilityQuestions as $questionSlug) {
+                                    $desirabilityTotal += $response->questions[$questionSlug] ?? 0;
+                                }
+                                $desirabilityAvg = count($desirabilityQuestions) > 0 ? $desirabilityTotal / count($desirabilityQuestions) : 0;
+                                
+                                // Calculate Feasibility (Technical) - 35% weight  
+                                $feasibilityTotal = 0;
+                                foreach ($feasibilityQuestions as $questionSlug) {
+                                    $feasibilityTotal += $response->questions[$questionSlug] ?? 0;
+                                }
+                                $feasibilityAvg = count($feasibilityQuestions) > 0 ? $feasibilityTotal / count($feasibilityQuestions) : 0;
+                                
+                                // Calculate Viability (Regulatory) - 25% weight
+                                $viabilityTotal = 0;
+                                foreach ($viabilityQuestions as $questionSlug) {
+                                    $viabilityTotal += $response->questions[$questionSlug] ?? 0;
+                                }
+                                $viabilityAvg = count($viabilityQuestions) > 0 ? $viabilityTotal / count($viabilityQuestions) : 0;
+                                
+                                // Calculate weighted progress metric (1 decimal place for clean UI)
+                                $weightedTotal = ($desirabilityAvg * 0.40) + ($feasibilityAvg * 0.35) + ($viabilityAvg * 0.25);
+                                $lineItemProgressMetric = number_format($weightedTotal, 1);
+                                
+                                $progressMetricTotal += $lineItemProgressMetric;
                             @endphp
-
-                            @foreach($sections->reject(fn($item, $key) => $key == 'Intutive_Scoring')->all() as $section => $sectionData)
-                                @php
-                                    $sectionQuestions = collect($sectionData)->pluck('question')->map(fn($item) => Str::slug($item))->toArray();
-
-                                    $total += collect($response->questions)->filter(function($item, $key) use ($sectionQuestions) {
-                                        return in_array($key, $sectionQuestions);
-                                    })->sum();
-                                @endphp
-                            @endforeach
-
-                            @php
-                                $progressMetricTotal += number_format($total / $totalSections, 1);
-                            @endphp
-                            <td class="p-2 text-center font-bold text-white bg-karban-green-3 border">{{ number_format($total / $totalSections, 1) }}</td>
+                            <td class="p-2 text-center font-bold text-white bg-karban-green-3 border">{{ $lineItemProgressMetric }}</td>
 
                             @foreach($questions as $question)
-                                <td class="p-2 text-center bg-white border">{{ Arr::get($response->questions, Str::slug($question['question'])) }}</td>
+                                <td class="p-2 text-center bg-white border">{{ Arr::get($response->questions, Str::slug($question['question']), 0) }}</td>
                             @endforeach
 
                             @foreach($sections->all() as $section => $sectionData)
@@ -128,8 +146,10 @@
                                             return in_array($key, $sectionQuestions);
                                         })->sum();
 
-                                        $sectionTotals[$section .'_count'] += number_format($total / $sections->count(), 1);
-                                        echo number_format($total / $sections->count(), 1);
+                                        // Fix: Divide by number of questions in THIS section, not total sections
+                                        $sectionAverage = $sectionData->count() > 0 ? $total / $sectionData->count() : 0;
+                                        $sectionTotals[$section .'_count'] += number_format($sectionAverage, 1);
+                                        echo number_format($sectionAverage, 1);
                                     @endphp
                                 </td>
                             @endforeach
@@ -157,11 +177,8 @@
 
                                 <td class="p-2 font-bold text-center text-white bg-{{ colorize(number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1)) }} border">
                                     @php
-
-
-                                        if( $mappedQuestions->pluck(Str::slug($question['question']))->sum() > 0) {
-                                            echo number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
-                                        }
+                                        // Always display the calculated value, including 0.0
+                                        echo number_format( $mappedQuestions->pluck(Str::slug($question['question']))->sum() / $mappedQuestions->count(), 1);
                                     @endphp
                                 </td>
                             @endif

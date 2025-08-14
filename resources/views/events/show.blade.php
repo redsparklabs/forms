@@ -5,9 +5,11 @@
                 <div class="flex justify-content">
                     <h2 class="text-xl font-semibold leading-tight text-gray-800">
                         {{ __('Assessment - ' . $event->name) }} - {{ $event->date?->format('m/d/y') }}
-                        <x-buttons.yellow wire:click="confirmUpdate('{{ $event->id }}')">
-                            {{ __('Update') }}
-                        </x-buttons.yellow>
+                        @can('update', $event)
+                            <x-buttons.yellow wire:click="confirmUpdate('{{ $event->id }}')">
+                                {{ __('Update') }}
+                            </x-buttons.yellow>
+                        @endcan
                     </h2>
                     </div>
                 <div>

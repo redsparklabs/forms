@@ -161,9 +161,20 @@ class Forms extends BaseComponent
     {
         $form = $this->organization->forms()->findOrFail($this->idBeingUpdated);
 
-        $this->assignedQuestions = collect($form->questions()->pluck('question_id')->toArray());
+        $this->assignedQuestions = collect($form->questions()->pluck('question_id')->map(fn($id) => (int) $id)->toArray());
 
-        $this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
+        // Assigned, ordered by pivot.order
+        $assigned = $form->questions()->orderBy('form_question.order')->get();
+
+        // Unassigned for this form
+        $unassigned = $this->organization->questions()
+            ->whereNotIn('id', $this->assignedQuestions)
+            ->orderBy('question') // secondary stable order
+            ->get();
+
+        // Final list: assigned first (in order), then unassigned
+        $this->allQuestions = $assigned->concat($unassigned);
+        //$this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
 
         $this->updateForm = [
             'name' => $form->name,
@@ -219,14 +230,22 @@ class Forms extends BaseComponent
         $form = Form::findOrFail($this->idBeingUpdated);
 
         if ($this->assignedQuestions) {
-            $form->questions()->sync($this->assignedQuestions);
+            $form->questions()->sync($this->assignedQuestions->toArray());
         } else {
             $form->questions()->detach();
         }
 
-        $this->assignedQuestions = collect($form->questions()->pluck('question_id')->toArray());
+        $this->assignedQuestions = collect($form->questions()->pluck('question_id')->map(fn($id) => (int) $id)->toArray());
 
-        $this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
+        $assigned = $form->questions()->orderBy('form_question.order')->get();
+        $unassigned = $this->organization->questions()
+            ->whereNotIn('id', $this->assignedQuestions)
+            ->orderBy('question')
+            ->get();
+
+        $this->allQuestions = $assigned->concat($unassigned);
+
+        //$this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
     }
 
     /**
@@ -241,8 +260,14 @@ class Forms extends BaseComponent
 
         FormQuestion::whereFormId($formId)->whereQuestionId($questionId)->first()?->moveOrderUp();
 
-        $this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
-
+        $assigned = $form->questions()->orderBy('form_question.order')->get();
+        $unassigned = $this->organization->questions()
+            ->whereNotIn('id', $assigned->pluck('id'))
+            ->orderBy('question')
+            ->get();
+        
+        $this->allQuestions = $assigned->concat($unassigned);
+        
         $this->notification()->success(
             'Question Moved',
             'Your question was successfully moved.'
@@ -260,8 +285,14 @@ class Forms extends BaseComponent
 
         FormQuestion::whereFormId($formId)->whereQuestionId($questionId)->first()?->moveOrderDown();
 
-        $this->allQuestions = $this->organization->questions()->get()->merge($form->questions()->get())->sortBy('pivot.order');
-
+        $assigned = $form->questions()->orderBy('form_question.order')->get();
+        $unassigned = $this->organization->questions()
+            ->whereNotIn('id', $assigned->pluck('id'))
+            ->orderBy('question')
+            ->get();
+        
+        $this->allQuestions = $assigned->concat($unassigned);
+        
         $this->notification()->success(
             'Question Moved',
             'Your question was successfully moved.'

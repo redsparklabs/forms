@@ -119,32 +119,67 @@ if (!function_exists('calculateSections')) {
 
         $allSections = collect($questions)->groupBy('section')->reject(fn ($item, $key) => $key == 'custom');
         $sectionCount = $allSections->keys()->mapWithkeys(fn ($item) => [$item . '_count' => 0])->all();
-        $totalSections = $allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->flatten(1)->count();
+        
+        // Define section weights for weighted scoring
+        $sectionWeights = [
+            'Desirability_(Market)' => 0.40,    // 40%
+            'Feasibility_(Technical)' => 0.35,  // 35%
+            'Viability_(Regulatory)' => 0.25,   // 25%
+            'Intuitive_Scoring' => 0.0          // Not included in progress metric
+        ];
+
+        $scoringSections = $allSections->reject(fn ($item, $key) => $key == 'Intuitive_Scoring');
+        $totalSections = $scoringSections->flatten(1)->count();
 
         if(!$totalSections) {
             return [];
         }
 
         foreach ($responses as $response) {
-            $total = 0;
-            foreach ($allSections->reject(fn ($item, $key) => $key == 'Intutive_Scoring')->all() as $sectionData) {
-
-                $sectionQuestions = $sectionData->pluck('question')->map(fn ($item) => Str::slug($item))->toArray();
-
-                $total += collect($response->questions)->filter(function ($item, $key) use ($sectionQuestions) {
-                    return in_array($key, $sectionQuestions);
-                })->sum();
+            $weightedTotal = 0;
+            
+            // Manual calculation to ensure accuracy - using exact section assignments from config
+            $desirabilityQuestions = ['opportunity-segments', 'customer-need', 'value-proposition'];
+            $feasibilityQuestions = ['solution', 'channels', 'competitive-advantage'];
+            $viabilityQuestions = ['key-metrics', 'revenue', 'costs'];
+            
+            // Calculate Desirability (Market) - 40% weight
+            $desirabilityTotal = 0;
+            foreach ($desirabilityQuestions as $questionSlug) {
+                $desirabilityTotal += $response->questions[$questionSlug] ?? 0;
             }
+            $desirabilityAvg = count($desirabilityQuestions) > 0 ? $desirabilityTotal / count($desirabilityQuestions) : 0;
+            $weightedTotal += $desirabilityAvg * 0.40;
+            
+            // Calculate Feasibility (Technical) - 35% weight  
+            $feasibilityTotal = 0;
+            foreach ($feasibilityQuestions as $questionSlug) {
+                $feasibilityTotal += $response->questions[$questionSlug] ?? 0;
+            }
+            $feasibilityAvg = count($feasibilityQuestions) > 0 ? $feasibilityTotal / count($feasibilityQuestions) : 0;
+            $weightedTotal += $feasibilityAvg * 0.35;
+            
+            // Calculate Viability (Regulatory) - 25% weight
+            $viabilityTotal = 0;
+            foreach ($viabilityQuestions as $questionSlug) {
+                $viabilityTotal += $response->questions[$questionSlug] ?? 0;
+            }
+            $viabilityAvg = count($viabilityQuestions) > 0 ? $viabilityTotal / count($viabilityQuestions) : 0;
+            $weightedTotal += $viabilityAvg * 0.25;
 
-            $progressMetricTotal = number_format(($total / $totalSections), 1);
+            // The weighted total is the final progress metric (1 decimal place for clean UI)
+            $progressMetricTotal = number_format($weightedTotal, 1);
 
+            // Calculate individual section counts for display
             foreach ($allSections->all() as $section => $sectionData) {
                 $sectionQuestions = $sectionData->pluck('question')->map(fn ($item) => Str::slug($item))->toArray();
                 $sectionTotal = collect($response->questions)->filter(function ($item, $key) use ($sectionQuestions) {
                     return in_array($key, $sectionQuestions);
                 })->sum();
 
-                $sectionCount[$section . '_count'] .= number_format($sectionTotal / $allSections->count(), 1);
+                // Calculate section average for display
+                $sectionAverage = $sectionData->count() > 0 ? $sectionTotal / $sectionData->count() : 0;
+                $sectionCount[$section . '_count'] = number_format($sectionAverage, 1);
             }
         }
 
@@ -154,6 +189,7 @@ if (!function_exists('calculateSections')) {
             'allSections' => $allSections,
             'sectionCount' => $sectionCount,
             'progressMetricTotal' => $progressMetricTotal,
+            'sectionWeights' => $sectionWeights, // Include weights in return for reference
         ];
     }
 }
