@@ -12,8 +12,7 @@ module.exports = {
         './resources/views/**/*.blade.php',
         './vendor/wireui/wireui/resources/**/*.blade.php',
         './vendor/wireui/wireui/ts/**/*.ts',
-        './vendor/wireui/wireui/src/View/**/*.php',
-        './safelist.txt'
+        './vendor/wireui/wireui/src/View/**/*.php'
     ],
     safelist: [
         'text-karban-green-1',
@@ -22,6 +21,12 @@ module.exports = {
         'text-karban-green-4',
         'text-karban-green-5',
         'text-karban-green-6',
+        'bg-karban-green-1',
+        'bg-karban-green-2',
+        'bg-karban-green-3',
+        'bg-karban-green-4',
+        'bg-karban-green-5',
+        'bg-karban-green-6',
     ],
     theme: {
         extend: {

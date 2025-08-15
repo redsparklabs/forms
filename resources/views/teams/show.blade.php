@@ -1,128 +1,222 @@
 <div class="mb-5">
-    <header class="bg-white">
-        <div class="px-4 pt-6 pb-10 mx-auto max-w-7xl sm:px-10 lg:px-8">
-            <div class="flex">
-                <h2 class="flex-1 text-xl font-medium leading-6 text-gray-900 font-bold">{{ __('Project') }} - {{ $team->name }}</h2>
-
+    <header class="bg-gradient-to-r from-green-600 to-emerald-700 shadow-lg">
+        <div class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
                 <div>
+                    <h2 class="text-3xl font-bold leading-tight text-white tracking-tight">{{ __('Project') }} - {{ $team->name }}</h2>
+                    <p class="mt-2 text-green-100 text-lg">{{ $team->description ?: 'Project overview and progress tracking' }}</p>
+                </div>
+                <div class="flex space-x-3">
                     @if (Gate::check('updateTeam', $organization))
-                        <x-buttons.green text="Update" wire:click="confirmUpdate('{{$team->id}}')" />
+                        <button wire:click="confirmUpdate('{{$team->id}}')" class="bg-white text-green-700 hover:bg-green-50 font-semibold px-6 py-3 rounded-lg shadow-md transition-all duration-200 inline-flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                            {{ __('Update') }}
+                        </button>
                     @endif
-
-                     @if (Gate::check('removeTeam', $organization))
-                        <x-buttons.red text="Archive" wire:click="confirmDestroy('{{$team->id}}')" />
+                    @if (Gate::check('removeTeam', $organization))
+                        <button wire:click="confirmDestroy('{{$team->id}}')" class="bg-red-600 text-white hover:bg-red-700 font-semibold px-6 py-3 rounded-lg shadow-md transition-all duration-200 inline-flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            {{ __('Archive') }}
+                        </button>
                     @endif
-                </div>
-            </div>
-            <div class="mt-3">
-                <span class="text-gray-500 text-sm">{{ $team->description }}</span>
-            </div>
-
-            <div class="grid grid-cols-9 gap-4 mt-5">
-                <div class="row-span-3 col-span-3 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <span class="inline-block text-sm font-medium text-gray-500 mb-2">Latest Progress Metric</span>
-
-                    <div class="flex items-center justify-center">
-                        @php
-                            $circumference = 2 * 22 / 7 * 120;
-                        @endphp
-                        <svg class="transform -rotate-90 w-72 h-72">
-
-                            <circle cx="145" cy="145" r="120" stroke="currentColor" stroke-width="30" fill="transparent" class="text-gray-100" />
-
-                            <circle cx="145" cy="145" r="120" stroke="currentColor" stroke-width="30" fill="url('#myGradient')"
-                                stroke-dasharray="{{ $circumference }}"
-                                stroke-dashoffset="{{ $circumference - ($team->latestEvent()?->progressMetric($team) * 20) / 100 * $circumference }}"
-                                class="text-{{ $team->latestEvent()?->stage($team->latestEvent()?->progressMetric($team))->color}}" />
-                        </svg>
-                        <div class="flex items-center justify-center absolute text-5xl bg-{{ $team->latestEvent()?->stage($team->latestEvent()?->progressMetric($team))->color }} text-white rounded-full w-32 h-32 text-center p-4">{{ number_format($team->latestEvent()?->progressMetric($team), 1) }}</div>
-                    </div>
-                   {{--  <div class="flex items-center justify-center">
-                        <div class="h-72 w-72 rounded-full bg-gradient-to-l from-karban-green-2 to-{{ $team->latestEvent()?->stage($team->latestEvent()?->progressMetric($team))->color }} flex items-center justify-center">
-                            <div class="h-56 w-56 bg-white rounded-full flex items-center justify-center">
-                                <div class="flex items-center justify-center h-36 w-36 rounded-full text-white text-5xl bg-{{ $team->latestEvent()?->stage($team->latestEvent()?->progressMetric($team))->color }}">{{ number_format($team->latestEvent()?->progressMetric($team), 1) }}</div>
-                            </div>
-                        </div>
-                    </div> --}}
-                    <div class="flex mt-4">
-                        <div class="flex-1 p-2 text-white font-bold text-center bg-karban-green-2">1</div>
-                        <div class="flex-1 p-2 text-white font-bold text-center bg-karban-green-3">2</div>
-                        <div class="flex-1 p-2 text-white font-bold text-center bg-karban-green-4">3</div>
-                        <div class="flex-1 p-2 text-white font-bold text-center bg-karban-green-5">4</div>
-                        <div class="flex-1 p-2 text-white font-bold text-center bg-karban-green-6">5</div>
-                    </div>
-                    {{-- <div class="flex mt-4 bg-gradient-to-r from-karban-green-2 to-karban-green-6">
-                        <div class="flex-1 p-2 text-white font-bold text-center">1</div>
-                        <div class="flex-1 p-2 text-white font-bold text-center">2</div>
-                        <div class="flex-1 p-2 text-white font-bold text-center">3</div>
-                        <div class="flex-1 p-2 text-white font-bold text-center">4</div>
-                        <div class="flex-1 p-2 text-white font-bold text-center">5</div>
-                    </div> --}}
-
-                </div>
-
-
-                <div class="col-span-2 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Project Start Date</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->start_date?->format('m/d/y') ?? 'N/A' }}</dd>
-                </div>
-                 <div class="col-span-2 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Estimated Launch</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">
-                        @if($team->estimated_launch_date)
-                            Q{{ $team->estimated_launch_date?->quarter }} {{ $team->estimated_launch_date?->format('Y') }}
-                        @else
-                            N/A
-                        @endif
-                    </dd>
-                </div>
-
-                 <div class="col-span-2 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Minimum Success Criteria</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->minimum_success_criteria ?? 'N/A' }}</dd>
-                </div>
-
-                <div class="col-start-4 col-span-3 col-end-7 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Investment To Date</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestEvent()?->pivot?->investment, 2)}}</dd>
-                </div>
-
-                 <div class="col-start-7 col-span-3 x-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Net Present Value (NPV)</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">${{ number_format($team->latestEvent()?->pivot?->net_projected_value, 2)}}</dd>
-                </div>
-
-                <div class="col-start-4 col-span-3 col-end-7 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Development Stage</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->latestEvent()?->stage($team->latestEvent()->progressMetric($team))->name }}</dd>
-                </div>
-
-                 <div class="col-start-7 col-span-3 px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
-                    <dt class="text-sm font-medium text-gray-500 truncate">Project Sponsor</dt>
-                    <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $team->sponsor ?? 'N/A'}}</dd>
                 </div>
             </div>
         </div>
     </header>
 
+    <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
 
-    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 pt-5" x-cloak x-data="{ activeTab:  0 }">
-        <div class="flex z-0 relative top-0.5">
-            <a @click.prevent="activeTab = 0;" class="shadow border-gray-100 border-l border-t border-r border-gray-200 px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md text-sm font-medium text-gray-500 truncate" :class="activeTab == 0 ? 'text-gray-900' : 'border-b'">Progress Metrics</a>
-
-            <a @click.prevent="activeTab = 1" class="shadow relative border-l border-t border-r border-gray-200 px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md ml-1 text-sm font-medium text-gray-500 truncate" :class="activeTab == 1 ? 'text-gray-900' : 'border-b'">Assessment History</a>
-
-            <a @click.prevent="activeTab = 2" class="shadow relative border-l border-t border-r border-gray-200 px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md ml-1 text-sm font-medium text-gray-500 truncate" :class="activeTab == 2 ? 'text-gray-900' : 'border-b'">Business Model Progression</a>
-            
-            @can('viewMembers', $team)
-                <a @click.prevent="activeTab = 3" class="shadow relative border-l border-t border-r border-gray-200 px-4 py-2 cursor-pointer rounded-tl-md rounded-tr-md ml-1 text-sm font-medium text-gray-500 truncate" :class="activeTab == 3 ? 'text-gray-900' : 'border-b'">Team Members</a>
-            @endcan
+        <!-- Progress Metric Card -->
+        <div class="mb-8 bg-white shadow-lg border border-gray-200 rounded-xl overflow-hidden">
+            <div class="px-6 py-5 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-200">
+                <div class="flex items-center">
+                    <div class="h-10 w-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">Latest Progress Metric</h3>
+                        <p class="mt-1 text-sm text-gray-600">Current project development stage and scoring</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-8">
+                <div class="flex items-center justify-center">
+                    @php
+                        $score = $team->latestEvent()?->progressMetric($team) ?? 0;
+                        $percentage = ($score / 5) * 100;
+                    @endphp
+                    <div class="relative">
+                        <svg class="transform -rotate-90 w-64 h-64">
+                            <circle cx="128" cy="128" r="100" stroke="currentColor" stroke-width="20" fill="transparent" class="text-gray-200" />
+                            <circle cx="128" cy="128" r="100" stroke="currentColor" stroke-width="20" fill="transparent"
+                                stroke-dasharray="628"
+                                stroke-dashoffset="{{ 628 - ($percentage * 6.28) }}"
+                                class="text-green-500 transition-all duration-1000 ease-out" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="text-5xl font-bold text-green-600">{{ number_format($score, 1) }}</div>
+                                <div class="text-sm font-medium text-gray-500 mt-1">out of 5.0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex mt-6 rounded-lg overflow-hidden shadow-sm">
+                    <div class="flex-1 p-3 text-white font-bold text-center bg-gradient-to-r from-green-400 to-green-500 {{ $score >= 1 ? 'opacity-100' : 'opacity-40' }}">1</div>
+                    <div class="flex-1 p-3 text-white font-bold text-center bg-gradient-to-r from-green-500 to-green-600 {{ $score >= 2 ? 'opacity-100' : 'opacity-40' }}">2</div>
+                    <div class="flex-1 p-3 text-white font-bold text-center bg-gradient-to-r from-green-600 to-green-700 {{ $score >= 3 ? 'opacity-100' : 'opacity-40' }}">3</div>
+                    <div class="flex-1 p-3 text-white font-bold text-center bg-gradient-to-r from-green-700 to-green-800 {{ $score >= 4 ? 'opacity-100' : 'opacity-40' }}">4</div>
+                    <div class="flex-1 p-3 text-white font-bold text-center bg-gradient-to-r from-green-800 to-green-900 {{ $score >= 5 ? 'opacity-100' : 'opacity-40' }}">5</div>
+                </div>
+            </div>
         </div>
 
-        <div class="border-gray-100 border-l border-b border-r shadow relative rounded-tr-md rounded-b-md p-4 z-10 bg-white" :class="{ 'active': activeTab === 0 }" x-show.transition.in.opacity.duration.600="activeTab === 0">
-            <canvas id="myChart" width="1025"  role="img" aria-label="" ></canvas>
+
+        <!-- Project Information Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-3">
+                    <div class="h-8 w-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-sm font-medium text-gray-500">Project Start Date</h4>
+                </div>
+                <p class="text-lg font-semibold text-gray-900">{{ $team->start_date?->format('M j, Y') ?? 'N/A' }}</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-3">
+                    <div class="h-8 w-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-sm font-medium text-gray-500">Estimated Launch</h4>
+                </div>
+                <p class="text-lg font-semibold text-gray-900">
+                    @if($team->estimated_launch_date)
+                        Q{{ $team->estimated_launch_date?->quarter }} {{ $team->estimated_launch_date?->format('Y') }}
+                    @else
+                        N/A
+                    @endif
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-3">
+                    <div class="h-8 w-8 bg-gradient-to-r from-amber-500 to-amber-600 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-sm font-medium text-gray-500">Success Criteria</h4>
+                </div>
+                <p class="text-lg font-semibold text-gray-900">{{ Str::limit($team->minimum_success_criteria, 40) ?? 'N/A' }}</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-3">
+                    <div class="h-8 w-8 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-sm font-medium text-gray-500">Investment To Date</h4>
+                </div>
+                <p class="text-lg font-semibold text-gray-900">${{ number_format($team->latestEvent()?->pivot?->investment ?? 0, 2)}}</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-3">
+                    <div class="h-8 w-8 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-sm font-medium text-gray-500">Net Present Value</h4>
+                </div>
+                <p class="text-lg font-semibold text-gray-900">${{ number_format($team->latestEvent()?->pivot?->net_projected_value ?? 0, 2)}}</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-3">
+                    <div class="h-8 w-8 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-sm font-medium text-gray-500">Project Sponsor</h4>
+                </div>
+                <p class="text-lg font-semibold text-gray-900">{{ $team->sponsor ?? 'N/A'}}</p>
+            </div>
         </div>
-        <div class="border-gray-100 border-l border-b shadow relative rounded-tr-md rounded-b-md p-4 z-10 bg-white" :class="{ 'active': activeTab === 1 }" x-show.transition.in.opacity.duration.600="activeTab === 1">
+    </div>
+
+
+    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8" x-cloak x-data="{ activeTab: 0 }">
+        <!-- Modern Tab Navigation -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-8 px-6" aria-label="Tabs">
+                    <button @click="activeTab = 0" class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200" :class="activeTab === 0 ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            Progress Metrics
+                        </div>
+                    </button>
+                    <button @click="activeTab = 1" class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200" :class="activeTab === 1 ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Assessment History
+                        </div>
+                    </button>
+                    <button @click="activeTab = 2" class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200" :class="activeTab === 2 ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                            Business Model
+                        </div>
+                    </button>
+                    @can('viewMembers', $team)
+                        <button @click="activeTab = 3" class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200" :class="activeTab === 3 ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'">
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                </svg>
+                                Team Members
+                            </div>
+                        </button>
+                    @endcan
+                </nav>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" x-show.transition.in.opacity.duration.600="activeTab === 0">
+            <div class="mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Progress Metrics Chart</h3>
+                <p class="text-sm text-gray-600">Track progress, investment, and NPV over time</p>
+            </div>
+            <canvas id="myChart" width="1025" role="img" aria-label=""></canvas>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" x-show.transition.in.opacity.duration.600="activeTab === 1">
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">Assessment History</h3>
+                <p class="text-sm text-gray-600">Complete history of project assessments and results</p>
+            </div>
             <div class="flex flex-col">
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -134,28 +228,49 @@
                             </div>
                         </div>
                         <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer hover:text-gray-900" wire:click="sortBy('name')">
-                                        {{ __('Name') }}
-                                        @if($events->count() > 1)
-                                            <x-sort :dir="$sortDirection" :active="$sortByField == 'name'"/>
-                                        @endif
+                            <table class="min-w-full">
+                                <thead class="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-200">
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-900" wire:click="sortBy('name')">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m0 0h2m-2 0v4m6-6v-5a2 2 0 00-2-2H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            {{ __('Assessment Name') }}
+                                            @if($events->count() > 1)
+                                                <x-sort :dir="$sortDirection" :active="$sortByField == 'name'"/>
+                                            @endif
+                                        </div>
                                     </th>
-                                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer hover:text-gray-900" wire:click="sortBy('date')">
-                                        {{ __('Date') }}
-                                        @if($events->count() > 1)
-                                            <x-sort :dir="$sortDirection" :active="$sortByField == 'date'"/>
-                                        @endif
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-900" wire:click="sortBy('date')">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                            {{ __('Date') }}
+                                            @if($events->count() > 1)
+                                                <x-sort :dir="$sortDirection" :active="$sortByField == 'date'"/>
+                                            @endif
+                                        </div>
                                     </th>
-                                     <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                                        {{ __('Progress Metric') }}
+                                     <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                            </svg>
+                                            {{ __('Progress Score') }}
+                                        </div>
                                     </th>
-                                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                                        {{ __('NPV') }}
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                            </svg>
+                                            {{ __('NPV') }}
+                                        </div>
                                     </th>
-
-                                    <th scope="col" class="relative px-6 py-3 text-right"></th>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        {{ __('Actions') }}
+                                    </th>
                                 </thead>
                                 <tbody>
                                     @forelse ($events as $event)
@@ -163,37 +278,85 @@
                                             'bg-white' => $loop->odd,
                                             'bg-gray-50' => $loop->even
                                         ])>
-                                            <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                {{ $event->name }}
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center">
+                                                    <div class="h-8 w-8 bg-gradient-to-r from-green-100 to-emerald-100 rounded-lg flex items-center justify-center mr-3">
+                                                        <span class="text-xs font-semibold text-green-700">{{ substr($event->name, 0, 2) }}</span>
+                                                    </div>
+                                                    <div>
+                                                        <div class="text-sm font-medium text-gray-900">{{ $event->name }}</div>
+                                                        <div class="text-sm text-gray-500">Assessment Session</div>
+                                                    </div>
+                                                </div>
                                             </td>
-                                            <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                {{ $event->date->format('m/d/y') }}
+                                            <td class="px-6 py-4 text-sm text-gray-900">
+                                                {{ $event->date->format('M j, Y') }}
                                             </td>
-                                             <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                <span class="font-bold text-lg text-{{ colorize($event->progressMetric($team)) }}">{{ $event->progressMetric($team) }}</span>
+                                             <td class="px-6 py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 mr-3">
+                                                        <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold text-white bg-gradient-to-r from-green-500 to-emerald-500">
+                                                            {{ $event->progressMetric($team) }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="flex-1">
+                                                        <div class="w-16 bg-gray-200 rounded-full h-2">
+                                                            <div class="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full" style="width: {{ min(100, ($event->progressMetric($team) / 5) * 100) }}%"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
-                                             <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                ${{ number_format($event->teams->find($team->id)->pivot->net_projected_value, 2) ?? 'N/A' }}
+                                             <td class="px-6 py-4 text-sm font-semibold text-gray-900">
+                                                ${{ number_format($event->teams->find($team->id)->pivot->net_projected_value ?? 0, 2) }}
                                             </td>
-                                              <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                              <td class="px-6 py-4">
                                               @if($event->progressMetric($team) > 0)
-                                                    <x-buttons.green-link href="{{ route('events.results', [$event->id, $team->id]) }}">  {{ __('View Results') }}</x-buttons.green-link>
+                                                    <a href="{{ route('events.results', [$event->id, $team->id]) }}" class="inline-flex items-center px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 shadow-sm">
+                                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                                        </svg>
+                                                        View Results
+                                                    </a>
                                                 @else
-                                                    <x-buttons.yellow>Awaiting Results</x-buttons.green>
+                                                    <span class="inline-flex items-center px-3 py-2 bg-yellow-100 border border-yellow-200 rounded-lg text-sm font-medium text-yellow-800">
+                                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                        Awaiting Results
+                                                    </span>
                                                 @endif
                                             </td>
                                         </tr>
                                     @empty
                                         @if(!$keyword)
                                              <tr class="bg-white">
-                                                <td class="px-6 py-4 text-sm font-medium text-center text-gray-500 whitespace-nowrap" colspan="5">
-                                                    No assessments available. Go ahead and <a class="text-blue-500 underline" href="{{ route('events.index', 'create') }}">{{ __('create one') }}</a>!
+                                                <td class="px-6 py-12 text-center" colspan="5">
+                                                    <div class="flex flex-col items-center">
+                                                        <svg class="h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m0 0h2m-2 0v4m6-6v-5a2 2 0 00-2-2H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                        <h3 class="text-lg font-medium text-gray-900 mb-2">No assessments yet</h3>
+                                                        <p class="text-gray-500 mb-4">Get started by creating your first assessment.</p>
+                                                        <a href="{{ route('events.index', 'create') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200">
+                                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                            </svg>
+                                                            Create Assessment
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @else
                                             <tr class="bg-white">
-                                                <td class="px-6 py-4 text-sm font-medium text-center text-gray-500 whitespace-nowrap" colspan="5">
-                                                    {{ __('No Growth Boards found.') }}
+                                                <td class="px-6 py-12 text-center" colspan="5">
+                                                    <div class="flex flex-col items-center">
+                                                        <svg class="h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                                        </svg>
+                                                        <h3 class="text-lg font-medium text-gray-900 mb-2">No results found</h3>
+                                                        <p class="text-gray-500">Try adjusting your search criteria.</p>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endif
@@ -210,7 +373,11 @@
                 </div>
             </div>
         </div>
-        <div class="border-gray-100 border-l border-b shadow relative rounded-tr-md rounded-b-md p-4 z-10 bg-white" :class="{ 'active': activeTab === 2}" x-show.transition.in.opacity.duration.600="activeTab === 2">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" x-show.transition.in.opacity.duration.600="activeTab === 2">
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">Business Model Progression</h3>
+                <p class="text-sm text-gray-600">Interactive business model components and development stage</p>
+            </div>
 
             <div class="flex">
                 <div class="mr-12 flex-1 gap-4 shadow p-4 rounded">
@@ -298,7 +465,11 @@
         
         <!-- Team Members Tab Content -->
         @can('viewMembers', $team)
-            <div class="border-gray-100 border-l border-b shadow relative rounded-tr-md rounded-b-md p-4 z-10 bg-white" :class="{ 'active': activeTab === 3 }" x-show.transition.in.opacity.duration.600="activeTab === 3">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" x-show.transition.in.opacity.duration.600="activeTab === 3">
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900">Team Members</h3>
+                    <p class="text-sm text-gray-600">Manage project team members and their roles</p>
+                </div>
                 <livewire:team-member-manager :team="$team" />
             </div>
         @endcan

@@ -99,6 +99,7 @@ class FormBuilder extends Component
      */
     public function render()
     {
-        return view('livewire.form-builder')->layout('layouts.form', ['header' => $this->form->name]);
+        $header = $this->event ? $this->event->name : $this->form->name;
+        return view('livewire.form-builder')->layout('layouts.form', ['header' => $header]);
     }
 }

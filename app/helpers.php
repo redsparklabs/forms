@@ -46,22 +46,26 @@ if (!function_exists('colorize')) {
     {
 
         if (inbetween($number, 0, 1)) {
-            return 'karban-green-2';
+            return 'karban-green-1';
         }
 
         if (inbetween($number, 1.1, 2)) {
-            return 'karban-green-3';
+            return 'karban-green-2';
         }
 
         if (inbetween($number, 2.1, 3)) {
-            return 'karban-green-4';
+            return 'karban-green-3';
         }
 
         if (inbetween($number, 3.1, 4)) {
-            return 'karban-green-5';
+            return 'karban-green-4';
         }
 
         if (inbetween($number, 4.1, 5)) {
+            return 'karban-green-5';
+        }
+
+        if ($number > 5) {
             return 'karban-green-6';
         }
 
