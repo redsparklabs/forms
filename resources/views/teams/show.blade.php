@@ -1,10 +1,10 @@
 <div class="mb-5">
-    <header class="bg-gradient-to-r from-green-600 to-emerald-700 shadow-lg">
+    <header class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg">
         <div class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
                 <div>
                     <h2 class="text-3xl font-bold leading-tight text-white tracking-tight">{{ __('Project') }} - {{ $team->name }}</h2>
-                    <p class="mt-2 text-green-100 text-lg">{{ $team->description ?: 'Project overview and progress tracking' }}</p>
+                    <p class="mt-2 text-gray-300 text-lg">{{ $team->description ?: 'Project overview and progress tracking' }}</p>
                 </div>
                 <div class="flex space-x-3">
                     @if (Gate::check('updateTeam', $organization))
@@ -30,132 +30,56 @@
 
     <div class="py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
 
-        <!-- Progress Metric Card -->
-        <div class="mb-8 bg-white shadow-lg border border-gray-200 rounded-xl overflow-hidden">
-            <div class="px-6 py-5 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-200">
-                <div class="flex items-center">
-                    <div class="h-10 w-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mr-4">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-900">Latest Progress Metric</h3>
-                        <p class="mt-1 text-sm text-gray-600">Current project development stage and scoring</p>
-                    </div>
-                </div>
-            </div>
-            <div class="p-8">
-                <div class="flex items-center justify-center">
-                    @php
-                        $score = $team->latestEvent()?->progressMetric($team) ?? 0;
-                        $percentage = ($score / 5) * 100;
-                    @endphp
-                    <div class="relative">
-                        <svg class="transform -rotate-90 w-64 h-64">
-                            <circle cx="128" cy="128" r="100" stroke="currentColor" stroke-width="20" fill="transparent" class="text-gray-200" />
-                            <circle cx="128" cy="128" r="100" stroke="currentColor" stroke-width="20" fill="transparent"
-                                stroke-dasharray="628"
-                                stroke-dashoffset="{{ 628 - ($percentage * 6.28) }}"
-                                class="text-green-500 transition-all duration-1000 ease-out" />
-                        </svg>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="text-center">
-                                <div class="text-5xl font-bold text-green-600">{{ number_format($score, 1) }}</div>
-                                <div class="text-sm font-medium text-gray-500 mt-1">out of 5.0</div>
+        <!-- Overview: Progress Metric + Info tiles -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+                <!-- Progress Metric (Left) -->
+                <div class="lg:col-span-2">
+                    <div class="text-center">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">Overall Progress Metric</h2>
+                        <div class="flex items-center justify-center">
+                            @php
+                                $score = $team->latestEvent()?->progressMetric($team) ?? 0;
+                                $percentage = ($score / 5) * 100;
+                            @endphp
+                            <div class="relative">
+                                <svg class="transform -rotate-90 w-64 h-64">
+                                    <circle cx="128" cy="128" r="100" stroke="currentColor" stroke-width="20" fill="transparent" class="text-gray-200" />
+                                    <circle cx="128" cy="128" r="100" stroke="currentColor" stroke-width="20" fill="transparent"
+                                        stroke-dasharray="628"
+                                        stroke-dashoffset="{{ 628 - ($percentage * 6.28) }}"
+                                        class="text-green-500 transition-all duration-1000 ease-out" />
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div class="text-5xl font-bold text-green-600">{{ number_format($score, 1) }}</div>
+                                        <div class="text-sm font-medium text-gray-500 mt-1">Progress Metric</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="flex mt-6 rounded-lg overflow-hidden shadow-sm">
-                    <div class="flex-1 p-3 text-white font-bold text-center bg-gradient-to-r from-green-400 to-green-500 {{ $score >= 1 ? 'opacity-100' : 'opacity-40' }}">1</div>
-                    <div class="flex-1 p-3 text-white font-bold text-center bg-gradient-to-r from-green-500 to-green-600 {{ $score >= 2 ? 'opacity-100' : 'opacity-40' }}">2</div>
-                    <div class="flex-1 p-3 text-white font-bold text-center bg-gradient-to-r from-green-600 to-green-700 {{ $score >= 3 ? 'opacity-100' : 'opacity-40' }}">3</div>
-                    <div class="flex-1 p-3 text-white font-bold text-center bg-gradient-to-r from-green-700 to-green-800 {{ $score >= 4 ? 'opacity-100' : 'opacity-40' }}">4</div>
-                    <div class="flex-1 p-3 text-white font-bold text-center bg-gradient-to-r from-green-800 to-green-900 {{ $score >= 5 ? 'opacity-100' : 'opacity-40' }}">5</div>
-                </div>
-            </div>
-        </div>
 
-
-        <!-- Project Information Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center mb-3">
-                    <div class="h-8 w-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-3">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
+                <!-- Tiles (Right) -->
+                <div class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="border rounded-lg p-4 bg-green-50 border-green-200">
+                        <div class="text-sm text-gray-600">Project Name</div>
+                        <div class="text-2xl font-bold text-green-700 mt-1">{{ $team->name }}</div>
                     </div>
-                    <h4 class="text-sm font-medium text-gray-500">Project Start Date</h4>
-                </div>
-                <p class="text-lg font-semibold text-gray-900">{{ $team->start_date?->format('M j, Y') ?? 'N/A' }}</p>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center mb-3">
-                    <div class="h-8 w-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
+                    <div class="border rounded-lg p-4">
+                        <div class="text-sm text-gray-600">Project Start Date</div>
+                        <div class="text-lg font-semibold text-gray-900 mt-1">{{ $team->start_date?->format('M j, Y') ?? 'N/A' }}</div>
                     </div>
-                    <h4 class="text-sm font-medium text-gray-500">Estimated Launch</h4>
-                </div>
-                <p class="text-lg font-semibold text-gray-900">
-                    @if($team->estimated_launch_date)
-                        Q{{ $team->estimated_launch_date?->quarter }} {{ $team->estimated_launch_date?->format('Y') }}
-                    @else
-                        N/A
-                    @endif
-                </p>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center mb-3">
-                    <div class="h-8 w-8 bg-gradient-to-r from-amber-500 to-amber-600 rounded-lg flex items-center justify-center mr-3">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
-                        </svg>
+                    <div class="border rounded-lg p-4">
+                        <div class="text-sm text-gray-600">Investment To Date</div>
+                        <div class="text-lg font-semibold text-gray-900 mt-1">${{ number_format($team->latestEvent()?->pivot?->investment ?? 0, 2) }}</div>
                     </div>
-                    <h4 class="text-sm font-medium text-gray-500">Success Criteria</h4>
-                </div>
-                <p class="text-lg font-semibold text-gray-900">{{ Str::limit($team->minimum_success_criteria, 40) ?? 'N/A' }}</p>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center mb-3">
-                    <div class="h-8 w-8 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center mr-3">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                        </svg>
+                    <div class="border rounded-lg p-4">
+                        <div class="text-sm text-gray-600">Net Projected Value</div>
+                        <div class="text-lg font-semibold text-gray-900 mt-1">${{ number_format($team->latestEvent()?->pivot?->net_projected_value ?? 0, 2) }}</div>
                     </div>
-                    <h4 class="text-sm font-medium text-gray-500">Investment To Date</h4>
                 </div>
-                <p class="text-lg font-semibold text-gray-900">${{ number_format($team->latestEvent()?->pivot?->investment ?? 0, 2)}}</p>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center mb-3">
-                    <div class="h-8 w-8 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center mr-3">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                        </svg>
-                    </div>
-                    <h4 class="text-sm font-medium text-gray-500">Net Present Value</h4>
-                </div>
-                <p class="text-lg font-semibold text-gray-900">${{ number_format($team->latestEvent()?->pivot?->net_projected_value ?? 0, 2)}}</p>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center mb-3">
-                    <div class="h-8 w-8 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                    </div>
-                    <h4 class="text-sm font-medium text-gray-500">Project Sponsor</h4>
-                </div>
-                <p class="text-lg font-semibold text-gray-900">{{ $team->sponsor ?? 'N/A'}}</p>
             </div>
         </div>
     </div>
@@ -171,7 +95,7 @@
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                             </svg>
-                            Progress Metrics
+                            Progress Metric
                         </div>
                     </button>
                     <button @click="activeTab = 1" class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200" :class="activeTab === 1 ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'">
@@ -207,7 +131,7 @@
         <!-- Tab Content -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" x-show.transition.in.opacity.duration.600="activeTab === 0">
             <div class="mb-4">
-                <h3 class="text-lg font-semibold text-gray-900">Progress Metrics Chart</h3>
+                <h3 class="text-lg font-semibold text-gray-900">Progress Metric chart</h3>
                 <p class="text-sm text-gray-600">Track progress, investment, and NPV over time</p>
             </div>
             <canvas id="myChart" width="1025" role="img" aria-label=""></canvas>
@@ -255,9 +179,9 @@
                                      <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         <div class="flex items-center">
                                             <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m0 0h2m-2 0v4m6-6v-5a2 2 0 00-2-2H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                             </svg>
-                                            {{ __('Progress Score') }}
+                                            {{ __('Progress Metric') }}
                                         </div>
                                     </th>
                                     <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -391,29 +315,21 @@
                         @if($responses && $responses->count() > 0 && $latestEvent && $latestEvent->latestForm())
                             @foreach($latestEvent->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $i => $question)
                                 @php
-                                    $number = 0;
+                                    $number = 0.0;
                                     $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
-                                    if($mappedResponses->count() > 0 && $mappedResponses->pluck(Str::slug($question['question']))->sum() > 0) {
-                                        $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
+                                    if ($mappedResponses->count() > 0) {
+                                        $avg = $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count();
+                                        $number = number_format($avg, 1);
                                     }
 
                                 @endphp
-                                    <div x-data="{ tooltip{{$i}}: false }"
-                                     class="{{ $question['classes'] }} bg-{{ colorize($number) }}  rounded flex cursor-pointer hover:opacity-80 transition-opacity"
-                                     wire:click="showHistoricalChart('{{ Str::slug($question['question']) }}', '{{ $question['question'] }}', '{{ addslashes($question['description']) }}')"
-                                    >
-                                        <div
-                                            x-on:mouseover="tooltip{{$i}} = true"
-                                            x-on:mouseleave="tooltip{{$i}} = false"
-                                            class="text-center p-4 items-center justify-center flex w-full text-white font-bold py-8"
-                                        >
-                                            <div>{{ $number}}</div>
-                                        </div>
-                                          <div class="relative" x-cloak x-show.transition.origin.top="tooltip{{$i}}">
-                                            <div class="absolute top-0 z-10 w-32 p-2 -mt-1 text-sm leading-tight text-black transform -translate-x-1/2 -translate-y-full bg-white rounded-lg border border-black">
-                                                <div class="font-bold text-center">{{ $question['question']}}</div>
-                                                <div class="text-center text-xs mt-1 text-gray-600">View Details</div>
-                                            </div>
+                                    <div class="{{ $question['classes'] }} relative bg-{{ colorize($number) }} rounded flex items-center justify-center py-8 text-white font-bold cursor-pointer hover:opacity-95"
+                                         wire:click="showHistoricalChart('{{ Str::slug($question['question']) }}', @js($question['question']), @js($question['description'] ?? ''))"
+                                         role="button"
+                                         aria-label="Show historical scores for {{ $question['question'] }}">
+                                        <div class="flex items-center justify-center w-full">
+                                            <div class="absolute top-1 left-1 text-[10px] leading-none font-semibold opacity-90">{{ $question['abbrev'] }}</div>
+                                            <div>{{ $number }}</div>
                                         </div>
                                     </div>
                             @endforeach
@@ -427,30 +343,22 @@
                                     $mappedResponses = collect($responses)->map(function ($value) {
                                         return $value->response['questions'];
                                     });
-                                    $number = 0;
-                                    if($mappedResponses->pluck(Str::slug($question['question']))->sum()) {
-                                        $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
+                                    $number = 0.0;
+                                    if ($mappedResponses->count() > 0) {
+                                        $avg = $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count();
+                                        $number = number_format($avg, 1);
                                     }
                                 @endphp
 
-                                <div x-data="{ tooltip2{{$i}}: false }"
-                                     class="{{ $question['classes'] }} bg-{{ colorize($number) }}  rounded flex cursor-pointer hover:opacity-80 transition-opacity"
-                                     wire:click="showHistoricalChart('{{ Str::slug($question['question']) }}', '{{ $question['question'] }}', '{{ addslashes($question['description']) }}')"
-                                    >
-                                        <div
-                                            x-on:mouseover="tooltip2{{$i}} = true"
-                                            x-on:mouseleave="tooltip2{{$i}} = false"
-                                            class="text-center p-4 items-center justify-center flex w-full text-white font-bold py-8"
-                                        >
-                                            <div>{{ $number}}</div>
-                                        </div>
-                                          <div class="relative" x-cloak x-show.transition.origin.top="tooltip2{{$i}}">
-                                            <div class="absolute top-0 z-10 w-32 p-2 -mt-1 text-sm leading-tight text-black transform -translate-x-1/2 -translate-y-full bg-white rounded-lg border border-black">
-                                                <div class="font-bold text-center">{{ $question['question']}}</div>
-                                                <div class="text-center text-xs mt-1 text-gray-600">View Details</div>
-                                            </div>
-                                        </div>
+                                <div class="{{ $question['classes'] }} relative bg-{{ colorize($number) }} rounded flex items-center justify-center py-8 text-white font-bold cursor-pointer hover:opacity-95"
+                                     wire:click="showHistoricalChart('{{ Str::slug($question['question']) }}', @js($question['question']), @js($question['description'] ?? ''))"
+                                     role="button"
+                                     aria-label="Show historical scores for {{ $question['question'] }}">
+                                    <div class="flex items-center justify-center w-full">
+                                        <div class="absolute top-1 left-1 text-[10px] leading-none font-semibold opacity-90">{{ $question['abbrev'] }}</div>
+                                        <div>{{ $number }}</div>
                                     </div>
+                                </div>
                             @endforeach
                         @endif
                     </div>
@@ -554,13 +462,40 @@
         loadGraph()
     })
 
+    @php
+        // Build a 90-day daily period ending at the latest event date (fallback: today)
+        $latestDate = $chartEvents->max('date') ?? now();
+        $endDate = \Carbon\Carbon::parse($latestDate);
+        $startDate = (clone $endDate)->subDays(90);
+        $period = \Carbon\CarbonPeriod::create($startDate->startOfDay(), '1 day', $endDate->endOfDay());
+        $days = collect($period->toArray());
+
+        // Map event data by day key
+        $progressByDay = $chartEvents
+            ->mapWithKeys(fn($e) => [$e->date->format('Y-m-d') => $e->progressMetric($team)]);
+        $investmentByDay = $chartEvents
+            ->mapWithKeys(fn($e) => [$e->date->format('Y-m-d') => $e->pivot?->investment]);
+        $npvByDay = $chartEvents
+            ->mapWithKeys(fn($e) => [$e->date->format('Y-m-d') => $e->pivot?->net_projected_value]);
+
+        // Build aligned arrays for the daily period; use null for missing days
+        $labelsDisplay = $days->map(fn($d) => $d->format('M j'))->values();
+        $progressArray = [];
+        $investmentArray = [];
+        $npvArray = [];
+        foreach ($days as $day) {
+            $key = $day->format('Y-m-d');
+            $progressArray[] = $progressByDay[$key] ?? null;
+            $investmentArray[] = $investmentByDay[$key] ?? null;
+            $npvArray[] = $npvByDay[$key] ?? null;
+        }
+    @endphp
+
     function loadGraph() {
         const chart = new Chart(document.getElementById("myChart"), {
             type: "line",
             data: {
-                labels: [
-                    "{!! $events->sortBy('date')->map(fn($item) => $item->date->format('M'))->implode('","') !!}"
-                ],
+                labels: {!! $labelsDisplay->toJson() !!},
                 datasets: [{
                     label: 'Progress Metric',
                     tension: .5,
@@ -568,9 +503,7 @@
                     borderWidth: 3,
                     backgroundColor: "#00c241",
                     yAxisID: 'y',
-                    data: [
-                        {{ $events->sortBy('date')->map(fn($item) => $item->progressMetric($team))->implode(',') }}
-                    ],
+                    data: {!! json_encode($progressArray) !!},
                 },{
                     label: 'Investment to Date',
                     tension: .5,
@@ -578,9 +511,7 @@
                     borderWidth: 3,
                     backgroundColor: "#61aa8d",
                     yAxisID: 'y2',
-                    data: [
-                        {{ $events->sortBy('date')->map(fn($item) => (string) $item->pivot?->investment)->implode(',') }}
-                    ],
+                    data: {!! json_encode($investmentArray) !!},
                 },{
                     label: 'NPV',
                     tension: .5,
@@ -588,9 +519,7 @@
                     borderWidth: 3,
                     backgroundColor: "#154214",
                     yAxisID: 'y1',
-                    data: [
-                        {{ $events->sortBy('date')->map(fn($item) => (string) $item->pivot?->net_projected_value)->implode(',') }}
-                    ],
+                    data: {!! json_encode($npvArray) !!},
                 }]
             },
             options: {
@@ -612,7 +541,7 @@
                 plugins: {
                     title: {
                         display: false,
-                        text: 'Progress Metrics'
+                        text: 'Progress Metric'
                     }
                 },
                 scales: {
@@ -636,6 +565,17 @@
                         position: 'right',
                         display: false,
                         type: 'logarithmic'
+                    },
+                    x: {
+                        ticks: {
+                            autoSkip: false,
+                            callback: function(value, index, ticks) {
+                                // Show one label per week (every 7th label)
+                                return index % 7 === 0 ? this.getLabelForValue(value) : '';
+                            },
+                            maxRotation: 0,
+                            minRotation: 0
+                        }
                     }
                 }
             }

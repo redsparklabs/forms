@@ -1,12 +1,12 @@
 <div class="mb-5">
-    <header class="bg-gradient-to-r from-green-600 to-emerald-700 shadow-lg">
+    <header class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg">
         <div class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
                 <div>
                     <h2 class="text-3xl font-bold leading-tight text-white tracking-tight">
                         {{ __('Portfolio') }}
                     </h2>
-                    <p class="mt-2 text-green-100 text-lg">
+                    <p class="mt-2 text-gray-300 text-lg">
                         Manage and track your innovation projects
                     </p>
                 </div>

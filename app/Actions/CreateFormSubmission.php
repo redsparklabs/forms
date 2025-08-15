@@ -57,24 +57,29 @@ class CreateFormSubmission
      */
     public function rules(): array
     {
-        $data = array_merge(array_map(function ($item) {
-            return ['questions.' . $item => ['required']];
-        }, $this->slugQuestions));
+        $rules = [];
 
-        $data = array_merge(...$data);
+        // Business model sliders: 0..5 allowed
+        foreach (config('questions.business-model') as $q) {
+            $slug = \Illuminate\Support\Str::slug($q['question']);
+            $rules['questions.' . $slug] = ['required', 'integer', 'between:0,5'];
+        }
 
-        // $data1 = array_merge(array_map(function ($item) {
-        //     return ['questions.custom.' . $item => ['required']];
-        // }, $this->customQuestions));
+        // Qualitative intuitive scoring sliders: 1..5
+        foreach (config('questions.qualitative-intuitive-scoring') as $q) {
+            $slug = \Illuminate\Support\Str::slug($q['question']);
+            $rules['questions.' . $slug] = ['required', 'integer', 'between:1,5'];
+        }
 
-        // $data1 = array_merge(...$data1);
+        // Optional: custom text questions are free text, not required by design
+        // foreach ($this->customQuestions as $slug) {
+        //     $rules['questions.custom.' . $slug] = ['nullable', 'string'];
+        // }
 
-        $data = array_merge($data, $data, [
-            'email' => ['required', 'email'],
-            'team' => ['required'],
-        ]);
+        $rules['email'] = ['required', 'email'];
+        $rules['team'] = ['required'];
 
-        return $data;
+        return $rules;
     }
 
     /**

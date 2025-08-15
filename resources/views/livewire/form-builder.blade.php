@@ -178,7 +178,7 @@
                     <input id="email" type="email" wire:model.defer="create_form.email" 
                            class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-gray-900 placeholder-gray-500" 
                            placeholder="your.email@example.com">
-                    <x-jet-input-error for="email" class="mt-2" />
+                    <x-jet-input-error for="email" bag="addFormSubmission" class="mt-2" />
                 </div>
             </div>
 
@@ -195,7 +195,7 @@
                                 </div>
                             @endforeach
                         </div>
-                        <x-jet-input-error for="team" class="mt-4" />
+                        <x-jet-input-error for="team" bag="addFormSubmission" class="mt-4" />
                     </div>
                 </div>
             @endif
@@ -270,7 +270,7 @@
                                 border: none;
                             }
                         </style>
-                        <x-jet-input-error for="questions.{{ $slug }}" class="mt-4" />
+                        <x-jet-input-error for="questions.{{ $slug }}" bag="addFormSubmission" class="mt-4" />
                     </div>
                 </div>
             @endforeach
@@ -320,7 +320,7 @@
                                 </div>
                             </div>
                         </div>
-                        <x-jet-input-error for="questions.{{ $slug }}" class="mt-4" />
+                        <x-jet-input-error for="questions.{{ $slug }}" bag="addFormSubmission" class="mt-4" />
                     </div>
                 </div>
             @endforeach
@@ -391,7 +391,7 @@
                         <textarea wire:model.defer="create_form.questions.custom.{{ $slug }}" rows="4" 
                                   class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-gray-900 placeholder-gray-500 resize-vertical" 
                                   placeholder="Please provide your detailed response here..."></textarea>
-                        <x-jet-input-error for="questions.custom.{{ $slug }}" class="mt-2" />
+                        <x-jet-input-error for="questions.custom.{{ $slug }}" bag="addFormSubmission" class="mt-2" />
                     </div>
                 </div>
             @endforeach

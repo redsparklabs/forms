@@ -66,6 +66,19 @@ class FormBuilder extends Component
         }, array_merge(
             $this->form->questions->pluck('question')->toArray(),
         ));
+
+        // Ensure default values exist for all sliders so validation sees the fields as present
+        // Business model sliders allow 0..5
+        foreach (config('questions.business-model') as $q) {
+            $slug = Str::slug($q['question']);
+            data_set($this->create_form, "questions.$slug", 0, overwrite: false);
+        }
+
+        // Qualitative intuitive scoring sliders are 1..5
+        foreach (config('questions.qualitative-intuitive-scoring') as $q) {
+            $slug = Str::slug($q['question']);
+            data_set($this->create_form, "questions.$slug", 1, overwrite: false);
+        }
     }
 
 

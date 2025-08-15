@@ -1,5 +1,5 @@
 <div class="mb-5">
-    <header class="bg-gradient-to-r from-green-600 to-emerald-600 shadow-lg">
+    <header class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg">
         <div class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
@@ -10,7 +10,7 @@
                     </div>
                     <div>
                         <h1 class="text-2xl font-bold text-white">{{ $event->name }}</h1>
-                        <p class="text-green-100 text-sm mt-1">
+                        <p class="text-gray-300 text-sm mt-1">
                             <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 112 0v1m-2 0h4m-4 0a2 2 0 00-2 2v10a2 2 0 002 2h4a2 2 0 002-2V9a2 2 0 00-2-2m-4 0V8a2 2 0 012-2h4a2 2 0 012 2v1"></path>
                             </svg>
@@ -156,7 +156,7 @@
                                 @endif
                             </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                                {{ __('Progress Score') }}
+                                {{ __('Progress Metric') }}
                             </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer hover:text-gray-900" wire:click="sortBy('priority_level')">
                                 {{ __('Priority Level') }}
@@ -263,60 +263,135 @@
     </div>
 
         <!-- Update Event Confirmation Modal -->
-        <x-jet-dialog-modal wire:model="confirmingUpdating">
+        <x-jet-dialog-modal wire:model="confirmingUpdating" maxWidth="2xl">
         <x-slot name="title">
-            {{ __('Update Growth Board') }}
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900">{{ __('Update Assessment') }}</h3>
+                    <p class="text-sm text-gray-500 mt-1">{{ __('Modify assessment details and settings') }}</p>
+                </div>
+            </div>
         </x-slot>
 
+        <x-slot name="description"></x-slot>
+
         <x-slot name="content">
-            <div class="col-span-6 mb-4 sm:col-span-4">
-                <x-jet-label for="name" value="{{ __('Growth Board Name') }}" />
-                <x-jet-input id="name" type="text" class="block w-full mt-1" model="updateForm.name" wire:model.defer="updateForm.name" />
-                <x-jet-input-error for="updateForm.name" class="mt-2" />
-            </div>
-
-            <div class="col-span-6 mb-4 sm:col-span-4">
-                <x-jet-label for="date" value="{{ __('Date') }}" />
-                <x-jet-input id="date" onkeydown="return false" type="date" class="block w-full mt-1" required pattern="\d{4}-\d{2}-\d{2}" wire:model.defer="updateForm.date" />
-                <x-jet-input-error for="updateForm.date" class="mt-2" />
-            </div>
-
-            <div class="col-span-6 mb-4 sm:col-span-4">
-                <x-jet-label for="team" value="{{ __('Teams') }}" />
-                <div class="grid grid-cols-4 gap-4">
-                    @foreach($organization->teams as $id => $team)
-                        <div class="py-2">
-                            <x-jet-label for="teams.{{ $team['id'] }}">
-                                <x-jet-checkbox name="team" id="teams.{{ $team['id'] }}" wire:model="updateForm.teams.{{ $team['id'] }}" :value="$team['id']" />
-                                {{ $team['name'] }}
-                            </x-jet-label>
-                        </div>
-                    @endforeach
+            <div class="space-y-6">
+                <!-- Assessment Name -->
+                <div class="space-y-2">
+                    <label for="name" class="flex items-center text-sm font-medium text-gray-700">
+                        <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m0 0h2m-2 0v4m6-6v-5a2 2 0 00-2-2H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        {{ __('Assessment Name') }}
+                        <span class="text-red-500 ml-1">*</span>
+                    </label>
+                    <input id="name" type="text" class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors duration-200" wire:model.defer="updateForm.name" placeholder="Enter assessment name" />
+                    <x-jet-input-error for="updateForm.name" class="mt-1" />
                 </div>
-                <x-jet-input-error for="updateForm.teams" class="mt-2" />
-            </div>
 
-            <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="forms" value="{{ __('Attach Form') }}" />
-                <div class="grid grid-cols-4 gap-4">
-                    @foreach($organization->forms as $id => $form)
-                        <div class="py-2">
-                            <x-radio name="form" id="forms.{{ $form['id'] }}" wire:model="updateForm.forms" :value="$form['id']" :label="$form['name']" />
-                        </div>
-                    @endforeach
+                <!-- Date and Department -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label for="date" class="flex items-center text-sm font-medium text-gray-700">
+                            <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            {{ __('Assessment Date') }}
+                            <span class="text-red-500 ml-1">*</span>
+                        </label>
+                        <input id="date" onkeydown="return false" type="date" class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors duration-200" required pattern="\\d{4}-\\d{2}-\\d{2}" wire:model.defer="updateForm.date" />
+                        <x-jet-input-error for="updateForm.date" class="mt-1" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="department" class="flex items-center text-sm font-medium text-gray-700">
+                            <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            {{ __('Department') }}
+                        </label>
+                        <input id="department" type="text" class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors duration-200" wire:model.defer="updateForm.department" placeholder="Optional department name" />
+                        <x-jet-input-error for="updateForm.department" class="mt-1" />
+                    </div>
                 </div>
-                <x-jet-input-error for="updateForm.forms" class="mt-2" />
+
+                <!-- Projects Selection -->
+                <div class="space-y-2">
+                    <label class="flex items-center text-sm font-medium text-gray-700">
+                        <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                        {{ __('Select Projects') }}
+                        <span class="text-red-500 ml-1">*</span>
+                    </label>
+                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            @foreach($organization->teams as $id => $team)
+                                <label class="flex items-center p-3 bg-white rounded-lg border border-gray-200 hover:bg-green-50 hover:border-green-200 cursor-pointer transition-colors duration-200">
+                                    <input type="checkbox" name="team" id="teams.{{ $team['id'] }}" wire:model="updateForm.teams.{{ $team['id'] }}" value="{{ $team['id'] }}" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2" />
+                                    <span class="ml-3 text-sm font-medium text-gray-700">{{ $team['name'] }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                    <x-jet-input-error for="updateForm.teams" class="mt-1" />
+                </div>
+
+                <!-- Form Selection -->
+                <div class="space-y-2">
+                    <label class="flex items-center text-sm font-medium text-gray-700">
+                        <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        {{ __('Assessment Form') }}
+                    </label>
+                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <div class="space-y-2">
+                            @foreach($organization->forms as $id => $form)
+                                <label class="flex items-center p-3 bg-white rounded-lg border border-gray-200 hover:bg-green-50 hover:border-green-200 cursor-pointer transition-colors duration-200">
+                                    <input type="radio" name="form" id="forms.{{ $form['id'] }}" wire:model="updateForm.forms" value="{{ $form['id'] }}" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 focus:ring-2" />
+                                    <div class="ml-3">
+                                        <span class="text-sm font-medium text-gray-700">{{ $form['name'] }}</span>
+                                        @if($form['description'])
+                                            <p class="text-xs text-gray-500 mt-1">{{ Str::limit($form['description'], 60) }}</p>
+                                        @endif
+                                    </div>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                    <x-jet-input-error for="updateForm.forms" class="mt-1" />
+                </div>
             </div>
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingUpdating')" wire:loading.attr="disabled">
-                {{ __('Cancel') }}
-            </x-jet-secondary-button>
-
-            <x-jet-button class="ml-2" wire:click="update" spinner="update">
-                {{ __('Update') }}
-            </x-jet-button>
+            <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                <div class="text-sm text-gray-500">
+                    <span class="text-red-500">*</span> {{ __('Required fields') }}
+                </div>
+                <div class="flex space-x-3">
+                    <button type="button" wire:click="$toggle('confirmingUpdating')" wire:loading.attr="disabled" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+                        {{ __('Cancel') }}
+                    </button>
+                    <button type="button" wire:click="update" wire:loading.attr="disabled" class="inline-flex items-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-sm transition-all duration-200">
+                        <svg wire:loading wire:target="update" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span wire:loading.remove wire:target="update">{{ __('Update Assessment') }}</span>
+                        <span wire:loading wire:target="update">{{ __('Updating...') }}</span>
+                    </button>
+                </div>
+            </div>
         </x-slot>
     </x-jet-dialog-modal>
 </div>

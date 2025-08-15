@@ -182,6 +182,17 @@ class Results extends Component
     }
 
     /**
+     * Close the update modal without saving.
+     *
+     * @return void
+     */
+    public function closeModal()
+    {
+        $this->resetErrorBag();
+        $this->confirmingUpdating = false;
+    }
+
+    /**
      * Render the component
      *
      * @return \Illuminate\View\View

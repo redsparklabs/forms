@@ -1,5 +1,5 @@
 <div class="mb-5">
-    <header class="bg-gradient-to-r from-green-600 to-emerald-700 shadow-lg">
+    <header class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg">
         <div class="px-4 pt-8 pb-6 mx-auto max-w-7xl sm:px-10 lg:px-8">
             <div class="flex">
                 <h2 class="flex-1 text-3xl font-bold leading-6 text-white tracking-tight">
@@ -10,7 +10,7 @@
                     @endif
                 </h2>
             </div>
-            <p class="mt-2 text-green-100 text-lg">
+            <p class="mt-2 text-gray-300 text-lg">
                 Business Model Evidence Assessment Overview
             </p>
         </div>
@@ -103,14 +103,15 @@
     })
 
     @php
-        $period = \Carbon\CarbonPeriod::create(now()->subMonths(12), ' 1 month', now());
+        // Use a rolling 90-day window, daily granularity
+        $period = \Carbon\CarbonPeriod::create(now()->subDays(90), '1 day', now());
     @endphp
     function loadGraph() {
         const chart = new Chart(document.getElementById("myChart"), {
             type: "line",
             data: {
                 labels: [
-                    "{!!collect($period)->map(fn($date) => $date->format('M / Y'))->implode('","') !!}"
+                    "{!! collect($period)->map(fn($date) => $date->format('M j'))->implode('","') !!}"
                 ],
                 datasets: [
 
@@ -119,19 +120,20 @@
                         @php
                             $thedata = [];
 
+                            // Map events by day key within the rolling window
                             $data = $team->events()
-                            ->orderBy('date')
-                            ->get()
-                            ->mapWithkeys(function($e) use($team)  {
-                                return [$e->date->format('M/y') => $e->progressMetric($team)];
-                            });
+                                ->whereBetween('date', [now()->subDays(90)->startOfDay(), now()->endOfDay()])
+                                ->orderBy('date')
+                                ->get()
+                                ->mapWithKeys(function($e) use($team)  {
+                                    return [$e->date->format('Y-m-d') => $e->progressMetric($team)];
+                                });
 
                             foreach ($period as $time) {
-                                $thedata[$time->format('M/y')] = '';
-                                foreach($data as $date => $score) {
-                                    if($date == $time->format('M/y')) {
-                                        $thedata[$date] = $score;
-                                    }
+                                $key = $time->format('Y-m-d');
+                                $thedata[$key] = '';
+                                if (isset($data[$key])) {
+                                    $thedata[$key] = $data[$key];
                                 }
                             }
 
@@ -168,7 +170,7 @@
                 plugins: {
                     title: {
                         display: false,
-                        text: 'Progress Metrics'
+                        text: 'Progress Metric'
                     },
                     legend: {
                         position: 'bottom'
@@ -198,6 +200,17 @@
                         position: 'right',
                         display: false,
                         type: 'logarithmic'
+                    },
+                    x: {
+                        ticks: {
+                            autoSkip: false,
+                            callback: function(value, index, ticks) {
+                                // Show one label per week (every 7th day)
+                                return index % 7 === 0 ? this.getLabelForValue(value) : '';
+                            },
+                            maxRotation: 0,
+                            minRotation: 0
+                        }
                     }
                 }
             }

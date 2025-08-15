@@ -27,12 +27,12 @@
         <div class="min-h-screen bg-white">
             <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-gradient-to-r from-green-600 to-emerald-700 shadow-lg">
+                <header class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg">
                     <div class="px-4 py-8 mx-auto text-center max-w-7xl sm:px-6 lg:px-8">
                         <h1 class="text-3xl font-bold text-white tracking-tight sm:text-4xl">
                             {{ $header }}
                         </h1>
-                        <p class="mt-2 text-green-100 text-lg">
+                        <p class="mt-2 text-gray-300 text-lg">
                             Business Model Evidence Assessment
                         </p>
                     </div>

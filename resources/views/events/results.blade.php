@@ -1,11 +1,11 @@
 <div class="min-h-screen bg-gray-50">
-    <!-- Clean Header -->
-    <header class="bg-white shadow-sm border-b border-gray-200">
+    <!-- Page Header -->
+    <header class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg">
         <div class="py-6 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">{{ $event->name }} Assessment Results</h1>
-                    <p class="text-gray-600 mt-1">{{ $team->name }} Project Evaluation</p>
+                    <h1 class="text-2xl font-bold text-white">{{ $event->name }} Assessment Results</h1>
+                    <p class="text-gray-300 mt-1">{{ $team->name }} Project Evaluation</p>
                 </div>
                 <div>
                     @can('update', $event)
@@ -47,7 +47,7 @@
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <div class="text-center">
                                         <div class="text-6xl font-bold text-green-600">{{ number_format($progressValue, 1) }}</div>
-                                        <div class="text-xl text-gray-500 font-medium mt-2">Score</div>
+                                        <div class="text-xl text-gray-500 font-medium mt-2">Progress Metric</div>
                                     </div>
                                 </div>
                             </div>
@@ -191,7 +191,7 @@
                                                     </div>
                                                     <div class="text-center">
                                                         <div class="text-2xl font-bold text-green-600">{{ $lineItemProgressMetric }}</div>
-                                                        <div class="text-xs text-green-600 font-medium">Overall Progress</div>
+                                                        <div class="text-xs text-green-600 font-medium">Overall Progress Metric</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -379,35 +379,24 @@
                     <p class="text-sm text-gray-600 mt-1">Visual assessment breakdown by business model components</p>
                 </div>
                 <div class="p-6">
-                    @if($responses && $responses->count() > 0)
-                    <div class="w-2/3 mx-auto">
+                @if($responses && $responses->count() > 0)
+                    <div class="w-2/3 max-w-5xl mx-auto">
                         <div class="grid grid-flow-col grid-rows-2 gap-1 w-full">
                             @foreach($questions->where('hidden', false)->sortBy('order')->take(7) as $i => $question)
                                 @php
-                                    $number = 0;
+                                    $number = 0.0;
                                     $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
-                                    if($mappedResponses->pluck(Str::slug($question['question']))->sum() > 0) {
-                                        $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
+                                    if ($mappedResponses->count() > 0) {
+                                        $avg = $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count();
+                                        $number = number_format($avg, 1);
                                     }
                                 @endphp
-                                <div x-data="{ tooltip{{$i}}: false }"
-                                     class="{{ $question['classes'] }} bg-{{ colorize($number) }} rounded flex cursor-pointer hover:opacity-90 transition-opacity"
-                                    >
-                                        <div
-                                            x-on:mouseover="tooltip{{$i}} = true"
-                                            x-on:mouseleave="tooltip{{$i}} = false"
-                                            class="text-center p-4 items-center justify-center flex w-full text-white font-bold py-8"
-                                        >
-                                            <div>{{ $question['abbrev'] }} <br/>{{ $number}}</div>
-                                        </div>
-                                        <div class="relative" x-cloak x-show.transition.origin.top="tooltip{{$i}}">
-                                            <div class="absolute top-0 z-10 w-48 p-2 -mt-1 text-sm leading-tight text-white bg-gray-900 transform -translate-x-1/2 -translate-y-full rounded-lg">
-                                                <div class="font-bold mb-2">{{ $question['question']}}</div>
-                                                <div class="text-gray-300">{{ $question['description']}}</div>
-                                                <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                                            </div>
-                                        </div>
+                                <div class="{{ $question['classes'] }} relative bg-{{ colorize($number) }} rounded flex items-center justify-center py-8 text-white font-bold">
+                                    <div class="flex items-center justify-center w-full">
+                                        <div class="absolute top-1 left-1 text-[10px] leading-none font-semibold opacity-90">{{ $question['abbrev'] }}</div>
+                                        <div>{{ $number }}</div>
                                     </div>
+                                </div>
                             @endforeach
                         </div>
 
@@ -417,30 +406,19 @@
                                     $mappedResponses = collect($responses)->map(function ($value) {
                                         return $value->response['questions'];
                                     });
-                                    $number = 0;
-                                    if($mappedResponses->pluck(Str::slug($question['question']))->sum()) {
-                                        $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
+                                    $number = 0.0;
+                                    if ($mappedResponses->count() > 0) {
+                                        $avg = $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count();
+                                        $number = number_format($avg, 1);
                                     }
                                 @endphp
 
-                                 <div x-data="{ tooltip2{{$i}}: false }"
-                                     class="{{ $question['classes'] }} bg-{{ colorize($number) }} rounded flex cursor-pointer hover:opacity-90 transition-opacity"
-                                    >
-                                        <div
-                                            x-on:mouseover="tooltip2{{$i}} = true"
-                                            x-on:mouseleave="tooltip2{{$i}} = false"
-                                            class="text-center p-4 items-center justify-center flex w-full text-white font-bold py-8"
-                                        >
-                                            <div>{{ $question['abbrev'] }} <br/>{{ $number}}</div>
-                                        </div>
-                                        <div class="relative" x-cloak x-show.transition.origin.top="tooltip2{{$i}}">
-                                            <div class="absolute top-0 z-10 w-48 p-2 -mt-1 text-sm leading-tight text-white bg-gray-900 transform -translate-x-1/2 -translate-y-full rounded-lg">
-                                                <div class="font-bold mb-2">{{ $question['question']}}</div>
-                                                <div class="text-gray-300">{{ $question['description']}}</div>
-                                                <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                                            </div>
-                                        </div>
+                                <div class="{{ $question['classes'] }} relative bg-{{ colorize($number) }} rounded flex items-center justify-center py-8 text-white font-bold">
+                                    <div class="flex items-center justify-center w-full">
+                                        <div class="absolute top-1 left-1 text-[10px] leading-none font-semibold opacity-90">{{ $question['abbrev'] }}</div>
+                                        <div>{{ $number }}</div>
                                     </div>
+                                </div>
                             @endforeach
                         </div>
                         
@@ -449,12 +427,11 @@
                             <p class="text-xs text-gray-600 italic">*Note: All scores are calculated based on the latest evaluation responses and represent team averages.</p>
                         </div>
                     </div>
-                    @else
-                        <div class="text-center py-8">
-                            <div class="text-gray-500">No responses available to generate the business model canvas.</div>
-                        </div>
-                    @endif
-                </div>
+                @else
+                    <div class="text-center py-8">
+                        <div class="text-gray-500">No responses available to generate the business model canvas.</div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -462,50 +439,62 @@
 
     </div>
 
-    <x-jet-dialog-modal wire:model="confirmingUpdating">
+    <x-jet-dialog-modal wire:model="confirmingUpdating" maxWidth="xl" x-on:keydown.escape.window="$wire.set('confirmingUpdating', false)">
         <x-slot name="title">
-            {{ __('Update Fields') }}
+            <div class="flex items-start justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ __('Update Fields') }}</h3>
+                    <p class="text-sm text-gray-500 mt-1">{{ __('Adjust financials and scheduling for this assessment.') }}</p>
+                </div>
+                <button type="button" class="ml-4 text-gray-400 hover:text-gray-600" x-on:click.stop="show = false; $wire.set('confirmingUpdating', false)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+            </div>
         </x-slot>
 
         <x-slot name="content">
 
             <div class="mt-4">
                 <x-jet-label for="net_projected_value" value="{{ __('Net Projected Value') }}" />
-                <div class="mt-1 flex rounded-md shadow-sm">
-                    <span class="inline-flex shadow-sm items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">$</span>
-                    <x-jet-input id="net_projected_value" type="text" class="block w-full border-l-0 rounded-l-none" wire:model.defer="updateForm.net_projected_value" />
+                <div class="mt-1 flex rounded-md shadow-sm transition focus-within:ring-2 focus-within:ring-green-500 focus-within:border-green-500">
+                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-green-200 bg-green-50 text-green-700 text-sm">$</span>
+                    <x-jet-input id="net_projected_value" type="text" placeholder="0" class="block w-full border-l-0 rounded-l-none rounded-r-md focus:border-green-500 focus:ring-green-500" wire:model.defer="updateForm.net_projected_value" />
                 </div>
                 <x-jet-input-error for="updateForm.net_projected_value" class="mt-2" />
             </div>
 
             <div class="mt-4">
                 <x-jet-label for="investment" value="{{ __('Investment') }}" />
-                <div class="mt-1 flex rounded-md shadow-sm">
-                    <span class="inline-flex shadow-sm items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">$</span>
-                    <x-jet-input type="text" id="investment" class="block w-full border-l-0 rounded-l-none" wire:model.defer="updateForm.investment" />
+                <div class="mt-1 flex rounded-md shadow-sm transition focus-within:ring-2 focus-within:ring-green-500 focus-within:border-green-500">
+                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-green-200 bg-green-50 text-green-700 text-sm">$</span>
+                    <x-jet-input type="text" id="investment" placeholder="0" class="block w-full border-l-0 rounded-l-none rounded-r-md focus:border-green-500 focus:ring-green-500" wire:model.defer="updateForm.investment" />
                 </div>
                 <x-jet-input-error for="updateForm.investment" class="mt-2" />
             </div>
 
             <div class="mt-4">
                 <x-jet-label for="priority_level" value="{{ __('Priority Level') }}" />
-                <x-jet-input id="priority_level" type="text" class="block w-full mt-1" wire:model.defer="updateForm.priority_level" />
+                <x-jet-input id="priority_level" type="text" placeholder="{{ __('e.g., High / Medium / Low') }}" class="block w-full mt-1 rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500" wire:model.defer="updateForm.priority_level" />
                 <x-jet-input-error for="updateForm.priority_level" class="mt-2" />
             </div>
 
             <div class="mt-4">
                 <x-jet-label for="start_date" value="{{ __('Start Date') }}" />
-                <x-jet-input id="start_date" type="date" class="block w-full mt-1" wire:model.defer="updateForm.start_date" />
+                <x-jet-input id="start_date" type="date" class="block w-full mt-1 rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500" wire:model.defer="updateForm.start_date" />
                 <x-jet-input-error for="updateForm.start_date" class="mt-2" />
             </div>
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingUpdating')" wire:loading.attr="disabled">
+            <button type="button"
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 rounded-lg shadow-sm"
+                    wire:click.stop="closeModal"
+                    x-on:click.stop="show = false; $wire.set('confirmingUpdating', false)"
+                    wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </button>
 
-            <x-jet-button class="ml-2" wire:click="update" spinner="update">
+            <x-jet-button type="button" class="ml-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 border-transparent rounded-lg" wire:click="update" spinner="update">
                 {{ __('Update') }}
             </x-jet-button>
         </x-slot>

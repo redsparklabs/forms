@@ -10,6 +10,7 @@ module.exports = {
         './vendor/laravel/jetstream/**/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './config/**/*.php',
         './vendor/wireui/wireui/resources/**/*.blade.php',
         './vendor/wireui/wireui/ts/**/*.ts',
         './vendor/wireui/wireui/src/View/**/*.php'
@@ -27,6 +28,12 @@ module.exports = {
         'bg-karban-green-4',
         'bg-karban-green-5',
         'bg-karban-green-6',
+        // Business Model Canvas grid spans (defined in config/questions.php)
+        'row-span-1',
+        'row-span-2',
+        'row-span-3',
+        'col-span-1',
+        'col-span-2',
     ],
     theme: {
         extend: {

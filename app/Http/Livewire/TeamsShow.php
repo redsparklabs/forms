@@ -11,6 +11,7 @@ use App\Actions\Teams\UpdateTeam;
 use App\Http\Livewire\BaseComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 class TeamsShow extends BaseComponent
 {
@@ -292,6 +293,21 @@ class TeamsShow extends BaseComponent
             ->orderBy($this->sortByField, $this->sortDirection)
             ->paginate(25);
 
-        return view('teams.show', compact('events'));
+        // Chart data: limit to last 90 days relative to most recent event
+        $latestEventDate = $this->team->events()->max('date');
+        if ($latestEventDate) {
+            $endDate = Carbon::parse($latestEventDate);
+        } else {
+            $endDate = Carbon::now();
+        }
+        $startDate = (clone $endDate)->subDays(90);
+
+        $chartEvents = $this->team
+            ->events()
+            ->whereBetween('date', [$startDate->startOfDay(), $endDate->endOfDay()])
+            ->orderBy('date', 'asc')
+            ->get();
+
+        return view('teams.show', compact('events', 'chartEvents'));
     }
 }

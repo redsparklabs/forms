@@ -160,6 +160,24 @@ abstract class BaseComponent extends Component
     }
 
     /**
+     * Close any open update modal and reset related state.
+     *
+     * @return void
+     */
+    public function closeModal()
+    {
+        // Close the updating modal consistently
+        $this->confirmingUpdating = false;
+
+        // Clear the id being edited
+        $this->idBeingUpdated = null;
+
+        // Clear validation state so it doesn't persist into next open
+        $this->resetErrorBag();
+        $this->resetValidation();
+    }
+
+    /**
      * Update action that should be executed
      *
      * @return void
