@@ -14,109 +14,138 @@
             wire:submit.prevent="create"
         >
             <div class="mb-6 bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
-                <h3 class="px-6 py-4 text-xl font-bold text-gray-900 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">Business Model Confidence Scoring</h3>
+                <h3 class="px-6 py-4 text-xl font-bold text-gray-900 bg-gray-50 border-b border-gray-200">Evaluate Business Model Readiness Using Evidence-Based Scoring</h3>
                 <div class="p-6 prose prose-sm max-w-none">
-                    {!! config('questions.overall_description') !!}
+                    <p class="mb-4">Rate each business model component based on the strength of supporting evidence available for investment decisions.</p>
+                    
+                    <h4 class="text-lg font-semibold text-gray-900 mb-3">Why Early-Stage Evidence Evaluation Matters</h4>
+                    <p class="mb-4">Traditional ROI metrics often fail in early-stage innovation because they rely on historical data and established market patterns. Growth boards require a different approach—one that balances speed-to-market with evidence-based decision making. This assessment helps leadership teams:</p>
+                    
+                    <ul class="mb-4 space-y-2">
+                        <li><strong>Avoid the "build it and they will come" trap</strong> by validating assumptions before major resource commitments</li>
+                        <li><strong>Make informed go/no-go decisions</strong> at critical funding gates without waiting for complete market data</li>
+                        <li><strong>Allocate resources strategically</strong> across a portfolio of initiatives based on evidence strength</li>
+                        <li><strong>Reduce innovation risk</strong> while maintaining competitive speed and agility</li>
+                    </ul>
+                    
+                    <h4 class="text-lg font-semibold text-gray-900 mb-3">Growth Board Responsibilities</h4>
+                    <p class="mb-4">As stewards of innovation investment, growth boards must evaluate opportunities using forward-looking indicators rather than backward-looking financial metrics. This evidence-based scoring enables boards to:</p>
+                    
+                    <ul class="mb-4 space-y-2">
+                        <li><strong>Prioritize initiatives</strong> with the strongest validation relative to their stage of development</li>
+                        <li><strong>Identify knowledge gaps</strong> that require additional investment before scaling</li>
+                        <li><strong>Balance portfolio risk</strong> by mixing high-confidence opportunities with strategic bets</li>
+                        <li><strong>Establish clear evidence thresholds</strong> for advancing projects through funding stages</li>
+                    </ul>
+                    
+                    <h4 class="text-lg font-semibold text-gray-900 mb-3">Evidence Quality Framework</h4>
+                    <p class="mb-2">Evaluate evidence strength across these business-critical dimensions:</p>
+                    <ul class="space-y-2">
+                        <li><strong>Market Research vs. Customer Behavior:</strong> Survey data vs. actual purchasing patterns</li>
+                        <li><strong>Controlled Testing vs. Market Reality:</strong> Lab/pilot results vs. real-world performance</li>
+                        <li><strong>Assumptions vs. Validated Data:</strong> Expert opinions vs. measurable business metrics</li>
+                        <li><strong>Concept Testing vs. Market-Ready Solution:</strong> Early prototypes vs. production-ready offerings</li>
+                    </ul>
                 </div>
             </div>
 
             <div class="mb-6 bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
-                <h3 class="px-6 py-4 text-xl font-bold text-gray-900 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">Confidence Score Scale</h3>
+                <h3 class="px-6 py-4 text-xl font-bold text-gray-900 bg-gray-50 border-b border-gray-200">Confidence Score Scale</h3>
                 <div class="p-4">
                     <!-- Dynamic SVG Confidence Score Scale -->
-                    <div class="w-full overflow-x-auto">
-                        <svg viewBox="0 0 800 400" class="w-full h-auto min-w-[600px] max-w-4xl mx-auto">
+                    <div class="w-full flex justify-center">
+                        <svg viewBox="0 0 1000 400" class="w-full h-auto max-w-6xl">
                             <!-- Title -->
-                            <text x="400" y="30" text-anchor="middle" class="text-2xl font-bold fill-blue-600">Confidence Score</text>
+                            <text x="500" y="30" text-anchor="middle" class="text-2xl font-bold fill-blue-600">Confidence Score</text>
                             
                             <!-- Score numbers -->
-                            <text x="50" y="80" text-anchor="middle" class="text-xl font-bold fill-blue-600">0</text>
-                            <text x="175" y="80" text-anchor="middle" class="text-lg font-semibold fill-gray-700">1</text>
-                            <text x="300" y="80" text-anchor="middle" class="text-lg font-semibold fill-gray-700">2</text>
-                            <text x="425" y="80" text-anchor="middle" class="text-xl font-bold fill-blue-600">3</text>
-                            <text x="550" y="80" text-anchor="middle" class="text-lg font-semibold fill-gray-700">4</text>
-                            <text x="675" y="80" text-anchor="middle" class="text-xl font-bold fill-blue-600">5</text>
+                            <text x="83" y="80" text-anchor="middle" class="text-xl font-bold fill-blue-600">0</text>
+                            <text x="233" y="80" text-anchor="middle" class="text-lg font-semibold fill-gray-700">1</text>
+                            <text x="383" y="80" text-anchor="middle" class="text-lg font-semibold fill-gray-700">2</text>
+                            <text x="533" y="80" text-anchor="middle" class="text-xl font-bold fill-blue-600">3</text>
+                            <text x="683" y="80" text-anchor="middle" class="text-lg font-semibold fill-gray-700">4</text>
+                            <text x="833" y="80" text-anchor="middle" class="text-xl font-bold fill-blue-600">5</text>
                             
                             <!-- Main scale line -->
-                            <line x1="50" y1="100" x2="675" y2="100" stroke="#374151" stroke-width="3"/>
+                            <line x1="83" y1="100" x2="833" y2="100" stroke="#374151" stroke-width="3"/>
                             
                             <!-- Scale points -->
-                            <circle cx="50" cy="100" r="8" fill="#374151"/>
-                            <circle cx="175" cy="100" r="8" fill="#374151"/>
-                            <circle cx="300" cy="100" r="8" fill="#374151"/>
-                            <circle cx="425" cy="100" r="8" fill="#374151"/>
-                            <circle cx="550" cy="100" r="8" fill="#374151"/>
-                            <circle cx="675" cy="100" r="8" fill="#374151"/>
+                            <circle cx="83" cy="100" r="8" fill="#374151"/>
+                            <circle cx="233" cy="100" r="8" fill="#374151"/>
+                            <circle cx="383" cy="100" r="8" fill="#374151"/>
+                            <circle cx="533" cy="100" r="8" fill="#374151"/>
+                            <circle cx="683" cy="100" r="8" fill="#374151"/>
+                            <circle cx="833" cy="100" r="8" fill="#374151"/>
                             
                             <!-- Vertical dashed lines -->
-                            <line x1="50" y1="110" x2="50" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
-                            <line x1="175" y1="110" x2="175" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
-                            <line x1="300" y1="110" x2="300" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
-                            <line x1="425" y1="110" x2="425" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
-                            <line x1="550" y1="110" x2="550" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
-                            <line x1="675" y1="110" x2="675" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
+                            <line x1="83" y1="110" x2="83" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
+                            <line x1="233" y1="110" x2="233" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
+                            <line x1="383" y1="110" x2="383" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
+                            <line x1="533" y1="110" x2="533" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
+                            <line x1="683" y1="110" x2="683" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
+                            <line x1="833" y1="110" x2="833" y2="280" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
                             
                             <!-- Description text boxes -->
-                            <foreignObject x="10" y="120" width="80" height="160">
+                            <foreignObject x="33" y="120" width="100" height="160">
                                 <div class="text-xs text-center text-gray-700 leading-tight">
                                     <div class="font-semibold mb-1">Not addressed yet;</div>
                                     <div>Not within scope of this evaluation</div>
                                 </div>
                             </foreignObject>
                             
-                            <foreignObject x="135" y="120" width="80" height="160">
+                            <foreignObject x="183" y="120" width="100" height="160">
                                 <div class="text-xs text-center text-gray-700 leading-tight">
                                     <div class="font-semibold mb-1">The team has</div>
                                     <div>provided little evidence, there is low confidence in the evidence</div>
                                 </div>
                             </foreignObject>
                             
-                            <foreignObject x="260" y="120" width="80" height="160">
+                            <foreignObject x="333" y="120" width="100" height="160">
                                 <div class="text-xs text-center text-gray-700 leading-tight">
                                     <div class="font-semibold mb-1">The team has</div>
                                     <div>provided some evidence, there is medium to low confidence in the evidence</div>
                                 </div>
                             </foreignObject>
                             
-                            <foreignObject x="385" y="120" width="80" height="160">
+                            <foreignObject x="483" y="120" width="100" height="160">
                                 <div class="text-xs text-center text-gray-700 leading-tight">
                                     <div class="font-semibold mb-1">The team has</div>
                                     <div>provided partial evidence not adequate to make a decision; neutral/moderate confidence</div>
                                 </div>
                             </foreignObject>
                             
-                            <foreignObject x="510" y="120" width="80" height="160">
+                            <foreignObject x="633" y="120" width="100" height="160">
                                 <div class="text-xs text-center text-gray-700 leading-tight">
                                     <div class="font-semibold mb-1">The team has</div>
                                     <div>provided evidence to make a premature decision, there is medium to medium high confidence in the evidence</div>
                                 </div>
                             </foreignObject>
                             
-                            <foreignObject x="635" y="120" width="80" height="160">
+                            <foreignObject x="783" y="120" width="100" height="160">
                                 <div class="text-xs text-center text-gray-700 leading-tight">
                                     <div class="font-semibold mb-1">The team has</div>
                                     <div>provided adequate evidence to make a decision, there is high confidence in the evidence</div>
                                 </div>
                             </foreignObject>
                             
-                            <!-- Confidence level labels -->
-                            <rect x="10" y="290" width="80" height="25" fill="#9ca3af" rx="3"/>
-                            <text x="50" y="307" text-anchor="middle" class="text-xs font-semibold fill-white">Not Addressed</text>
+                            <!-- Confidence level labels - seamless bars -->
+                            <rect x="33" y="290" width="150" height="25" fill="#9ca3af"/>
+                            <text x="108" y="307" text-anchor="middle" class="text-xs font-semibold fill-white">Not Addressed</text>
                             
-                            <rect x="135" y="290" width="80" height="25" fill="#ef4444" rx="3"/>
-                            <text x="175" y="307" text-anchor="middle" class="text-xs font-semibold fill-white">No Confidence</text>
+                            <rect x="183" y="290" width="150" height="25" fill="#ef4444"/>
+                            <text x="258" y="307" text-anchor="middle" class="text-xs font-semibold fill-white">No Confidence</text>
                             
-                            <rect x="260" y="290" width="80" height="25" fill="#f97316" rx="3"/>
-                            <text x="300" y="307" text-anchor="middle" class="text-xs font-semibold fill-white">Low Confidence</text>
+                            <rect x="333" y="290" width="150" height="25" fill="#f97316"/>
+                            <text x="408" y="307" text-anchor="middle" class="text-xs font-semibold fill-white">Low Confidence</text>
                             
-                            <rect x="385" y="290" width="80" height="25" fill="#eab308" rx="3"/>
-                            <text x="425" y="307" text-anchor="middle" class="text-xs font-semibold fill-black">Moderate Confidence</text>
+                            <rect x="483" y="290" width="150" height="25" fill="#eab308"/>
+                            <text x="558" y="307" text-anchor="middle" class="text-xs font-semibold fill-black">Moderate Confidence</text>
                             
-                            <rect x="510" y="290" width="80" height="25" fill="#84cc16" rx="3"/>
-                            <text x="550" y="307" text-anchor="middle" class="text-xs font-semibold fill-black">Reasonable Confidence</text>
+                            <rect x="633" y="290" width="150" height="25" fill="#84cc16"/>
+                            <text x="708" y="307" text-anchor="middle" class="text-xs font-semibold fill-black">Reasonable Confidence</text>
                             
-                            <rect x="635" y="290" width="80" height="25" fill="#22c55e" rx="3"/>
-                            <text x="675" y="307" text-anchor="middle" class="text-xs font-semibold fill-white">High Confidence</text>
+                            <rect x="783" y="290" width="150" height="25" fill="#22c55e"/>
+                            <text x="858" y="307" text-anchor="middle" class="text-xs font-semibold fill-white">High Confidence</text>
                             
                             <!-- Risk gradient bar -->
                             <defs>
@@ -129,19 +158,19 @@
                                     <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
                                 </linearGradient>
                             </defs>
-                            <rect x="10" y="330" width="705" height="20" fill="url(#riskGradient)" rx="3"/>
+                            <rect x="183" y="330" width="650" height="15" fill="url(#riskGradient)" rx="7"/>
                             
                             <!-- Risk labels -->
-                            <text x="200" y="365" text-anchor="middle" class="text-sm font-bold fill-gray-700">High Risk</text>
-                            <text x="400" y="365" text-anchor="middle" class="text-sm font-bold fill-gray-700">Mitigated Risk</text>
-                            <text x="600" y="365" text-anchor="middle" class="text-sm font-bold fill-gray-700">Low Risk</text>
+                            <text x="280" y="360" text-anchor="middle" class="text-sm font-semibold fill-red-600">High Risk</text>
+                            <text x="508" y="360" text-anchor="middle" class="text-sm font-semibold fill-yellow-600">Mitigated Risk</text>
+                            <text x="736" y="360" text-anchor="middle" class="text-sm font-semibold fill-green-600">Low Risk</text>
                         </svg>
                     </div>
                 </div>
             </div>
 
             <div class="mb-6 bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
-                <h3 class="px-6 py-4 text-lg font-semibold text-gray-900 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">Email Address</h3>
+                <h3 class="px-6 py-4 text-lg font-semibold text-gray-900 bg-gray-50 border-b border-gray-200">Email Address</h3>
                 <div class="p-6">
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
                         Please enter your email address
@@ -155,7 +184,7 @@
 
             @if($event && $event->teams->count() > 1)
                 <div class="mb-6 bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
-                    <h3 class="px-6 py-4 text-lg font-semibold text-gray-900 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">Select Team</h3>
+                    <h3 class="px-6 py-4 text-lg font-semibold text-gray-900 bg-gray-50 border-b border-gray-200">Select Team</h3>
                     <div class="p-6">
                         <div class="space-y-4">
                             @foreach($event->teams->all() as $team)
@@ -176,53 +205,71 @@
                     $slug = Str::slug($question['question'])
                 @endphp
                 <div class="mb-6 bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+                    <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-900">{{ $question['question'] }}</h3>
                         <p class="mt-2 text-sm text-gray-600">{{ $question['description'] }}</p>
                     </div>
-                    <div class="p-6">
-                        <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 sm:space-x-4">
-                            <div class="flex-shrink-0 text-xs font-medium text-gray-500 text-center sm:text-left">
-                                Not Applicable<br>(N/A)
+                    <div class="p-6" x-data="{ sliderValue: 0 }">
+                        <div class="space-y-4">
+                            <!-- Slider with labels -->
+                            <div class="flex items-center justify-between text-xs font-medium text-gray-500 px-2">
+                                <span>Not Addressed</span>
+                                <span>High Confidence</span>
                             </div>
                             
-                            <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-                                <div class="flex flex-col items-center space-y-2">
-                                    <label for="score-[{{ $slug }}]-0" class="text-sm font-semibold text-blue-600 cursor-pointer">0</label>
-                                    <input type="radio" id="score-[{{ $slug }}]-0" wire:model.defer="create_form.questions.{{ $slug }}" value="0" 
-                                           class="w-5 h-5 text-blue-600 border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all duration-200" />
+                            <!-- Slider container -->
+                            <div class="relative">
+                                <input type="range" 
+                                       id="slider-{{ $slug }}" 
+                                       min="0" 
+                                       max="5" 
+                                       step="1"
+                                       x-model="sliderValue"
+                                       wire:model.defer="create_form.questions.{{ $slug }}"
+                                       class="w-full h-3 bg-gradient-to-r from-red-500 via-orange-500 via-yellow-500 via-lime-500 to-green-500 rounded-lg appearance-none cursor-pointer slider-thumb">
+                                
+                                <!-- Slider value labels -->
+                                <div class="flex justify-between items-center mt-2 px-1">
+                                    <span class="text-sm font-semibold text-blue-600">0</span>
+                                    <span class="text-sm font-medium text-gray-700">1</span>
+                                    <span class="text-sm font-medium text-gray-700">2</span>
+                                    <span class="text-sm font-semibold text-blue-600">3</span>
+                                    <span class="text-sm font-medium text-gray-700">4</span>
+                                    <span class="text-sm font-semibold text-blue-600">5</span>
                                 </div>
-                                <div class="flex flex-col items-center space-y-2">
-                                    <label for="score-[{{ $slug }}]-1" class="text-sm font-medium text-gray-700 cursor-pointer">1</label>
-                                    <input type="radio" id="score-[{{ $slug }}]-1" wire:model.defer="create_form.questions.{{ $slug }}" value="1" 
-                                           class="w-5 h-5 text-blue-600 border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all duration-200" />
+                                
+                                <!-- Current value display -->
+                                <div class="mt-3 text-center">
+                                    <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
+                                        Current Score: <span x-text="sliderValue"></span>
+                                    </span>
                                 </div>
-                                <div class="flex flex-col items-center space-y-2">
-                                    <label for="score-[{{ $slug }}]-2" class="text-sm font-medium text-gray-700 cursor-pointer">2</label>
-                                    <input type="radio" id="score-[{{ $slug }}]-2" wire:model.defer="create_form.questions.{{ $slug }}" value="2" 
-                                           class="w-5 h-5 text-blue-600 border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all duration-200" />
-                                </div>
-                                <div class="flex flex-col items-center space-y-2">
-                                    <label for="score-[{{ $slug }}]-3" class="text-sm font-semibold text-blue-600 cursor-pointer">3</label>
-                                    <input type="radio" id="score-[{{ $slug }}]-3" wire:model.defer="create_form.questions.{{ $slug }}" value="3" 
-                                           class="w-5 h-5 text-blue-600 border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all duration-200" />
-                                </div>
-                                <div class="flex flex-col items-center space-y-2">
-                                    <label for="score-[{{ $slug }}]-4" class="text-sm font-medium text-gray-700 cursor-pointer">4</label>
-                                    <input type="radio" id="score-[{{ $slug }}]-4" wire:model.defer="create_form.questions.{{ $slug }}" value="4" 
-                                           class="w-5 h-5 text-blue-600 border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all duration-200" />
-                                </div>
-                                <div class="flex flex-col items-center space-y-2">
-                                    <label for="score-[{{ $slug }}]-5" class="text-sm font-semibold text-blue-600 cursor-pointer">5</label>
-                                    <input type="radio" id="score-[{{ $slug }}]-5" wire:model.defer="create_form.questions.{{ $slug }}" value="5" 
-                                           class="w-5 h-5 text-blue-600 border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all duration-200" />
-                                </div>
-                            </div>
-                            
-                            <div class="flex-shrink-0 text-xs font-medium text-gray-500 text-center sm:text-right">
-                                High<br>Confidence
                             </div>
                         </div>
+                        
+                        <style>
+                            .slider-thumb::-webkit-slider-thumb {
+                                appearance: none;
+                                height: 24px;
+                                width: 24px;
+                                border-radius: 50%;
+                                background: #3b82f6;
+                                border: 2px solid #ffffff;
+                                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                                cursor: pointer;
+                            }
+                            
+                            .slider-thumb::-moz-range-thumb {
+                                height: 24px;
+                                width: 24px;
+                                border-radius: 50%;
+                                background: #3b82f6;
+                                border: 2px solid #ffffff;
+                                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                                cursor: pointer;
+                                border: none;
+                            }
+                        </style>
                         <x-jet-input-error for="questions.{{ $slug }}" class="mt-4" />
                     </div>
                 </div>
@@ -233,46 +280,44 @@
                     $slug = Str::slug($question['question'])
                 @endphp
                 <div class="mb-6 bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+                    <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-900">{{ $question['question'] }}</h3>
                         <p class="mt-2 text-sm text-gray-600">{{ $question['description'] }}</p>
                     </div>
-                    <div class="p-6">
-                        <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 sm:space-x-4">
-                            <div class="flex-shrink-0 text-xs font-medium text-gray-500 text-center sm:text-left">
-                                Not Applicable<br>(N/A)
+                    <div class="p-6" x-data="{ sliderValue: 1 }">
+                        <div class="space-y-4">
+                            <!-- Slider with labels -->
+                            <div class="flex items-center justify-between text-xs font-medium text-gray-500 px-2">
+                                <span>Low Confidence</span>
+                                <span>High Confidence</span>
                             </div>
                             
-                            <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-                                <div class="flex flex-col items-center space-y-2">
-                                    <label for="score-[{{ $slug }}]-1" class="text-sm font-medium text-gray-700 cursor-pointer">1</label>
-                                    <input type="radio" id="score-[{{ $slug }}]-1" wire:model.defer="create_form.questions.{{ $slug }}" value="1" 
-                                           class="w-5 h-5 text-blue-600 border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all duration-200" />
+                            <!-- Slider container -->
+                            <div class="relative">
+                                <input type="range" 
+                                       id="slider-{{ $slug }}" 
+                                       min="1" 
+                                       max="5" 
+                                       step="1"
+                                       x-model="sliderValue"
+                                       wire:model.defer="create_form.questions.{{ $slug }}"
+                                       class="w-full h-3 bg-gradient-to-r from-red-500 via-orange-500 via-yellow-500 via-lime-500 to-green-500 rounded-lg appearance-none cursor-pointer slider-thumb">
+                                
+                                <!-- Slider value labels -->
+                                <div class="flex justify-between items-center mt-2 px-1">
+                                    <span class="text-sm font-medium text-gray-700">1</span>
+                                    <span class="text-sm font-medium text-gray-700">2</span>
+                                    <span class="text-sm font-semibold text-blue-600">3</span>
+                                    <span class="text-sm font-medium text-gray-700">4</span>
+                                    <span class="text-sm font-semibold text-blue-600">5</span>
                                 </div>
-                                <div class="flex flex-col items-center space-y-2">
-                                    <label for="score-[{{ $slug }}]-2" class="text-sm font-medium text-gray-700 cursor-pointer">2</label>
-                                    <input type="radio" id="score-[{{ $slug }}]-2" wire:model.defer="create_form.questions.{{ $slug }}" value="2" 
-                                           class="w-5 h-5 text-blue-600 border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all duration-200" />
+                                
+                                <!-- Current value display -->
+                                <div class="mt-3 text-center">
+                                    <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
+                                        Current Score: <span x-text="sliderValue"></span>
+                                    </span>
                                 </div>
-                                <div class="flex flex-col items-center space-y-2">
-                                    <label for="score-[{{ $slug }}]-3" class="text-sm font-semibold text-blue-600 cursor-pointer">3</label>
-                                    <input type="radio" id="score-[{{ $slug }}]-3" wire:model.defer="create_form.questions.{{ $slug }}" value="3" 
-                                           class="w-5 h-5 text-blue-600 border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all duration-200" />
-                                </div>
-                                <div class="flex flex-col items-center space-y-2">
-                                    <label for="score-[{{ $slug }}]-4" class="text-sm font-medium text-gray-700 cursor-pointer">4</label>
-                                    <input type="radio" id="score-[{{ $slug }}]-4" wire:model.defer="create_form.questions.{{ $slug }}" value="4" 
-                                           class="w-5 h-5 text-blue-600 border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all duration-200" />
-                                </div>
-                                <div class="flex flex-col items-center space-y-2">
-                                    <label for="score-[{{ $slug }}]-5" class="text-sm font-semibold text-blue-600 cursor-pointer">5</label>
-                                    <input type="radio" id="score-[{{ $slug }}]-5" wire:model.defer="create_form.questions.{{ $slug }}" value="5" 
-                                           class="w-5 h-5 text-blue-600 border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all duration-200" />
-                                </div>
-                            </div>
-                            
-                            <div class="flex-shrink-0 text-xs font-medium text-gray-500 text-center sm:text-right">
-                                High<br>Confidence
                             </div>
                         </div>
                         <x-jet-input-error for="questions.{{ $slug }}" class="mt-4" />
@@ -336,7 +381,7 @@
                     $slug = Str::slug($question['question'])
                 @endphp
                 <div class="mb-6 bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+                    <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-900">{{ $question['question'] }}</h3>
                         @if($question['description'])
                             <p class="mt-2 text-sm text-gray-600">{{ $question['description'] }}</p>
