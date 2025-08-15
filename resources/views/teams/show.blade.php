@@ -218,14 +218,15 @@
                     <div class="grid grid-flow-col grid-rows-2 gap-1 w-full">
                         @php
                         // @dd($team);
-                            $responses = $team->latestEvent()?->responses()->where('team_id', $team->id)->get();
+                            $latestEvent = $team->latestEvent();
+                            $responses = $latestEvent?->responses()->where('team_id', $team->id)->get();
                         @endphp
-                        @if($responses)
-                            @foreach($team->latestEvent()->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $i => $question)
+                        @if($responses && $responses->count() > 0 && $latestEvent && $latestEvent->latestForm())
+                            @foreach($latestEvent->latestForm()->allQuestions()->where('hidden', false)->sortBy('order')->take(7) as $i => $question)
                                 @php
                                     $number = 0;
                                     $mappedResponses = collect($responses)->map(fn ($value) => $value->response['questions']);
-                                    if($mappedResponses->pluck(Str::slug($question['question']))->sum() > 0) {
+                                    if($mappedResponses->count() > 0 && $mappedResponses->pluck(Str::slug($question['question']))->sum() > 0) {
                                         $number = number_format( $mappedResponses->pluck(Str::slug($question['question']))->sum() / $mappedResponses->count(), 1);
                                     }
 
@@ -331,7 +332,7 @@
                  x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                  class="inline-block w-full max-w-4xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
                 
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex justify-between items-center mb-2">
                     <h3 class="text-lg font-medium text-gray-900">
                         Historical Scoring: {{ $selectedQuestionTitle ?? 'Component' }}
                     </h3>
@@ -344,9 +345,8 @@
                 </div>
 
                 @if($selectedQuestionDescription)
-                    <div class="mb-6 p-4 bg-gray-50 rounded-lg border">
-                        <h4 class="font-semibold text-gray-900 mb-2">{{ $selectedQuestionTitle ?? 'Component' }} Description</h4>
-                        <p class="text-gray-700 text-sm leading-relaxed">{{ $selectedQuestionDescription }}</p>
+                    <div class="mb-6">
+                        <p class="text-gray-600 text-sm leading-relaxed">{{ $selectedQuestionDescription }}</p>
                     </div>
                 @endif
 

@@ -81,12 +81,12 @@
                                 </div>
                             </div>
                             
-                            @if(auth()->user()->can('updateMemberRole', [$team, $member]) && $member->id !== $team->owner_id)
+                            @if(auth()->user()->can('updateMemberRole', [$team, $member, \App\Models\TeamMember::ROLE_MEMBER]) && $member->id !== $team->owner_id)
                                 <div class="flex items-center space-x-4">
                                     <select
-                                        wire:model.defer="newRole"
-                                        wire:change="updateRole({{ $member->id }}, $event.target.value)"
+                                        wire:change="confirmRoleChange({{ $member->id }}, $event.target.value, '{{ $member->name }}', '{{ $member->pivot->role }}')"
                                         class="rounded-md border-gray-300 py-1 pl-2 pr-8 text-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                                        data-current-role="{{ $member->pivot->role }}"
                                     >
                                         <option value="{{ \App\Models\TeamMember::ROLE_MEMBER }}" {{ $member->pivot->role === \App\Models\TeamMember::ROLE_MEMBER ? 'selected' : '' }}>
                                             {{ __('Member') }}
@@ -94,11 +94,7 @@
                                         <option value="{{ \App\Models\TeamMember::ROLE_LEAD }}" {{ $member->pivot->role === \App\Models\TeamMember::ROLE_LEAD ? 'selected' : '' }}>
                                             {{ __('Lead') }}
                                         </option>
-                                        @if(auth()->user()->can('updateMemberRole', [$team, $member, \App\Models\TeamMember::ROLE_OWNER]))
-                                            <option value="{{ \App\Models\TeamMember::ROLE_OWNER }}" {{ $member->pivot->role === \App\Models\TeamMember::ROLE_OWNER ? 'selected' : '' }}>
-                                                {{ __('Owner') }}
-                                            </option>
-                                        @endif
+                                        {{-- Owner role removed from dropdown as requested --}}
                                     </select>
                                     
                                     @if(auth()->user()->can('removeMember', [$team, $member]) && $member->id !== $team->owner_id)
@@ -199,6 +195,31 @@
             <x-jet-danger-button class="ml-2" wire:click="removeTeamMember" wire:loading.attr="disabled">
                 {{ __('Remove') }}
             </x-jet-danger-button>
+        </x-slot>
+    </x-jet-confirmation-modal>
+
+    <!-- Change Role Confirmation Modal -->
+    <x-jet-confirmation-modal wire:model="confirmingRoleChange">
+        <x-slot name="title">
+            {{ __('Change Team Member Role') }}
+        </x-slot>
+
+        <x-slot name="content">
+            @if($memberBeingUpdated)
+                {{ __('Are you sure you want to change') }} <strong>{{ $memberBeingUpdated['name'] }}</strong> {{ __('from') }} 
+                <strong>{{ ucfirst($memberBeingUpdated['current_role']) }}</strong> {{ __('to') }} 
+                <strong>{{ ucfirst($memberBeingUpdated['new_role']) }}</strong>?
+            @endif
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-jet-secondary-button wire:click="cancelRoleChange" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-jet-secondary-button>
+
+            <x-jet-button class="ml-2" wire:click="updateRole" wire:loading.attr="disabled">
+                {{ __('Change Role') }}
+            </x-jet-button>
         </x-slot>
     </x-jet-confirmation-modal>
 </div>

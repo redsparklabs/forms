@@ -211,9 +211,10 @@ class TeamPolicy
      * @param  \App\Models\User  $user
      * @param  \App\Models\Team  $team
      * @param  \App\Models\User  $member
+     * @param  string  $role
      * @return mixed
      */
-    public function updateMemberRole(User $user, Team $team, User $member)
+    public function updateMemberRole(User $user, Team $team, User $member, string $role)
     {
         // Organization admins can update any member's role
         if ($user->hasOrganizationRole($team->organization, 'admin')) {

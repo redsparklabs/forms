@@ -26,7 +26,23 @@
 
             <div class="mt-4">
                 <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                @php
+                    $invitationEmail = '';
+                    if (request()->has('invitation')) {
+                        $invitation = \App\Models\TeamMember::where('invitation_token', request('invitation'))
+                            ->where('invitation_sent_at', '>=', now()->subDays(7))
+                            ->first();
+                        if ($invitation) {
+                            $invitationEmail = $invitation->email;
+                        }
+                    }
+                @endphp
+                <x-jet-input id="email" class="block mt-1 w-full {{ $invitationEmail ? 'bg-gray-50' : '' }}" type="email" name="email" 
+                    value="{{ old('email', $invitationEmail) }}"
+                    required />
+                @if($invitationEmail)
+                    <p class="mt-1 text-xs text-gray-500">This email address is associated with your team invitation.</p>
+                @endif
             </div>
 
             <div class="mt-4">

@@ -147,7 +147,7 @@
                                         })->sum();
 
                                         // Fix: Divide by number of questions in THIS section, not total sections
-                                        $sectionAverage = $sectionData->count() > 0 ? $total / $sectionData->count() : 0;
+                                        $sectionAverage = count($sectionData) > 0 ? $total / count($sectionData) : 0;
                                         $sectionTotals[$section .'_count'] += number_format($sectionAverage, 1);
                                         echo number_format($sectionAverage, 1);
                                     @endphp
@@ -159,9 +159,9 @@
 
                     <tr>
                         <td></td>
-                        @if($progressMetricTotal > 0 && $responses->count() > 0)
-                            <td class="p-2 font-bold text-center text-white bg-{{colorize(number_format($progressMetricTotal / $responses->count(), 1))}} border">
-                                {{ number_format($progressMetricTotal / $responses->count(), 1) }}
+                        @if($progressMetricTotal > 0 && count($responses) > 0)
+                            <td class="p-2 font-bold text-center text-white bg-{{colorize(number_format($progressMetricTotal / count($responses), 1))}} border">
+                                {{ number_format($progressMetricTotal / count($responses), 1) }}
                         @else
                             <td></td>
                         @endif
@@ -185,9 +185,9 @@
                         @endforeach
 
                         @foreach($sections->all() as $section => $sectionData)
-                            @if($sectionTotals[$section .'_count'] && $responses->count())
-                                <td class="text-white font-bold bg-{{colorize(number_format($sectionTotals[$section .'_count'] / $responses->count(), 1) ) }} border text-center p-2">
-                                    {{ number_format($sectionTotals[$section .'_count'] / $responses->count(), 1) }}
+                            @if($sectionTotals[$section .'_count'] && count($responses))
+                                <td class="text-white font-bold bg-{{colorize(number_format($sectionTotals[$section .'_count'] / count($responses), 1) ) }} border text-center p-2">
+                                    {{ number_format($sectionTotals[$section .'_count'] / count($responses), 1) }}
                                 </td>
                             @else
                                 <td> </td>

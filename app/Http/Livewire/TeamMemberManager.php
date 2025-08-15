@@ -64,6 +64,20 @@ class TeamMemberManager extends Component
     public $newRole = null;
 
     /**
+     * Indicates if the application is confirming a role change.
+     *
+     * @var bool
+     */
+    public $confirmingRoleChange = false;
+
+    /**
+     * The member being updated (for confirmation dialog).
+     *
+     * @var array|null
+     */
+    public $memberBeingUpdated = null;
+
+    /**
      * Mount the component.
      *
      * @param  \App\Models\Team  $team
@@ -454,25 +468,81 @@ class TeamMemberManager extends Component
     }
 
     /**
-     * Update the given team member's role.
+     * Confirm role change for a team member.
      *
      * @param  int  $userId
-     * @param  string  $role
+     * @param  string  $newRole
+     * @param  string  $memberName
+     * @param  string  $currentRole
      * @return void
      */
-    public function updateRole($userId, $role)
+    public function confirmRoleChange($userId, $newRole, $memberName, $currentRole)
     {
+        // Don't show confirmation if role hasn't actually changed
+        if ($newRole === $currentRole) {
+            return;
+        }
+
         $user = User::findOrFail($userId);
         
-        if (!Auth::user() || !Auth::user()->can('updateMemberRole', [$this->team, $user])) {
+        if (!Auth::user() || !Auth::user()->can('updateMemberRole', [$this->team, $user, $newRole])) {
+            abort(403);
+        }
+
+        $this->memberBeingUpdated = [
+            'id' => $userId,
+            'name' => $memberName,
+            'current_role' => $currentRole,
+            'new_role' => $newRole,
+        ];
+
+        $this->confirmingRoleChange = true;
+    }
+
+    /**
+     * Cancel the role change.
+     *
+     * @return void
+     */
+    public function cancelRoleChange()
+    {
+        $this->confirmingRoleChange = false;
+        $this->memberBeingUpdated = null;
+        
+        // Reset the dropdown to the current role by refreshing the component
+        $this->emit('resetRoleDropdown');
+    }
+
+    /**
+     * Update the given team member's role (after confirmation).
+     *
+     * @return void
+     */
+    public function updateRole()
+    {
+        if (!$this->memberBeingUpdated) {
+            return;
+        }
+
+        $userId = $this->memberBeingUpdated['id'];
+        $newRole = $this->memberBeingUpdated['new_role'];
+        
+        $user = User::findOrFail($userId);
+        
+        if (!Auth::user() || !Auth::user()->can('updateMemberRole', [$this->team, $user, $newRole])) {
             abort(403);
         }
 
         $this->team->members()->updateExistingPivot($userId, [
-            'role' => $role,
+            'role' => $newRole,
         ]);
 
+        $this->confirmingRoleChange = false;
+        $this->memberBeingUpdated = null;
         $this->updatingTeamMemberRole = null;
+        
+        // Show success message
+        session()->flash('message', 'Team member role updated successfully.');
     }
 
     /**

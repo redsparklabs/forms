@@ -116,11 +116,21 @@ class Event extends Model
      */
     public function progressMetric(Team $team)
     {
-        $data = calculateSections($this, $team);
+        try {
+            $data = calculateSections($this, $team);
 
-        if($data) {
-            return number_format($data['progressMetricTotal'], 1);
+            if($data && isset($data['progressMetricTotal']) && is_numeric($data['progressMetricTotal'])) {
+                return number_format($data['progressMetricTotal'], 1);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error calculating progress metric', [
+                'event_id' => $this->id,
+                'team_id' => $team->id,
+                'error' => $e->getMessage()
+            ]);
         }
+
+        return '0.0';
     }
 
     /**

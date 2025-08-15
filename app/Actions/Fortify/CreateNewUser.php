@@ -195,16 +195,26 @@ class CreateNewUser implements CreatesNewUsers
                     // Store the team ID in session for redirect after registration
                     session(['invitation_redirect_team_id' => $teamId]);
                     
+                    \Log::info('Invitation processed successfully during registration - NO organization created', [
+                        'user_id' => $user->id,
+                        'team_id' => $teamId,
+                        'invitation_token' => $input['invitation_token'],
+                    ]);
+                    
                 } catch (\Exception $e) {
                     \Log::error('Failed to process invitation during registration', [
                         'error' => $e->getMessage(),
                         'user_id' => $user->id,
                         'invitation_token' => $input['invitation_token'],
                     ]);
-                    // Continue with registration even if invitation processing fails
+                    // Even if invitation processing fails, DO NOT create an organization
+                    // The user was invited to join a team, not to create their own organization
                 }
+                
+                // IMPORTANT: Invited users should NEVER get an organization created
+                // They are joining an existing team, not creating their own workspace
             } else {
-                // Only create organization if no invitation was processed
+                // Only create organization if this is a regular registration (no invitation)
                 $this->createOrganization($user);
             }
             
